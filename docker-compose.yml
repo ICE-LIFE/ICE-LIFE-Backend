@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:10
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+        max_replicas_per_node: 1
+    env_file: .env
+    environment:
+      TZ: Asia/Seoul
+      MARIADB_MYSQL_LOCALHOST_USER: yes
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh", "--defaults-file=/etc/mysql/healthcheck.cnf-notdefault", "--connect"]
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+    secrets:
+      - db_root_password
+      - db_password
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - db_data:/var/lib/mysql
+
+networks:
+  backend:
+
+secrets:
+  db_root_password:
+    file: ./db/root_password.txt
+  db_password:
+    file: ./db/password.txt
+
+volumes:
+  db_data:
