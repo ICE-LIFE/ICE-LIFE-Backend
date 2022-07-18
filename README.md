@@ -23,3 +23,9 @@
     ```txt
     docker compose up
     ```
+
+## (for Dev) Run MySQL only
+
+```txt
+docker compose -f .\docker-compose.db.yml up
+```
