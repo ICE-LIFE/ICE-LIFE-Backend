@@ -1,6 +1,23 @@
 version: "3"
 
 services:
+  app:
+    image: ice-market:0.1.0
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_HOST: db
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+    secrets:
+      - db_password
+
   db:
     image: mariadb:10
     deploy:
