@@ -9,13 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class IceMarketApplication {
+    private final UserRepository userRepository;
+
+    public IceMarketApplication(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(IceMarketApplication.class, args);
     }
 
     @GetMapping("/hello")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return String.format("Hello %s!", name);
+    public String hello(@RequestParam(value = "id", defaultValue = "0") int id) {
+        User user = userRepository.findById(id);
+        return String.format("Hello %s!", user.getName());
     }
 }
