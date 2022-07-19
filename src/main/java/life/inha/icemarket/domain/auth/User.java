@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "users")
@@ -17,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class User {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
     @NonNull
@@ -31,6 +30,9 @@ public class User {
 
     private String nickname;
 
+    @NonNull
+    private String student_id;
+
     @CreatedDate
     @NonNull
     private LocalDateTime createdAt;
@@ -38,7 +40,7 @@ public class User {
 //    @LastModifiedDate
 //    @NonNull
 //    private LocalDateTime updatedAt;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+//
+//    @Column(name = "deleted_at")
+//    private LocalDateTime deletedAt;
 }
