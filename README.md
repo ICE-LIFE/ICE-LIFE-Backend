@@ -14,7 +14,7 @@
 
 1. Create `.env`.
 
-    Check [`.env.example`](./.env.example)
+    Check [`.env.example`](./.env)
 
 2. Create `db/password.txt`.
 
