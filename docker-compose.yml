@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  app:
+    image: ice-market:0.1.0
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_HOST: db
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+    restart: always
+    secrets:
+      - db_password
+
+  db:
+    image: mysql:8
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+        max_replicas_per_node: 1
+    env_file: .env
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    healthcheck:
+      test: ["CMD", "mysql", "--user=$$MYSQL_USER", "--password=$$(cat $$MYSQL_PASSWORD_FILE)", "-e 'SHOW DATABASES'"]
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+    restart: always
+    secrets:
+      - db_password
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - db_data:/var/lib/mysql
+
+networks:
+  backend:
+
+secrets:
+  db_password:
+    file: ./db/password.txt
+
+volumes:
+  db_data:
