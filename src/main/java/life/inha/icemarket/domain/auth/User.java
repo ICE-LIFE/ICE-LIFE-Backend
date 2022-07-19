@@ -1,4 +1,4 @@
-package life.inha.icemarket;
+package life.inha.icemarket.domain.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
