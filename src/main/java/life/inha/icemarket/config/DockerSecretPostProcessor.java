@@ -1,4 +1,4 @@
-package life.inha.icemarket;
+package life.inha.icemarket.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
