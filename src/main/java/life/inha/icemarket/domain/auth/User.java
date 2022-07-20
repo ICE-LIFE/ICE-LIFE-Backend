@@ -1,10 +1,7 @@
 package life.inha.icemarket.domain.auth;
 
 import life.inha.icemarket.domain.core.Post;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -12,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "users")
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -44,4 +41,9 @@ public class User {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void setNickname(String nickname){
+        // 닉네임 중복 체크 후 설정
+        this.nickname = nickname;
+    }
 }
