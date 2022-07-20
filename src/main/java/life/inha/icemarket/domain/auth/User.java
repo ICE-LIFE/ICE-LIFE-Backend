@@ -1,15 +1,15 @@
 package life.inha.icemarket.domain.auth;
 
+import life.inha.icemarket.domain.core.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "users")
 @Data
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class User {
     @Id
-    private int id;
+    private Integer id;
 
     @NonNull
     private String name;
@@ -30,6 +30,9 @@ public class User {
     private String passwordHashed;
 
     private String nickname;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList;
 
     @CreatedDate
     @NonNull
