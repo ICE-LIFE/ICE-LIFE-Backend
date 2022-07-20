@@ -42,6 +42,13 @@ public class User {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.nickname = nickname;
+    }
+
     public void setNickname(String nickname){
         // 닉네임 중복 체크 후 설정
         this.nickname = nickname;

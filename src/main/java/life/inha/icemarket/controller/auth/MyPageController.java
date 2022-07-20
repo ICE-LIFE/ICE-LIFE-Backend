@@ -42,7 +42,7 @@ public class MyPageController {
             @ApiResponse(responseCode = "400", description = "잘못된 유저 정보 수정 URL 요청"),
             @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
     })
-    public ResponseEntity<Integer> updateUserInfo(Integer userId, String nickname)throws Exception {
+    public ResponseEntity<User> updateUserInfo(Integer userId, String nickname)throws Exception {
         return new ResponseEntity<>(myPageService.update(userId, nickname), HttpStatus.OK);
     }
 

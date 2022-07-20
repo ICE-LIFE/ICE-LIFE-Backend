@@ -13,10 +13,10 @@ public class MyPageService {
 
     private UserRepository userRepository;
 
-    public Integer update(Integer userId, String nickname) throws Exception{
+    public User update(Integer userId, String nickname) throws Exception{
         User user = userRepository.findById(userId).orElseThrow(() -> new Exception("사용자를 찾을 수 없습니다."));
         user.setNickname(nickname);
-        return userRepository.save(user).getId();
+        return userRepository.save(user);
     }
 
     public MyPageDto getMyPageDto(Integer userId) throws Exception {
