@@ -1,20 +1,19 @@
-package life.inha.icemarket.domain.auth;
+package life.inha.icemarket.domain.core;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
-@Entity(name = "users")
-@Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "users")
 public class User {
     @Id
     private int id;
@@ -31,14 +30,14 @@ public class User {
 
     private String nickname;
 
-    @CreatedDate
     @NonNull
-    private LocalDateTime createdAt;
+    @CreatedDate
+    private Instant createdAt;
 
-//    @LastModifiedDate
-//    @NonNull
-//    private LocalDateTime updatedAt;
+    @NonNull
+    @LastModifiedDate
+    private Instant updatedAt;
 
     @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    private Instant deletedAt;
 }
