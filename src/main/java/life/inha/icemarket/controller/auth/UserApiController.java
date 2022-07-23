@@ -1,4 +1,4 @@
-package life.inha.icemarket;
+package life.inha.icemarket.controller.auth;
 
 import life.inha.icemarket.domain.auth.SiteUser;
 import life.inha.icemarket.domain.auth.UserRepository;

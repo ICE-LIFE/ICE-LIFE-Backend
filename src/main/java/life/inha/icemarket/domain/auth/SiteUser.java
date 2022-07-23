@@ -13,25 +13,23 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class SiteUser {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
     @NonNull
     private String name;
 
     @NonNull
+    @Column(unique=true)
     private String email;
 
     @NonNull
     @Column(name = "password_hashed")
     private String passwordHashed;
 
+    @Column(unique=true)
     private String nickname;
-
-    @NonNull
-    private String student_id;
 
     @CreatedDate
     @NonNull

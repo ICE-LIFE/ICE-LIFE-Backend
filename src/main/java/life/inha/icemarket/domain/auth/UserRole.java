@@ -1,10 +1,10 @@
-package life.inha.icemarket.domain.core;
+package life.inha.icemarket.domain.auth;
 
 import lombok.Getter;
 
 @Getter
 public enum UserRole {
-    GUEST("ROLE_GUSET"),
+    GUEST("ROLE_GUEST"),
     USER("ROLE_USER"),
     ADMIN("ROLE_ADMIN");
 
@@ -12,5 +12,5 @@ public enum UserRole {
          this.value = value;
     }
 
-    private String value;
+    private final String value;
 }
