@@ -31,8 +31,8 @@ public class SecurityConfig{
                         .disable()
                 .formLogin()
                     .usernameParameter("email")
-               // .loginPage("/login")
-                // .defaultSuccessUrl("/")
+                    //.loginPage("/login")
+                    .defaultSuccessUrl("/")
                 ;
         return http.build();
     }

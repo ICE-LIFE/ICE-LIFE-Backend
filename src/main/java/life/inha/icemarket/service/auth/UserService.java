@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +30,10 @@ public class UserService {
         user.setCreatedAt(LocalDateTime.now());
         this.userRepository.save(user);
         return user;
+    }
+
+    public void SetPasswordHashed(SiteUser user,  String passwordHashed) throws Exception{
+        user.setPasswordHashed(passwordHashed);
+        userRepository.save(user);
     }
 }

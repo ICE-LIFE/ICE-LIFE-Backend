@@ -44,9 +44,7 @@ public class UserSecurityService implements UserDetailsService {
         }
 
         */
-        if("pkd2@gmail.com".equals(email)){
-            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue())); // 지금 들어온 user에게 USER권한 부여.
-        } else authorities.add(new SimpleGrantedAuthority(UserRole.GUEST.getValue()));
+        authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
 
         return new CustomUserDetails(siteUser.getEmail(), siteUser.getPasswordHashed(), authorities);
     }
