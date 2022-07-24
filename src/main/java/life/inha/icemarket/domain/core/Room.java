@@ -4,10 +4,9 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -20,6 +19,11 @@ public class Room {
 
     @NonNull
     private String name;
+
+    @NonNull
+    @ManyToMany
+    @JoinTable(name = "room_users", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 
     @NonNull
     @CreatedDate

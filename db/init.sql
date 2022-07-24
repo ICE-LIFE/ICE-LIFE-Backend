@@ -26,3 +26,11 @@ CREATE TABLE room_chats (
     FOREIGN KEY (room_id) REFERENCES rooms (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+CREATE TABLE room_users (
+    room_id    BIGINT    NOT NULL,
+    user_id    INT       NOT NULL,
+    PRIMARY KEY (room_id, user_id),
+    FOREIGN KEY (room_id) REFERENCES rooms (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
