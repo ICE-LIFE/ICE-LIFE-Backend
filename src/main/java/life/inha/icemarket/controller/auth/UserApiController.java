@@ -4,9 +4,6 @@ import life.inha.icemarket.domain.auth.*;
 import life.inha.icemarket.service.auth.UserCreateForm;
 import life.inha.icemarket.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,22 +11,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
-// @RequestMapping("/user")
 public class UserApiController {
     private final UserService userService;
 
     private final UserRepository userRepository; //for api test
 
     private final PasswordEncoder passwordEncoder;
-
-    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm){
@@ -59,48 +51,13 @@ public class UserApiController {
 
         return "redirect:/";
 
-//        // for return test START
-//        SiteUser user = userRepository.findById(1213);
-//        Integer Id = user.getId();
-//        String Name = user.getName();
-//        String Email = user.getEmail();
-//        String Password = user.getPasswordHashed();
-//        String Nickname = user.getNickname();
-//        UserRole Userrole = user.getRole();
-//        return Id + Name + Email + Password + Nickname + Userrole;
-//        // for return test END
     }
 
-    @ResponseBody // for api test
+    @ResponseBody
     @GetMapping("/login")
     public String login_get(){
         return "login_form";
     }
-
-    @RequestMapping(
-            value = "/login",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<?> login(
-            final HttpServletRequest req,
-            final HttpServletResponse res,
-            @Valid @RequestBody Token.Request request) throws Exception{
-        SiteUser siteUser = this.userRepository.findByEmail(request.getId()).orElseThrow(
-                ()->new IllegalArgumentException("사용자가 없습니다.")
-        );
-        if(!request.getSecret().equals(siteUser.getPasswordHashed())){
-            throw new IllegalArgumentException("비밀번호가 다릅니다.");
-        }
-        Authentication authentication = new UserAuthentication(request.getId(), null, null);
-        String token = jwtTokenProvider.createToken(authentication);
-        
-        Token.Response response = Token.Response.builder().token(token).build();
-        return ResponseEntity.ok(response);
-    }
-
-
-
 
     @GetMapping("/findpw")
     public String findpw(){

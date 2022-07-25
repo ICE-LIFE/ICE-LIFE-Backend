@@ -24,26 +24,25 @@ public class SecurityConfig{
     private final UserSecurityService userSecurityService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-                .authorizeRequests()
-//                .antMatchers("/hello").permitAll()
-//                .antMatchers("/signup").permitAll()
-//                .antMatchers("/login").permitAll()
-                .antMatchers("/**/").permitAll()
+                .csrf() //(2)
+                .disable()
+                .exceptionHandling() //(3)
+                .authenticationEntryPoint(unauthorizedHandler)
                 .and()
-                    .csrf()
-                        .disable()
-                .formLogin()
-                    .usernameParameter("email")
-                    .loginPage("/login")
-                    //.defaultSuccessUrl("/")
+                .authorizeRequests() // (5)
+                .antMatchers("/login").permitAll()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .formLogin().disable().headers().frameOptions().disable()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
-                //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
     }

@@ -38,10 +38,6 @@ public class SiteUser {
     @NonNull
     private LocalDateTime createdAt;
 
-//    @LastModifiedDate
-//    @NonNull
-//    private LocalDateTime updatedAt;
-//
 //    @Column(name = "deleted_at")
 //    private LocalDateTime deletedAt;
 }

@@ -10,8 +10,8 @@ public class Token {
     @NoArgsConstructor
     @AllArgsConstructor
     public static final class Request{
-        private String id;
-        private String secret;
+        private String email;
+        private String password;
     }
 
     @Builder

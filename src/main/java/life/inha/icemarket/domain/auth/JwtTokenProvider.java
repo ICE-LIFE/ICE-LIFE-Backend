@@ -21,8 +21,6 @@ public class JwtTokenProvider {
     //유효시간 30분
     private final long tokenValidTime = 30 * 60 * 1000L;
 
-    private final UserDetailsService userDetailsService;
-
     //객체 초기화, secretKey -> BASE64 encoding
     @PostConstruct
     protected void init(){
