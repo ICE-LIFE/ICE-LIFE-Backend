@@ -2,6 +2,7 @@ package life.inha.icemarket.service.auth;
 
 import life.inha.icemarket.domain.auth.SiteUser;
 import life.inha.icemarket.domain.auth.UserRepository;
+import life.inha.icemarket.domain.auth.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class UserService {
         user.setNickname(nickname);
         user.setPasswordHashed(passwordEncoder.encode(passwordHashed));
         user.setCreatedAt(LocalDateTime.now());
+        user.setRole(UserRole.USER);
         this.userRepository.save(user);
         return user;
     }

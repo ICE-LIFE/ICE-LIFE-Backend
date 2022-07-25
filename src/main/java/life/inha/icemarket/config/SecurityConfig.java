@@ -1,5 +1,7 @@
 package life.inha.icemarket.config;
 
+import life.inha.icemarket.domain.auth.JwtAuthenticationFilter;
+import life.inha.icemarket.domain.auth.JwtTokenProvider;
 import life.inha.icemarket.service.auth.UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -8,9 +10,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @Configuration
@@ -18,6 +22,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig{
 
     private final UserSecurityService userSecurityService;
+    private final JwtTokenProvider jwtTokenProvider;
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
@@ -31,9 +38,13 @@ public class SecurityConfig{
                         .disable()
                 .formLogin()
                     .usernameParameter("email")
-                    //.loginPage("/login")
-                    .defaultSuccessUrl("/")
-                ;
+                    .loginPage("/login")
+                    //.defaultSuccessUrl("/")
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class);
+                //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         return http.build();
     }
 

@@ -31,6 +31,9 @@ public class SiteUser {
     @Column(unique=true)
     private String nickname;
 
+    @Transient
+    private UserRole role;
+
     @CreatedDate
     @NonNull
     private LocalDateTime createdAt;

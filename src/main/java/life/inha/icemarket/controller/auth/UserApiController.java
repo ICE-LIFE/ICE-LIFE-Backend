@@ -1,10 +1,12 @@
 package life.inha.icemarket.controller.auth;
 
-import life.inha.icemarket.domain.auth.SiteUser;
-import life.inha.icemarket.domain.auth.UserRepository;
+import life.inha.icemarket.domain.auth.*;
 import life.inha.icemarket.service.auth.UserCreateForm;
 import life.inha.icemarket.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -24,6 +28,8 @@ public class UserApiController {
     private final UserRepository userRepository; //for api test
 
     private final PasswordEncoder passwordEncoder;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm){
@@ -51,18 +57,18 @@ public class UserApiController {
                 userCreateForm.getNickname()
         );
 
-        //return "redirect:/";
+        return "redirect:/";
 
-        // for return test START
-        SiteUser user = new SiteUser();
-        user = userRepository.findById(12191759);
-        Integer Id = user.getId();
-        String Name = user.getName();
-        String Email = user.getEmail();
-        String Password = user.getPasswordHashed();
-        String Nickname = user.getNickname();
-        return Id + Name + Email + Password + Nickname;
-        // for return test END
+//        // for return test START
+//        SiteUser user = userRepository.findById(1213);
+//        Integer Id = user.getId();
+//        String Name = user.getName();
+//        String Email = user.getEmail();
+//        String Password = user.getPasswordHashed();
+//        String Nickname = user.getNickname();
+//        UserRole Userrole = user.getRole();
+//        return Id + Name + Email + Password + Nickname + Userrole;
+//        // for return test END
     }
 
     @ResponseBody // for api test
@@ -71,6 +77,31 @@ public class UserApiController {
         return "login_form";
     }
 
+    @RequestMapping(
+            value = "/login",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> login(
+            final HttpServletRequest req,
+            final HttpServletResponse res,
+            @Valid @RequestBody Token.Request request) throws Exception{
+        SiteUser siteUser = this.userRepository.findByEmail(request.getId()).orElseThrow(
+                ()->new IllegalArgumentException("사용자가 없습니다.")
+        );
+        if(!request.getSecret().equals(siteUser.getPasswordHashed())){
+            throw new IllegalArgumentException("비밀번호가 다릅니다.");
+        }
+        Authentication authentication = new UserAuthentication(request.getId(), null, null);
+        String token = jwtTokenProvider.createToken(authentication);
+        
+        Token.Response response = Token.Response.builder().token(token).build();
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
     @GetMapping("/findpw")
     public String findpw(){
         return "find_pw";
@@ -78,7 +109,7 @@ public class UserApiController {
 
     @PostMapping("/findpw")
     public String findpw(@RequestParam String email, @RequestParam String nickname,
-                         RedirectAttributes redirect) throws Exception{
+                         RedirectAttributes redirect) throws UsernameNotFoundException{
         Optional <SiteUser> email_siteUser = userRepository.findByEmail(email);
 
         if(email_siteUser.isEmpty()){
@@ -104,7 +135,6 @@ public class UserApiController {
         }
 
         password1 = passwordEncoder.encode(password1);
-        password2 = passwordEncoder.encode(password2);
 
         Optional <SiteUser> _siteUser = userRepository.findByEmail(email);
         if(_siteUser.isEmpty()){
