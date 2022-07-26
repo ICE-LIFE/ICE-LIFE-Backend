@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,20 +43,20 @@ public class ChatController {
             return;
         }
         String roomName = args[0];
-        Room room = Room.builder()
-                .name(roomName)
-                .build();
-        Room createdRoom = roomRepository.save(room);
+        ArrayList<User> targetUsers = new ArrayList<>();
         if (args.length >= 2) {
             for (int i = 1; i < args.length; i += 1) {
                 int targetUserId = Integer.parseInt(args[i]);
-                if (!userRepository.existsById(targetUserId)) {
-                    // throw no user exception
-                    return;
-                }
-                roomRepository.joinUser(createdRoom.getId(), userId);
+                User targetUser = userRepository.findById(targetUserId).orElseThrow(); // check no user exception
+                targetUsers.add(targetUser);
             }
         }
+        Room room = Room.builder()
+                .name(roomName)
+                .users(targetUsers)
+                .build();
+        Room createdRoom = roomRepository.save(room);
+        System.out.println("create: " + createdRoom.getId());
     }
 
     @MessageMapping("/room/{roomId}")
@@ -76,9 +77,9 @@ public class ChatController {
         }
     }
 
-    @MessageMapping("/room/{roomId}/join")
+    @MessageMapping("/room/{roomId}/invite")
     @Transactional
-    public void joinRoom(Principal principal, @DestinationVariable int roomId) {
+    public void inviteUser(Principal principal, @DestinationVariable int roomId, String message) {
         int userId = Integer.parseInt(principal.getName());
         if (!roomRepository.existsById(roomId)) {
             // throw no room exception
@@ -87,7 +88,12 @@ public class ChatController {
             // throw no user exception
             return;
         }
-        roomRepository.joinUser(roomId, userId);
+        int targetUserId = Integer.parseInt(message);
+        if (!userRepository.existsById(targetUserId)) {
+            // throw no user exception
+            return;
+        }
+        roomRepository.joinUser(roomId, targetUserId); // check user is already in room
     }
 
     @MessageMapping("/room/{roomId}/leave")

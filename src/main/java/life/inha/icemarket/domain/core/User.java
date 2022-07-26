@@ -3,6 +3,7 @@ package life.inha.icemarket.domain.core;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

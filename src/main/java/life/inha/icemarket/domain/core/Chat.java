@@ -2,6 +2,7 @@ package life.inha.icemarket.domain.core;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -11,6 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity(name = "room_chats")
+@EntityListeners(AuditingEntityListener.class)
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
