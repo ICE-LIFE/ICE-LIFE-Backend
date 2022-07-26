@@ -1,23 +1,20 @@
 package life.inha.icemarket.domain.auth;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import life.inha.icemarket.domain.core.Post;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "users")
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
-    private int id;
+    private Integer id;
 
     @NonNull
     private String name;
@@ -31,6 +28,9 @@ public class User {
 
     private String nickname;
 
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList;
+
     @CreatedDate
     @NonNull
     private LocalDateTime createdAt;
@@ -41,4 +41,16 @@ public class User {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.nickname = nickname;
+    }
+
+    public void setNickname(String nickname){
+        // 닉네임 중복 체크 후 설정
+        this.nickname = nickname;
+    }
 }
