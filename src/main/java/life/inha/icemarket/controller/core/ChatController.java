@@ -73,7 +73,7 @@ public class ChatController {
         chatRepository.record(roomId, sourceUserId, message);
 
         for (User targetUser : users) {
-            messagingTemplate.convertAndSendToUser(String.valueOf(targetUser.getId()), "/queue/room/" + roomId, message);
+            messagingTemplate.convertAndSendToUser(String.valueOf(targetUser.getId()), "/topic/room/" + roomId, message);
         }
     }
 

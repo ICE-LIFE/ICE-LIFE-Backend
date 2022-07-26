@@ -29,6 +29,10 @@ client.publish({
 채팅 전송
 
 ```js
+client.subscribe(`/user/12190000/topic/room/1`, (message) => {
+    console.log(message.body);
+});
+
 client.publish({
     destination: '/app/room/1',
     body: '안녕하세요',
