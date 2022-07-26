@@ -1,14 +1,15 @@
 package life.inha.icemarket.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import life.inha.icemarket.domain.core.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
 @AllArgsConstructor
+@Getter @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MyPageDto {
     private String name;
 
