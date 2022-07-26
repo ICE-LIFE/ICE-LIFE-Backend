@@ -8,13 +8,16 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
+@AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity(name = "rooms")
 public class Room {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
@@ -25,11 +28,9 @@ public class Room {
     @JoinTable(name = "room_users", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
-    @NonNull
     @CreatedDate
     private Instant createdAt;
 
-    @NonNull
     @LastModifiedDate
     private Instant updatedAt;
 

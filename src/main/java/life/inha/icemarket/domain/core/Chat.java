@@ -3,10 +3,7 @@ package life.inha.icemarket.domain.core;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.Instant;
 
 @RequiredArgsConstructor
@@ -16,6 +13,7 @@ import java.time.Instant;
 @Entity(name = "room_chats")
 public class Chat {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
@@ -31,7 +29,6 @@ public class Chat {
     @NonNull
     private String content;
 
-    @NonNull
     @CreatedDate
     private Instant createdAt;
 }

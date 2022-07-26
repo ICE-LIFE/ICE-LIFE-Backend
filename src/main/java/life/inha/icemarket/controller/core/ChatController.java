@@ -28,6 +28,36 @@ public class ChatController {
         this.messagingTemplate = messagingTemplate;
     }
 
+    @MessageMapping("/room/create")
+    @Transactional
+    public void createRoom(Principal principal, String message) {
+        int userId = Integer.parseInt(principal.getName());
+        if (!userRepository.existsById(userId)) {
+            // throw no user exception
+            return;
+        }
+        String[] args = message.split(",");
+        if (args.length == 0) {
+            // throw no arg exception
+            return;
+        }
+        String roomName = args[0];
+        Room room = Room.builder()
+                .name(roomName)
+                .build();
+        Room createdRoom = roomRepository.save(room);
+        if (args.length >= 2) {
+            for (int i = 1; i < args.length; i += 1) {
+                int targetUserId = Integer.parseInt(args[i]);
+                if (!userRepository.existsById(targetUserId)) {
+                    // throw no user exception
+                    return;
+                }
+                roomRepository.joinUser(createdRoom.getId(), userId);
+            }
+        }
+    }
+
     @MessageMapping("/room/{roomId}")
     @Transactional
     public void chat(Principal principal, @DestinationVariable int roomId, String message) {
@@ -48,7 +78,7 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}/join")
     @Transactional
-    public void join(Principal principal, @DestinationVariable int roomId) {
+    public void joinRoom(Principal principal, @DestinationVariable int roomId) {
         int userId = Integer.parseInt(principal.getName());
         if (!roomRepository.existsById(roomId)) {
             // throw no room exception
@@ -57,12 +87,12 @@ public class ChatController {
             // throw no user exception
             return;
         }
-        roomRepository.join(roomId, userId);
+        roomRepository.joinUser(roomId, userId);
     }
 
     @MessageMapping("/room/{roomId}/leave")
     @Transactional
-    public void leave(Principal principal, @DestinationVariable int roomId) {
+    public void leaveRoom(Principal principal, @DestinationVariable int roomId) {
         int userId = Integer.parseInt(principal.getName());
         if (!userRepository.existsById(userId)) {
             // throw no user exception
@@ -73,6 +103,6 @@ public class ChatController {
             // throw no user in room exception
             return;
         }
-        roomRepository.leave(roomId, userId);
+        roomRepository.leaveUser(roomId, userId);
     }
 }

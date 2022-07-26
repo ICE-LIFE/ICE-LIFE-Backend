@@ -4,9 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
 
 @RequiredArgsConstructor
@@ -16,6 +14,7 @@ import java.time.Instant;
 @Entity(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
@@ -30,11 +29,9 @@ public class User {
 
     private String nickname;
 
-    @NonNull
     @CreatedDate
     private Instant createdAt;
 
-    @NonNull
     @LastModifiedDate
     private Instant updatedAt;
 

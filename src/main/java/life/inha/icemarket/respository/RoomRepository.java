@@ -12,10 +12,10 @@ public interface RoomRepository extends CrudRepository<Room, Integer> {
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO room_users (room_id, user_id) VALUES (?1, ?2)", nativeQuery = true)
-    void join(int roomId, int userId);
+    void joinUser(int roomId, int userId);
 
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM room_users WHERE (room_id, user_id) = (?1, ?2)", nativeQuery = true)
-    void leave(int roomId, int userId);
+    void leaveUser(int roomId, int userId);
 }

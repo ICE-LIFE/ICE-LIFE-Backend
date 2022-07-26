@@ -1,7 +1,7 @@
 package life.inha.icemarket;
 
-import life.inha.icemarket.domain.auth.User;
-import life.inha.icemarket.domain.auth.UserRepository;
+import life.inha.icemarket.domain.core.User;
+import life.inha.icemarket.respository.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class IceMarketApplication {
 
     @GetMapping("/hello")
     public String hello(@RequestParam(value = "id", defaultValue = "0") int id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id).orElseThrow();
         return String.format("Hello %s!", user.getName());
     }
 }
