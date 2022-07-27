@@ -1,5 +1,7 @@
 package life.inha.icemarket.controller.auth;
 
+import life.inha.icemarket.config.JwtTokenProvider;
+import life.inha.icemarket.config.Token;
 import life.inha.icemarket.domain.auth.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -45,7 +47,9 @@ public class AuthController {
         Authentication authentication = new UserAuthentication(request.getEmail(), null, null);
         String token = jwtTokenProvider.createToken(authentication);
 
-        Token.Response response = Token.Response.builder().token(token).build();
+        Token.Response response = Token.Response.builder()
+                .token(token).
+                build();
         return ResponseEntity.ok(response);
     }
 }

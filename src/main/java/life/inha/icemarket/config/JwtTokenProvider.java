@@ -1,4 +1,4 @@
-package life.inha.icemarket.domain.auth;
+package life.inha.icemarket.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

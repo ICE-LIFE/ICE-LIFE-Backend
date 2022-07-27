@@ -1,9 +1,17 @@
 package life.inha.icemarket.controller.auth;
 
+import life.inha.icemarket.config.JwtAuthenticationEntryPoint;
+import life.inha.icemarket.config.JwtAuthenticationFilter;
+import life.inha.icemarket.config.JwtTokenProvider;
+import life.inha.icemarket.config.Token;
 import life.inha.icemarket.domain.auth.*;
+import life.inha.icemarket.service.auth.FindPasswordForm;
+import life.inha.icemarket.service.auth.ResetPasswordForm;
 import life.inha.icemarket.service.auth.UserCreateForm;
 import life.inha.icemarket.service.auth.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,6 +19,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.naming.Binding;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -29,10 +39,16 @@ public class UserApiController {
     }
 
     @ResponseBody //for api test
-    @PostMapping("/signup")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult){
+    @RequestMapping(
+            value = "/signup",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    ) // 7/27 json request
+    //@PostMapping("/signup")
+    public String signup(
+            @Valid @RequestBody UserCreateForm userCreateForm, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            return "signup_form";
+            return "Binding Result Error" + bindingResult.getObjectName();
         }
 
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())){
@@ -64,19 +80,23 @@ public class UserApiController {
         return "find_pw";
     }
 
-    @PostMapping("/findpw")
-    public String findpw(@RequestParam String email, @RequestParam String nickname,
-                         RedirectAttributes redirect) throws UsernameNotFoundException{
-        Optional <SiteUser> email_siteUser = userRepository.findByEmail(email);
+    @RequestMapping(
+            value = "/findpw",
+            method = RequestMethod.POST
+    )
+    public String findpw(@Valid @RequestBody FindPasswordForm findPasswordForm, BindingResult bindingResult,
+                         RedirectAttributes redirect
+                         ) throws UsernameNotFoundException{
+        Optional <SiteUser> email_siteUser = userRepository.findByEmail(findPasswordForm.getEmail());
 
         if(email_siteUser.isEmpty()){
             throw new UsernameNotFoundException("사용자가 없습니다.");
         }
         SiteUser siteUser = email_siteUser.get();
 
-        if(siteUser.getNickname().equals(nickname)){
-            redirect.addFlashAttribute("email", email);
-            return "redirect:/resetpw";
+        if(siteUser.getNickname().equals(findPasswordForm.getNickname())){
+        redirect.addFlashAttribute("email", findPasswordForm.getEmail());
+            return "redirect:/resetpw"; //resetpw 홈페이지로 email 정보 전달.
         } else throw new UsernameNotFoundException("사용자가 없습니다.");
     }
 
@@ -84,24 +104,33 @@ public class UserApiController {
     // todo : pw form 만들기, 사용자인지 인증하기
 
     @ResponseBody
-    @PostMapping(value="/resetpw")
-    public String resetpw(@RequestParam String email, @RequestParam String password1, @RequestParam String password2)
-            throws Exception {
-        if(!password1.equals(password2)){
+    @RequestMapping(
+            value="/resetpw",
+            method=RequestMethod.POST
+    )
+    public String resetpw(@Valid @RequestBody ResetPasswordForm resetPasswordForm, BindingResult bindingResult) throws  Exception{
+        if(bindingResult.hasErrors()){
+            return "Binding Result Error" + bindingResult.getObjectName();
+        }
+
+        if(! resetPasswordForm.getPassword1().equals(resetPasswordForm.getPassword2())){
             throw new Exception("입력한 두 비밀번호가 서로 다릅니다.");
         }
 
-        password1 = passwordEncoder.encode(password1);
+        String password = passwordEncoder.encode(resetPasswordForm.getPassword1());
 
-        Optional <SiteUser> _siteUser = userRepository.findByEmail(email);
+        Optional <SiteUser> _siteUser = userRepository.findByEmail(resetPasswordForm.getEmail());
         if(_siteUser.isEmpty()){
             throw new UsernameNotFoundException("사용자가 없습니다.");
         }
 
         SiteUser siteUser = _siteUser.get();
         String beforepw = siteUser.getPasswordHashed();
-        this.userService.SetPasswordHashed(siteUser, password1);
+        this.userService.SetPasswordHashed(siteUser, password);
         String afterpw = siteUser.getPasswordHashed();
         return beforepw + "\n" + afterpw;
     }
+
+
+
 }

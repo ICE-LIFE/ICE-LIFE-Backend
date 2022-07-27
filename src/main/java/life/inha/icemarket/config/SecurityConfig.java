@@ -1,7 +1,5 @@
 package life.inha.icemarket.config;
 
-import life.inha.icemarket.domain.auth.JwtAuthenticationFilter;
-import life.inha.icemarket.domain.auth.JwtTokenProvider;
 import life.inha.icemarket.service.auth.UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -36,13 +34,16 @@ public class SecurityConfig{
                 .authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .authorizeRequests() // (5)
-                .antMatchers("/login").permitAll()
+                .antMatchers("/signup", "/login", "/resetpw", "/findpw").permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .formLogin().disable().headers().frameOptions().disable()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
@@ -56,4 +57,6 @@ public class SecurityConfig{
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+
 }

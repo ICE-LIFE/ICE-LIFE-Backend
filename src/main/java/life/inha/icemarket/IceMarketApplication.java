@@ -21,11 +21,5 @@ public class IceMarketApplication {
         SpringApplication.run(IceMarketApplication.class, args);
     }
 
-    @ResponseBody
-    @GetMapping("/hello")
-    public String hello(@RequestParam(value = "id", defaultValue = "0") int id) {
-        // User user = userRepository.findById(id);
-        // return String.format("Hello %s", user.getName());
-        return "hello";
-    }
+
 }
