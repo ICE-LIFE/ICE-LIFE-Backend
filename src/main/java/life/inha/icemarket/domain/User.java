@@ -1,4 +1,4 @@
-package life.inha.icemarket.domain.core;
+package life.inha.icemarket.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,15 +9,13 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
-@AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Setter
-@Entity(name = "rooms")
+@Entity(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class Room {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,9 +23,14 @@ public class Room {
     @NonNull
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "room_users", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
+    @NonNull
+    private String email;
+
+    @NonNull
+    @Column(name = "password_hashed")
+    private String passwordHashed;
+
+    private String nickname;
 
     @CreatedDate
     private Instant createdAt;
@@ -37,4 +40,19 @@ public class Room {
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList;
+
+    public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.nickname = nickname;
+    }
+
+    public void setNickname(String nickname) {
+        // 닉네임 중복 체크 후 설정
+        this.nickname = nickname;
+    }
 }

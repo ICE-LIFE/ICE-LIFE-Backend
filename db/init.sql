@@ -9,6 +9,24 @@ CREATE TABLE users (
     deleted_at      TIMESTAMP
 );
 
+CREATE TABLE categories (
+    id   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(10) NOT NULL UNIQUE
+);
+
+CREATE TABLE posts (
+    id          BIGINT    NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    category_id INT       NOT NULL,
+    author_id   INT       NOT NULL,
+    content     TEXT      NOT NULL,
+    thumbnail   VARCHAR(100),
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at  TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories (id),
+    FOREIGN KEY (author_id) REFERENCES users (id)
+);
+
 CREATE TABLE rooms (
     id         BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(10) NOT NULL,
@@ -28,8 +46,8 @@ CREATE TABLE room_chats (
 );
 
 CREATE TABLE room_users (
-    room_id    BIGINT    NOT NULL,
-    user_id    INT       NOT NULL,
+    room_id BIGINT NOT NULL,
+    user_id INT    NOT NULL,
     PRIMARY KEY (room_id, user_id),
     FOREIGN KEY (room_id) REFERENCES rooms (id),
     FOREIGN KEY (user_id) REFERENCES users (id)

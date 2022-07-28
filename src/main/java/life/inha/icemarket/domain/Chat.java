@@ -1,4 +1,4 @@
-package life.inha.icemarket.domain.core;
+package life.inha.icemarket.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
