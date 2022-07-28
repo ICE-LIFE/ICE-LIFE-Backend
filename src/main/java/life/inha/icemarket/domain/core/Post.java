@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Getter
 public class Post {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne
