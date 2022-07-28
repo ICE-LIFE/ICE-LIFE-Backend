@@ -1,51 +1,40 @@
 package life.inha.icemarket.controller.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import life.inha.icemarket.domain.auth.User;
+import life.inha.icemarket.domain.User;
 import life.inha.icemarket.dto.MyPageDto;
 import life.inha.icemarket.service.auth.MyPageService;
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MyPageController.class)
 class MyPageControllerTest {
 
+    @InjectMocks
+    MyPageController myPageController;
+    @Mock
+    MyPageService myPageService;
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private ObjectMapper objectMapper;
 
-    @InjectMocks
-    MyPageController myPageController;
-
-    @Mock
-    MyPageService myPageService;
-
     @BeforeEach
-    public void init(){
+    public void init() {
         mvc = MockMvcBuilders.standaloneSetup(myPageController)
                 .alwaysExpect(status().isOk())
                 .build();
@@ -61,7 +50,7 @@ class MyPageControllerTest {
 
         // when
         mvc.perform(get("/user/view")
-                .param("userId", "12201863"))
+                        .param("userId", "12201863"))
                 .andExpect(content().string(objectMapper.writeValueAsString(myPageDto)));
     }
 
@@ -74,10 +63,10 @@ class MyPageControllerTest {
 
         // when
         String responseBody = mvc.perform(put("/user/mypage")
-                .param("userId", "12201863")
-                .param("nickname", "겨미겨미"))
+                        .param("userId", "12201863")
+                        .param("nickname", "겨미겨미"))
                 .andExpect(status().isOk())
-                        .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString();
 
         // then
         assertThat(responseBody).contains("겨미겨미");

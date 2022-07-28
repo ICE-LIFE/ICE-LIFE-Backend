@@ -1,6 +1,5 @@
-package life.inha.icemarket.domain.core;
+package life.inha.icemarket.domain;
 
-import life.inha.icemarket.domain.auth.User;
 import lombok.Getter;
 
 import javax.persistence.*;
