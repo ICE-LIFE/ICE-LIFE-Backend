@@ -1,5 +1,6 @@
 package life.inha.icemarket.controller;
 
+
 import life.inha.icemarket.domain.Room;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.ChatRepository;
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Objects;
+
 
 @Controller
 public class ChatController {
@@ -32,7 +36,9 @@ public class ChatController {
     @MessageMapping("/room/create")
     @Transactional
     public void createRoom(Principal principal, String message) {
-        int userId = Integer.parseInt(principal.getName());
+
+        Integer userId = Integer.valueOf(principal.getName());
+
         if (!userRepository.existsById(userId)) {
             // throw no user exception
             return;
@@ -46,7 +52,9 @@ public class ChatController {
         ArrayList<User> targetUsers = new ArrayList<>();
         if (args.length >= 2) {
             for (int i = 1; i < args.length; i += 1) {
-                int targetUserId = Integer.parseInt(args[i]);
+
+                Integer targetUserId = Integer.valueOf(args[i]);
+
                 User targetUser = userRepository.findById(targetUserId).orElseThrow(); // check no user exception
                 targetUsers.add(targetUser);
             }
@@ -61,10 +69,12 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}")
     @Transactional
-    public void chat(Principal principal, @DestinationVariable int roomId, String message) {
-        int sourceUserId = Integer.parseInt(principal.getName());
+
+    public void chat(Principal principal, @DestinationVariable Integer roomId, String message) {
+        Integer sourceUserId = Integer.valueOf(principal.getName());
         Room room = roomRepository.findById(roomId).orElseThrow(); // check no room exception
-        if (room.getUsers().stream().noneMatch(user -> user.getId() == sourceUserId)) {
+        if (room.getUsers().stream().noneMatch(user -> Objects.equals(user.getId(), sourceUserId))) {
+
             // throw no user in room exception
             return;
         }
@@ -79,8 +89,10 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}/invite")
     @Transactional
-    public void inviteUser(Principal principal, @DestinationVariable int roomId, String message) {
-        int userId = Integer.parseInt(principal.getName());
+
+    public void inviteUser(Principal principal, @DestinationVariable Integer roomId, String message) {
+        Integer userId = Integer.valueOf(principal.getName());
+
         if (!roomRepository.existsById(roomId)) {
             // throw no room exception
             return;
@@ -88,7 +100,9 @@ public class ChatController {
             // throw no user exception
             return;
         }
-        int targetUserId = Integer.parseInt(message);
+
+        Integer targetUserId = Integer.valueOf(message);
+
         if (!userRepository.existsById(targetUserId)) {
             // throw no user exception
             return;
@@ -98,14 +112,18 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}/leave")
     @Transactional
-    public void leaveRoom(Principal principal, @DestinationVariable int roomId) {
-        int userId = Integer.parseInt(principal.getName());
+
+    public void leaveRoom(Principal principal, @DestinationVariable Integer roomId) {
+        Integer userId = Integer.valueOf(principal.getName());
+
         if (!userRepository.existsById(userId)) {
             // throw no user exception
             return;
         }
         Room room = roomRepository.findById(roomId).orElseThrow(); // check no room exception
-        if (room.getUsers().stream().noneMatch(user -> user.getId() == userId)) {
+
+        if (room.getUsers().stream().noneMatch(user -> Objects.equals(user.getId(), userId))) {
+
             // throw no user in room exception
             return;
         }

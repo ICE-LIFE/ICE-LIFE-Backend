@@ -12,5 +12,5 @@ public interface ChatRepository extends CrudRepository<Chat, Integer> {
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO room_chats (room_id, user_id, content) VALUES (?1, ?2, ?3)", nativeQuery = true)
-    void record(int roomId, int userId, String content);
+    void record(Integer roomId, Integer userId, String content);
 }
