@@ -58,7 +58,7 @@ public class ItemController {
     @Operation(description = "복지물품 삭제")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "잘못된 유저 복지물품 수정 요청"),
+            @ApiResponse(responseCode = "400", description = "잘못된 유저 복지물품 삭제 요청"),
             @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
     })
     @GetMapping("/item/delete/{id}")

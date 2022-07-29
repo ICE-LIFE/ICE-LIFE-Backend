@@ -61,4 +61,15 @@ public class ItemHistoryController {
         header.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         return new ResponseEntity<Iterable<ItemHistrory>>(itemHistoryService.readAll(),header,HttpStatus.OK);
     }
+
+    @Operation(description = "복지물품 대여 기록 삭제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "잘못된 유저 복지물품 대여 기록 삭제 요청"),
+            @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
+    })
+    @GetMapping("/item-history/delete/{id}")
+    public void deleteItemHistory(@PathVariable Integer id){
+        itemHistoryService.delete(id);
+    }
 }

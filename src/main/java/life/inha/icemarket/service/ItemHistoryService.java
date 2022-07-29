@@ -26,6 +26,7 @@ public class ItemHistoryService {
         return itemHistory;
     }
 
+    @Transactional
     private int calcRemainder(Item item, ItemHistrory itemHistory) {
         return item.getAmount() - (itemHistoryRepository.countItemHistory(itemHistory.getItem_id()) - itemHistoryRepository.countReturnItem(itemHistory.getItem_id()));
     }
@@ -43,5 +44,13 @@ public class ItemHistoryService {
     @Transactional(readOnly = true)
     public Iterable<ItemHistrory> readAll(){
         return itemHistoryRepository.findAll();
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        ItemHistrory itemHistrory = itemHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품 대여 기록이 없습니다. id="+id));
+        Item item = itemRepository.findById(itemHistrory.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistrory.getItem_id()));
+        itemHistoryRepository.deleteById(id);
+        item.updateRemainder(calcRemainder(item,itemHistrory));
     }
 }
