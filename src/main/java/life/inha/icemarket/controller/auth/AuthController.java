@@ -4,6 +4,7 @@ import life.inha.icemarket.config.JwtTokenProvider;
 import life.inha.icemarket.config.Token;
 import life.inha.icemarket.domain.auth.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -50,6 +52,7 @@ public class AuthController {
         Token.Response response = Token.Response.builder()
                 .token(token).
                 build();
+        log.info("Login @ {} with token {}",request.getEmail(), token);
         return ResponseEntity.ok(response);
     }
 }

@@ -30,9 +30,6 @@ public class SecurityConfig{
         http
                 .csrf() //(2)
                 .disable()
-                .exceptionHandling() //(3)
-                .authenticationEntryPoint(unauthorizedHandler)
-                .and()
                 .authorizeRequests() // (5)
                 .antMatchers("/signup", "/login", "/resetpw", "/findpw").permitAll()
                 .anyRequest()
@@ -42,9 +39,9 @@ public class SecurityConfig{
                 .formLogin().disable().headers().frameOptions().disable()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
-
-
+                        UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling() //(3)
+                .authenticationEntryPoint(unauthorizedHandler);
         return http.build();
     }
 

@@ -75,11 +75,13 @@ public class UserApiController {
         return "login_form";
     }
 
-    @GetMapping("/findpw")
+    //@ResponseBody
+    @GetMapping("findpw")
     public String findpw(){
-        return "find_pw";
+        return "find_pw.html";
     }
 
+    @ResponseBody
     @RequestMapping(
             value = "/findpw",
             method = RequestMethod.POST
@@ -96,7 +98,8 @@ public class UserApiController {
 
         if(siteUser.getNickname().equals(findPasswordForm.getNickname())){
         redirect.addFlashAttribute("email", findPasswordForm.getEmail());
-            return "redirect:/resetpw"; //resetpw 홈페이지로 email 정보 전달.
+            return "OK";
+            //return "redirect:/resetpw"; //resetpw 홈페이지로 email 정보 전달.
         } else throw new UsernameNotFoundException("사용자가 없습니다.");
     }
 
