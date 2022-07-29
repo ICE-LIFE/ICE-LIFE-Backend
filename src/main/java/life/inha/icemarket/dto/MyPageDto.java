@@ -1,7 +1,7 @@
 package life.inha.icemarket.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import life.inha.icemarket.domain.core.Post;
+import life.inha.icemarket.domain.Post;
 import lombok.*;
 
 import java.util.List;

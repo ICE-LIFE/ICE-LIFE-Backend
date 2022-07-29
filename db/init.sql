@@ -34,3 +34,19 @@ CREATE TABLE room_users (
     FOREIGN KEY (room_id) REFERENCES rooms (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+CREATE TABLE items (
+    id              INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name            VARCHAR(10)  NOT NULL,
+    image           VARCHAR(100) NOT NULL,
+    amount          INT          NOT NULL,
+    remainder       INT          NOT NULL
+);
+
+CREATE TABLE item_history (
+    id              INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    item_id         INT          NOT NULL,
+    manager_id      INT          NOT NULL,
+    rent_at         TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    return_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,6 +1,6 @@
 package life.inha.icemarket.respository;
 
-import life.inha.icemarket.domain.core.Chat;
+import life.inha.icemarket.domain.Chat;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

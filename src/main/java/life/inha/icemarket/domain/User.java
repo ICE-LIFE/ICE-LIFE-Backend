@@ -1,7 +1,8 @@
-package life.inha.icemarket.domain.core;
+package life.inha.icemarket.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -11,26 +12,31 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "room_chats")
+@Entity(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class Chat {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NonNull
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
+    private String name;
 
     @NonNull
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String email;
 
     @NonNull
-    private String content;
+    @Column(name = "password_hashed")
+    private String passwordHashed;
+
+    private String nickname;
 
     @CreatedDate
     private Instant createdAt;
+
+    @LastModifiedDate
+    private Instant updatedAt;
+
+    @Column(name = "deleted_at")
+    private Instant deletedAt;
 }

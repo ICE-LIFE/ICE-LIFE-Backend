@@ -1,7 +1,7 @@
-package life.inha.icemarket.controller.core;
+package life.inha.icemarket.controller;
 
-import life.inha.icemarket.domain.core.Room;
-import life.inha.icemarket.domain.core.User;
+import life.inha.icemarket.domain.Room;
+import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.ChatRepository;
 import life.inha.icemarket.respository.RoomRepository;
 import life.inha.icemarket.respository.UserRepository;
