@@ -14,30 +14,30 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Entity(name="item_history")
-public class ItemHistrory {
+public class ItemHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NonNull
-    private Integer item_id;
+    private Integer itemId;
 
     @NonNull
-    private Integer manager_id;
+    private Integer managerId;
 
     @NonNull
-    private Timestamp rent_at;
+    private Timestamp rentAt;
 
-    private Timestamp return_at;
+    private Timestamp returnAt;
 
     @Builder
-    public ItemHistrory(Integer item_id, Integer manager_id, Timestamp rent_at){
-        this.item_id = item_id;
-        this.manager_id = manager_id;
-        this.rent_at = rent_at;
+    public ItemHistrory(Integer itemId, Integer managerId, Timestamp rentAt){
+        this.itemId = itemId;
+        this.managerId = managerId;
+        this.rentAt = rentAt;
     }
 
     public void update(Timestamp currentTime){
-        this.return_at = currentTime;
+        this.returnAt = currentTime;
     }
 }
