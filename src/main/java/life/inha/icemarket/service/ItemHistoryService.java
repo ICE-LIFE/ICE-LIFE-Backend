@@ -1,7 +1,7 @@
 package life.inha.icemarket.service;
 
 import life.inha.icemarket.domain.Item;
-import life.inha.icemarket.domain.ItemHistrory;
+import life.inha.icemarket.domain.ItemHistory;
 import life.inha.icemarket.dto.ItemHistorySaveRequestDto;
 import life.inha.icemarket.respository.ItemHistoryRepository;
 import life.inha.icemarket.respository.ItemRepository;
@@ -19,21 +19,21 @@ public class ItemHistoryService {
     private final ItemService itemService;
 
     @Transactional
-    public ItemHistrory create(ItemHistorySaveRequestDto requestDto){
+    public ItemHistory create(ItemHistorySaveRequestDto requestDto){
         Item item = itemRepository.findById(requestDto.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+requestDto.getItem_id()));
-        ItemHistrory itemHistory = itemHistoryRepository.save(requestDto.toEntity());
+        ItemHistory itemHistory = itemHistoryRepository.save(requestDto.toEntity());
         item.updateRemainder(calcRemainder(item, itemHistory));
         return itemHistory;
     }
 
     @Transactional
-    private int calcRemainder(Item item, ItemHistrory itemHistory) {
+    private int calcRemainder(Item item, ItemHistory itemHistory) {
         return item.getAmount() - (itemHistoryRepository.countItemHistory(itemHistory.getItem_id()) - itemHistoryRepository.countReturnItem(itemHistory.getItem_id()));
     }
 
     @Transactional
-    public ItemHistrory update(Integer id, Timestamp currentTime){
-        ItemHistrory itemHistory = itemHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품 대여 기록이 없습니다. id="+id));
+    public ItemHistory update(Integer id, Timestamp currentTime){
+        ItemHistory itemHistory = itemHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품 대여 기록이 없습니다. id="+id));
         Item item = itemRepository.findById(itemHistory.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistory.getItem_id()));
 
         itemHistory.update(currentTime);
@@ -42,7 +42,7 @@ public class ItemHistoryService {
     }
 
     @Transactional(readOnly = true)
-    public Iterable<ItemHistrory> readAll(){
+    public Iterable<ItemHistory> readAll(){
         return itemHistoryRepository.findAll();
     }
 
