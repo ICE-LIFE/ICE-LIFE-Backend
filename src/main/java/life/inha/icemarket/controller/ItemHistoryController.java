@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import life.inha.icemarket.domain.Item;
-import life.inha.icemarket.domain.ItemHistrory;
+import life.inha.icemarket.domain.ItemHistory;
 import life.inha.icemarket.dto.ItemHistorySaveRequestDto;
 import life.inha.icemarket.service.ItemHistoryService;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +29,11 @@ public class ItemHistoryController {
             @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
     })
     @PostMapping("/item-history/create")
-    public ResponseEntity<ItemHistrory> createItemHistory(@RequestBody ItemHistorySaveRequestDto requestDto) {
+    public ResponseEntity<ItemHistory> createItemHistory(@RequestBody ItemHistorySaveRequestDto requestDto) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         requestDto.setRent_at();
-        return new ResponseEntity<ItemHistrory>(itemHistoryService.create(requestDto),header, HttpStatus.OK);
+        return new ResponseEntity<ItemHistory>(itemHistoryService.create(requestDto),header, HttpStatus.OK);
     }
 
     @Operation(description = "복지물품 대여 기록에 반납 날짜 추가")
@@ -43,10 +43,10 @@ public class ItemHistoryController {
             @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
     })
     @GetMapping("/item-history/update/{id}")
-    public ResponseEntity<ItemHistrory> updateItemHistory(@PathVariable Integer id) {
+    public ResponseEntity<ItemHistory> updateItemHistory(@PathVariable Integer id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        return new ResponseEntity<ItemHistrory>(itemHistoryService.update(id, new Timestamp(System.currentTimeMillis())),header,HttpStatus.OK);
+        return new ResponseEntity<ItemHistory>(itemHistoryService.update(id, new Timestamp(System.currentTimeMillis())),header,HttpStatus.OK);
     }
 
     @Operation(description = "복지물품 대여 기록 전체 조회")
@@ -56,10 +56,10 @@ public class ItemHistoryController {
             @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
     })
     @GetMapping("/item-history/read")
-    public ResponseEntity<Iterable<ItemHistrory>> readItemHistory(){
+    public ResponseEntity<Iterable<ItemHistory>> readItemHistory(){
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
-        return new ResponseEntity<Iterable<ItemHistrory>>(itemHistoryService.readAll(),header,HttpStatus.OK);
+        return new ResponseEntity<Iterable<ItemHistory>>(itemHistoryService.readAll(),header,HttpStatus.OK);
     }
 
     @Operation(description = "복지물품 대여 기록 삭제")
