@@ -10,27 +10,26 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor
 public class ItemHistorySaveRequestDto {
-    private Integer item_id;
-    private Integer manager_id;
-    private Timestamp rent_at;
-    //private Timestamp return_at;
+    private Integer itemId;
+    private Integer managerId;
+    private Timestamp rentAt;
 
     @Builder
-    public ItemHistorySaveRequestDto(Integer item_id, Integer manager_id) {
-        this.item_id = item_id;
-        this.manager_id = manager_id;
-        this.rent_at = new Timestamp(System.currentTimeMillis());
+    public ItemHistorySaveRequestDto(Integer itemId, Integer managerId) {
+        this.itemId = itemId;
+        this.managerId = managerId;
+        this.rentAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public void setRent_at() {
-        this.rent_at = new Timestamp(System.currentTimeMillis());
+    public void setRentAt() {
+        this.rentAt = new Timestamp(System.currentTimeMillis());
     }
 
     public ItemHistory toEntity(){
         return ItemHistory.builder()
-                .item_id(item_id)
-                .manager_id(manager_id)
-                .rent_at(rent_at)
+                .itemId(itemId)
+                .managerId(managerId)
+                .rentAt(rentAt)
                 .build();
     }
 }
