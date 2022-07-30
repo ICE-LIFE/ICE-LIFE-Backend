@@ -21,11 +21,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(MyPageController.class)
+@WebMvcTest(life.inha.icemarket.controller.auth.MyPageController.class)
 class MyPageControllerTest {
 
     @InjectMocks
-    MyPageController myPageController;
+    life.inha.icemarket.controller.auth.MyPageController myPageController;
     @Mock
     MyPageService myPageService;
     @Autowired
@@ -44,7 +44,7 @@ class MyPageControllerTest {
     @Test
     public void getUserInfo() throws Exception {
         // given
-        User user = new User(12201863, "김민겸", "12201863@inha.edu", "겸이");
+        User user = new User(12201863, "김민겸", "12201863@inha.edu", "겸이", "Admin");
         MyPageDto myPageDto = new MyPageDto("김민겸", 12201863, "겸이");
         given(myPageService.getMyPageDto(anyInt())).willReturn(myPageDto);
 
@@ -58,7 +58,7 @@ class MyPageControllerTest {
     @Test
     public void updateUserInfo() throws Exception {
         // given
-        User expectedUser = new User(12201863, "김민겸", "12201863@inha.edu", "겨미겨미");
+        User expectedUser = new User(12201863, "김민겸", "12201863@inha.edu", "겨미겨미", "Admin");
         given(myPageService.update(anyInt(), anyString())).willReturn(expectedUser);
 
         // when

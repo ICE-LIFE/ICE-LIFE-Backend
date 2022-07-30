@@ -48,11 +48,16 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
-    public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
+    @Column(name = "auth")
+    private String auth;
+
+    @Builder
+    public User(Integer id, @NonNull String name, @NonNull String email, String nickname, String auth) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.nickname = nickname;
+        this.auth = "Guest";
     }
 
     public void setNickname(String nickname) {
