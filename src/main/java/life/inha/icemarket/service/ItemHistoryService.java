@@ -48,9 +48,9 @@ public class ItemHistoryService {
 
     @Transactional
     public void delete(Integer id) {
-        ItemHistrory itemHistrory = itemHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품 대여 기록이 없습니다. id="+id));
-        Item item = itemRepository.findById(itemHistrory.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistrory.getItem_id()));
+        ItemHistory itemHistory = itemHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품 대여 기록이 없습니다. id="+id));
+        Item item = itemRepository.findById(itemHistory.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistory.getItem_id()));
         itemHistoryRepository.deleteById(id);
-        item.updateRemainder(calcRemainder(item,itemHistrory));
+        item.updateRemainder(calcRemainder(item,itemHistory));
     }
 }
