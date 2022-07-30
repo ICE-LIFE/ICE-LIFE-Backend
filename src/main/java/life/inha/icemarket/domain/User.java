@@ -7,7 +7,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+
 import java.util.List;
+
 
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -18,7 +20,9 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
+
 
     @NonNull
     private String name;
@@ -41,6 +45,7 @@ public class User {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
@@ -55,4 +60,5 @@ public class User {
         // 닉네임 중복 체크 후 설정
         this.nickname = nickname;
     }
+
 }
