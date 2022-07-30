@@ -31,7 +31,7 @@ public class ItemHistory {
     private Timestamp returnAt;
 
     @Builder
-    public ItemHistrory(Integer itemId, Integer managerId, Timestamp rentAt){
+    public ItemHistory(Integer itemId, Integer managerId, Timestamp rentAt){
         this.itemId = itemId;
         this.managerId = managerId;
         this.rentAt = rentAt;
