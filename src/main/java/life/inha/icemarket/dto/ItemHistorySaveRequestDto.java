@@ -1,6 +1,6 @@
 package life.inha.icemarket.dto;
 
-import life.inha.icemarket.domain.ItemHistrory;
+import life.inha.icemarket.domain.ItemHistory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +26,8 @@ public class ItemHistorySaveRequestDto {
         this.rent_at = new Timestamp(System.currentTimeMillis());
     }
 
-    public ItemHistrory toEntity(){
-        return ItemHistrory.builder()
+    public ItemHistory toEntity(){
+        return ItemHistory.builder()
                 .item_id(item_id)
                 .manager_id(manager_id)
                 .rent_at(rent_at)
