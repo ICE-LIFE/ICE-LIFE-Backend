@@ -28,7 +28,7 @@ public class ItemHistoryService {
     }
 
     @Transactional
-    private int calcRemainder(Item item, ItemHistory itemHistory) {
+    private Integer calcRemainder(Item item, ItemHistory itemHistory) {
         return item.getAmount() - (itemHistoryRepository.countItemHistory(itemHistory.getItemId()) - itemHistoryRepository.countReturnItem(itemHistory.getItemId()));
     }
 
