@@ -20,7 +20,8 @@ public class ItemHistoryService {
 
     @Transactional
     public ItemHistory create(ItemHistorySaveRequestDto requestDto){
-        Item item = itemRepository.findById(requestDto.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+requestDto.getItem_id()));
+        Item item = itemRepository.findById(requestDto.
+        ItemId()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+requestDto.getItemId()));
         ItemHistory itemHistory = itemHistoryRepository.save(requestDto.toEntity());
         item.updateRemainder(calcRemainder(item, itemHistory));
         return itemHistory;
@@ -28,13 +29,13 @@ public class ItemHistoryService {
 
     @Transactional
     private int calcRemainder(Item item, ItemHistory itemHistory) {
-        return item.getAmount() - (itemHistoryRepository.countItemHistory(itemHistory.getItem_id()) - itemHistoryRepository.countReturnItem(itemHistory.getItem_id()));
+        return item.getAmount() - (itemHistoryRepository.countItemHistory(itemHistory.getItemId()) - itemHistoryRepository.countReturnItem(itemHistory.getItemId()));
     }
 
     @Transactional
     public ItemHistory update(Integer id, Timestamp currentTime){
         ItemHistory itemHistory = itemHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품 대여 기록이 없습니다. id="+id));
-        Item item = itemRepository.findById(itemHistory.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistory.getItem_id()));
+        Item item = itemRepository.findById(itemHistory.getItemId()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistory.getItemId()));
 
         itemHistory.update(currentTime);
         item.updateRemainder(calcRemainder(item,itemHistory));
@@ -49,7 +50,7 @@ public class ItemHistoryService {
     @Transactional
     public void delete(Integer id) {
         ItemHistory itemHistory = itemHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품 대여 기록이 없습니다. id="+id));
-        Item item = itemRepository.findById(itemHistory.getItem_id()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistory.getItem_id()));
+        Item item = itemRepository.findById(itemHistory.getItemId()).orElseThrow(() -> new IllegalArgumentException("해당 복지 물품이 없습니다. id="+itemHistory.getItemId()));
         itemHistoryRepository.deleteById(id);
         item.updateRemainder(calcRemainder(item,itemHistory));
     }
