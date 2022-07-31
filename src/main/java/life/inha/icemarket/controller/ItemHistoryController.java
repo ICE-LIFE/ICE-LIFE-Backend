@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.ItemHistory;
 import life.inha.icemarket.dto.ItemHistorySaveRequestDto;
 import life.inha.icemarket.service.ItemHistoryService;
@@ -25,11 +26,7 @@ public class ItemHistoryController {
     private final ItemHistoryService itemHistoryService;
 
     @Operation(description = "복지물품 대여 기록 추가")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "잘못된 유저 복지물품 대여 기록 추가 요청"),
-            @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
-    })
+    @ApiDocumentResponse
     @PostMapping("/item-history/create")
     public ResponseEntity<ItemHistory> createItemHistory(@RequestBody ItemHistorySaveRequestDto requestDto) {
         HttpHeaders header = new HttpHeaders();
@@ -39,11 +36,7 @@ public class ItemHistoryController {
     }
 
     @Operation(description = "복지물품 대여 기록에 반납 날짜 추가")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "잘못된 유저 복지물품 대여 기록 업데이트 요청"),
-            @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
-    })
+    @ApiDocumentResponse
     @GetMapping("/item-history/update/{id}")
     public ResponseEntity<ItemHistory> updateItemHistory(@PathVariable Integer id) {
         HttpHeaders header = new HttpHeaders();
@@ -52,11 +45,7 @@ public class ItemHistoryController {
     }
 
     @Operation(description = "복지물품 대여 기록 전체 조회")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "잘못된 유저 복지물품 대여 기록 조회 요청"),
-            @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
-    })
+    @ApiDocumentResponse
     @GetMapping("/item-history/read")
     public ResponseEntity<Iterable<ItemHistory>> readItemHistory() {
         HttpHeaders header = new HttpHeaders();
@@ -65,11 +54,7 @@ public class ItemHistoryController {
     }
 
     @Operation(description = "복지물품 대여 기록 삭제")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "잘못된 유저 복지물품 대여 기록 삭제 요청"),
-            @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
-    })
+    @ApiDocumentResponse
     @GetMapping("/item-history/delete/{id}")
     public void deleteItemHistory(@PathVariable Integer id) {
         itemHistoryService.delete(id);

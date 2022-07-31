@@ -1,10 +1,10 @@
 package life.inha.icemarket.controller;
 
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.Room;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.ChatRepository;
@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,12 +34,7 @@ public class ChatController {
 
     @MessageMapping("/room/create")
     @Transactional
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "201", description = "Created"),
-            @ApiResponse(responseCode = "400", description = "잘못된 채팅방 생성 요청"),
-            @ApiResponse(responseCode = "401", description = "채팅방 생성 권한 없음")
-    })
+    @ApiDocumentResponse
     public void createRoom(Principal principal, String message) {
 
         Integer userId = Integer.valueOf(principal.getName());
@@ -75,11 +69,7 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}")
     @Transactional
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "잘못된 채팅 요청"),
-            @ApiResponse(responseCode = "401", description = "채팅 권한 없음")
-    })
+    @ApiDocumentResponse
     public void chat(Principal principal, @DestinationVariable Integer roomId, String message) {
         Integer sourceUserId = Integer.valueOf(principal.getName());
         Room room = roomRepository.findById(roomId).orElseThrow(); // check no room exception
@@ -99,11 +89,7 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}/invite")
     @Transactional
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "잘못된 사용자 초대 요청"),
-            @ApiResponse(responseCode = "401", description = "사용자 초대 권한 없음")
-    })
+    @ApiDocumentResponse
     public void inviteUser(Principal principal, @DestinationVariable Integer roomId, String message) {
         Integer userId = Integer.valueOf(principal.getName());
 

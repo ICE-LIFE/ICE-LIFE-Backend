@@ -1,18 +1,19 @@
-package life.inha.icemarket.config;
+package life.inha.icemarket.config.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
     @Bean
-    public GroupedOpenApi publicApi(){
+    public GroupedOpenApi openAPI(){
         return GroupedOpenApi.builder()
-                .group("life.inha")
-                .pathsToMatch("/api/**")
+                .group("life.inha.icemarket")
+                .pathsToMatch("/**")
                 .build();
     }
 

@@ -1,9 +1,10 @@
-package life.inha.icemarket.controller.auth;
+package life.inha.icemarket.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.dto.MyPageDto;
 import life.inha.icemarket.service.auth.MyPageService;
@@ -24,11 +25,7 @@ public class MyPageController {
 
     @Operation(description = "사용자 정보 조회")
     @GetMapping("/user/mypage/{id}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "잘못된 유저 조회 URL 요청"),
-            @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
-    })
+    @ApiDocumentResponse
     public ResponseEntity<MyPageDto> getUserInfo(@PathVariable Integer userId) throws Exception { // 추후 @Autenticated로 UserId 가져오도록 수정 필요
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
@@ -38,11 +35,7 @@ public class MyPageController {
 
     @Operation(description = "사용자 정보 수정")
     @PutMapping("/user/mypage/{id}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "400", description = "잘못된 유저 정보 수정 URL 요청"),
-            @ApiResponse(responseCode = "403", description = "클라이언트의 접근 권한이 없음")
-    })
+    @ApiDocumentResponse
     public ResponseEntity<User> updateUserInfo(@PathVariable Integer userId, @RequestParam("nickname") String nickname) throws Exception {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
