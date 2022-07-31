@@ -13,7 +13,7 @@ import javax.persistence.Id;
 
 @NoArgsConstructor
 @Getter
-@Entity(name="items")
+@Entity(name = "items")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Item {
     private Integer remainder;
 
     @Builder
-    public Item(String name, String image, Integer amount){
+    public Item(String name, String image, Integer amount) {
         this.name = name;
         this.image = image;
         this.amount = amount;
@@ -40,14 +40,14 @@ public class Item {
     }
 
 
-    public void update(String name, String image, Integer amount,Integer remainder){
+    public void update(String name, String image, Integer amount, Integer remainder) {
         this.name = name;
         this.image = image;
         this.amount = amount;
         this.remainder = remainder;
     }
 
-    public void updateRemainder(Integer remainder){
+    public void updateRemainder(Integer remainder) {
         this.remainder = remainder;
     }
 }

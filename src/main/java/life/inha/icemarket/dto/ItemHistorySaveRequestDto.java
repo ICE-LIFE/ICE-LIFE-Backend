@@ -25,7 +25,7 @@ public class ItemHistorySaveRequestDto {
         this.rentAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public ItemHistory toEntity(){
+    public ItemHistory toEntity() {
         return ItemHistory.builder()
                 .itemId(itemId)
                 .managerId(managerId)
