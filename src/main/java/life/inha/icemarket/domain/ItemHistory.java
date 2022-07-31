@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
-@Entity(name="item_history")
+@Entity(name = "item_history")
 public class ItemHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,13 @@ public class ItemHistory {
     private Timestamp returnAt;
 
     @Builder
-    public ItemHistory(Integer itemId, Integer managerId, Timestamp rentAt){
+    public ItemHistory(Integer itemId, Integer managerId, Timestamp rentAt) {
         this.itemId = itemId;
         this.managerId = managerId;
         this.rentAt = rentAt;
     }
 
-    public void update(Timestamp currentTime){
+    public void update(Timestamp currentTime) {
         this.returnAt = currentTime;
     }
 }

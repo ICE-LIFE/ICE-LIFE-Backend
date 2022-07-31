@@ -20,7 +20,7 @@ public class ItemSaveRequestDto {
         this.amount = amount;
     }
 
-    public Item toEntity(){
+    public Item toEntity() {
         return Item.builder()
                 .name(name)
                 .image(image)
