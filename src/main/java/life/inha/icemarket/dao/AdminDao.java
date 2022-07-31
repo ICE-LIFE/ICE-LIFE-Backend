@@ -1,6 +1,5 @@
 package life.inha.icemarket.dao;
 
-import life.inha.icemarket.dto.UserDto;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

@@ -1,6 +1,7 @@
 package life.inha.icemarket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import life.inha.icemarket.domain.Role;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.dto.MyPageDto;
 import life.inha.icemarket.service.auth.MyPageService;
@@ -44,7 +45,7 @@ class MyPageControllerTest {
     @Test
     public void getUserInfo() throws Exception {
         // given
-        User user = new User(12201863, "김민겸", "12201863@inha.edu", "겸이", "Admin");
+        User user = new User(12201863, "김민겸", "12201863@inha.edu", "겸이", Role.ADMIN);
         MyPageDto myPageDto = new MyPageDto("김민겸", 12201863, "겸이");
         given(myPageService.getMyPageDto(anyInt())).willReturn(myPageDto);
 
@@ -58,7 +59,7 @@ class MyPageControllerTest {
     @Test
     public void updateUserInfo() throws Exception {
         // given
-        User expectedUser = new User(12201863, "김민겸", "12201863@inha.edu", "겨미겨미", "Admin");
+        User expectedUser = new User(12201863, "김민겸", "12201863@inha.edu", "겨미겨미", Role.ADMIN);
         given(myPageService.update(anyInt(), anyString())).willReturn(expectedUser);
 
         // when

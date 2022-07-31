@@ -1,6 +1,7 @@
 package life.inha.icemarket.domain;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,7 +22,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
-
 
     @NonNull
     private String name;
@@ -44,19 +44,21 @@ public class User {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
-    @Column(name = "role")
-    private String role = "Guest";
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.GUEST;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.JOIN;
 
     @Builder
-    public User(Integer id, @NonNull String name, @NonNull String email, String nickname, String role) {
+    public User(Integer id, @NonNull String name, String nickname, Status status, Role role) {
         this.id = id;
         this.name = name;
-        this.email = email;
         this.nickname = nickname;
+        this.status = status;
         this.role = role;
     }
 
