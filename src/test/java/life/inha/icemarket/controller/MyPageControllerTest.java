@@ -1,4 +1,4 @@
-package life.inha.icemarket.controller.auth;
+package life.inha.icemarket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import life.inha.icemarket.domain.User;

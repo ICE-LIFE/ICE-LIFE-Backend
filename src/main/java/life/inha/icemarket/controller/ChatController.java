@@ -1,16 +1,21 @@
 package life.inha.icemarket.controller;
 
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.Room;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.ChatRepository;
 import life.inha.icemarket.respository.RoomRepository;
 import life.inha.icemarket.respository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -18,22 +23,18 @@ import java.util.List;
 import java.util.Objects;
 
 
-@Controller
+@Tag(name = "chat", description = "채팅 API")
+@RestController
+@RequiredArgsConstructor
 public class ChatController {
     private final RoomRepository roomRepository;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public ChatController(RoomRepository roomRepository, ChatRepository chatRepository, UserRepository userRepository, SimpMessagingTemplate messagingTemplate) {
-        this.roomRepository = roomRepository;
-        this.chatRepository = chatRepository;
-        this.userRepository = userRepository;
-        this.messagingTemplate = messagingTemplate;
-    }
-
     @MessageMapping("/room/create")
     @Transactional
+    @ApiDocumentResponse
     public void createRoom(Principal principal, String message) {
 
         Integer userId = Integer.valueOf(principal.getName());
@@ -68,7 +69,7 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}")
     @Transactional
-
+    @ApiDocumentResponse
     public void chat(Principal principal, @DestinationVariable Integer roomId, String message) {
         Integer sourceUserId = Integer.valueOf(principal.getName());
         Room room = roomRepository.findById(roomId).orElseThrow(); // check no room exception
@@ -88,7 +89,7 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}/invite")
     @Transactional
-
+    @ApiDocumentResponse
     public void inviteUser(Principal principal, @DestinationVariable Integer roomId, String message) {
         Integer userId = Integer.valueOf(principal.getName());
 
@@ -111,7 +112,10 @@ public class ChatController {
 
     @MessageMapping("/room/{roomId}/leave")
     @Transactional
-
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "잘못된 채팅방 퇴장 요청"),
+    })
     public void leaveRoom(Principal principal, @DestinationVariable Integer roomId) {
         Integer userId = Integer.valueOf(principal.getName());
 
