@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 
-@Tag(name = "MyPage", description = "마이페이지")
+@Tag(name = "MyPage", description = "마이페이지 API")
 @RestController
 @RequiredArgsConstructor
 public class MyPageController {

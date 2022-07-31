@@ -3,6 +3,7 @@ package life.inha.icemarket.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.domain.ItemHistory;
 import life.inha.icemarket.dto.ItemHistorySaveRequestDto;
 import life.inha.icemarket.service.ItemHistoryService;
@@ -17,6 +18,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 
+@Tag(name = "ItemHistory", description = "복지불품 대여 기록 API")
 @RequiredArgsConstructor
 @RestController
 public class ItemHistoryController {
