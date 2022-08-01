@@ -36,10 +36,10 @@ public class UserApiController {
 
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/signup")
-    public String signup(UserCreateForm userCreateForm){
-        return "signup_form";
-    }
+//    @GetMapping("/signup")
+//    public String signup(UserCreateForm userCreateForm){
+//        return "signup_form";
+//    }
 
     @ResponseBody //for api test
     @RequestMapping(
