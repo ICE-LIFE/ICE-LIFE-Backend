@@ -13,11 +13,14 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.error("Responding with unauthorized error : {}",authException.getMessage());
 
-        request.setAttribute("response.failure.code", request.getAttribute("unauthorization.code"));
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, (String) request.getAttribute("unauthorization.code"));
+    @Override
+    public void commence(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException e) throws IOException{
+        log.error("Responding with unauthroized error. Message - {}", e.getMessage());
+
+//        ErrorCode
     }
 }
