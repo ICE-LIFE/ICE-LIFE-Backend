@@ -1,4 +1,7 @@
+/*
+빌드에서 제외
 package life.inha.icemarket.config;
+
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -24,3 +27,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 //        ErrorCode
     }
 }
+ */

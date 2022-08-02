@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class LoginApiController {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;

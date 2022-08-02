@@ -22,7 +22,7 @@ public class SecurityConfig{
     private final UserSecurityService userSecurityService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+    //private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
 
     @Bean
