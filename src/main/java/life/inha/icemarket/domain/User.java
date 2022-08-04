@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.Instant;
 import java.util.List;
 
@@ -18,15 +19,16 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    // User의 Id는 학번이므로 자동 생성 기능을 꺼두었습니다.
     private Integer id;
 
 
-    @NonNull
+    @Column(unique=true)
     private String name;
 
-    @NonNull
+    @Email
+    @Column(unique=true)
     private String email;
 
     @NonNull
@@ -38,8 +40,8 @@ public class User {
     @CreatedDate
     private Instant createdAt;
 
-    @LastModifiedDate
-    private Instant updatedAt;
+//    @LastModifiedDate
+//    private Instant updatedAt;
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
@@ -47,6 +49,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
+
+    @Transient
+    private UserRole role;
 
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;

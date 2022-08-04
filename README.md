@@ -1,3 +1,4 @@
+PKD 개인 
 정통마켓 백엔드 레포지토리입니다.
 
 ## Build Spring Boot Image
@@ -14,7 +15,7 @@
 
 1. Create `.env`.
 
-    Check [`.env.example`](./.env.example)
+    Check [`.env.example`](./.env)
 
 2. Create `db/password.txt`.
 
