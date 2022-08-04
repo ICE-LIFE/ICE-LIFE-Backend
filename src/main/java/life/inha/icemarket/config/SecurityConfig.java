@@ -1,6 +1,6 @@
 package life.inha.icemarket.config;
 
-import life.inha.icemarket.service.auth.UserSecurityService;
+import life.inha.icemarket.service.UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,22 +28,19 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-                .csrf() //(2)
+                .httpBasic().disable()
+                .csrf()
                 .disable()
-                .authorizeRequests() // (5)
+                .authorizeRequests()
                 .antMatchers("**").permitAll()
-                //.antMatchers("/signup", "/login", "/resetpw", "/findpw").permitAll()
-//                .anyRequest()
-//                .authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .formLogin().disable().headers().frameOptions().disable()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling() //(3)
+                .exceptionHandling()
         ;
-                //.authenticationEntryPoint(unauthorizedHandler);
         return http.build();
     }
 
@@ -52,10 +49,8 @@ public class SecurityConfig{
         return new BCryptPasswordEncoder();
     }
 
-    @Bean // 이 Bean을 생성하면, 스프링의 내부 동작에서 UserSecurityService와 PasswordEncoder가 자동으로 설정된다.
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
 }
