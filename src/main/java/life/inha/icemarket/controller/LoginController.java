@@ -1,7 +1,10 @@
 package life.inha.icemarket.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.JwtTokenProvider;
 import life.inha.icemarket.config.Token;
+import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.config.UserAuthentication;
 import life.inha.icemarket.respository.UserRepository;
@@ -11,24 +14,32 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+@Tag(name="Login", description = "로그인 API")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class LoginApiController {
+public class LoginController {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+    @Operation(description = "로그인 페이지")
+    @ApiDocumentResponse
+    @ResponseBody
+    @GetMapping("/login")
+    public String login_get(){
+        return "login_form";
+    }
+
+    @Operation(description = "로그인")
+    @ApiDocumentResponse
     @RequestMapping(
             value = "/login",
             method = RequestMethod.POST,

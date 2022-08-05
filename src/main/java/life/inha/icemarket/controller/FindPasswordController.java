@@ -1,5 +1,9 @@
 package life.inha.icemarket.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.UserService;
@@ -7,7 +11,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,17 +21,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Optional;
 
+@Tag(name="FindPassword", description = "비밀번호 찾기 API")
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 
-
-public class UserApiController {
+public class FindPasswordController {
 
     @Getter
     @Setter
@@ -55,74 +56,16 @@ public class UserApiController {
         private String password2;
     }
 
-    @Getter
-    @Setter
-    public static class UserCreateForm {
-        @NotNull(message = "사용자 ID는 필수항목입니다.")
-        private Integer id;
 
-        @Size(min=3, max=25)
-        @NotEmpty(message = "사용자 이름은 필수항목입니다.")
-        private String name;
-
-        @NotEmpty(message = "비밀번호는 필수항목입니다.")
-        private String password1;
-
-        @NotEmpty(message = "비밀번호는 필수항목입니다.")
-        private String password2;
-
-        @NotEmpty(message = "사용자 별명은 필수항목입니다.")
-        private String nickname;
-
-        @NotEmpty(message = "사용자 이메일은 필수항목입니다.")
-        @Email
-        private String email;
-    }
 
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
-    // 회원가입 post 요청 컨트롤러 시작 //
-    @ResponseBody //for api test
-    @RequestMapping(
-            value = "/signup",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public String signup(
-            @Valid @RequestBody UserCreateForm userCreateForm, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return "Binding Result Error" + bindingResult.getObjectName();
-        }
-
-        if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())){
-            bindingResult.rejectValue("password2", "passwordInCorrect",
-                    "2개의 패스워드가 일치하지 않습니다.");
-            return "signup_form";
-        }
-
-        userService.create(
-                userCreateForm.getId(),
-                userCreateForm.getName(),
-                userCreateForm.getEmail(),
-                userCreateForm.getPassword1(),
-                userCreateForm.getNickname()
-        );
-        return "redirect:/";
-    }
-    // 회원가입 post 요청 컨트롤러 끝 //
-
-    // 로그인 get 요청 컨트롤러 //
-    @ResponseBody
-    @GetMapping("/login")
-    public String login_get(){
-        return "login_form";
-    }
-
-
     // 비밀번호 찾기 get 요청 컨트롤러
+    @Operation(description = "비밀번호 찾기 페이지")
+    @ApiDocumentResponse
     @GetMapping("/findpw")
     public String findpw(Model model){
         model.addAttribute("FindPasswordForm", new FindPasswordForm());
@@ -131,6 +74,8 @@ public class UserApiController {
 
 
     // 비밀번호 찾기 post 요청 컨트롤러 시작 //
+    @Operation(description = "비밀번호 찾기")
+    @ApiDocumentResponse
    // @ResponseBody
     @RequestMapping(
             value = "/findpw",
@@ -160,6 +105,8 @@ public class UserApiController {
     // 비밀번호 찾기 post 요청 컨트롤러 끝 //
 
     // 비밀번호 초기화 post 요청 컨트롤러 시작 //
+    @Operation(description = "비밀번호 초기화")
+    @ApiDocumentResponse
     @ResponseBody
     @RequestMapping(
             value="/resetpw",
