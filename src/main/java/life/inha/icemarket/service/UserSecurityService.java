@@ -2,10 +2,8 @@ package life.inha.icemarket.service;
 
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.UserRepository;
-import life.inha.icemarket.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
