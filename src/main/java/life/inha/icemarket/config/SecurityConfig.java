@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,28 +22,35 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig{
 
     private final UserSecurityService userSecurityService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtDecodeFilter jwtDecodeFilter;
 
     //private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userSecurityService);
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+
+        JwtLoginFilter jwtLoginFilter = new JwtLoginFilter(authenticationManager);
+        jwtLoginFilter.setUsernameParameter("email");
+        jwtLoginFilter.setPasswordParameter("password");
+
+        return http
                 .httpBasic().disable()
-                .csrf()
-                .disable()
+                .csrf().disable()
+                .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("**").permitAll()
+                .antMatchers("/**").permitAll()
+                // .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .formLogin().disable().headers().frameOptions().disable()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-        ;
-        return http.build();
+                .authenticationManager(authenticationManager)
+                .addFilterBefore(jwtDecodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
@@ -49,8 +58,5 @@ public class SecurityConfig{
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+
 }
