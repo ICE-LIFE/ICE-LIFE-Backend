@@ -26,6 +26,7 @@ public class UserSecurityService implements UserDetailsService {
         /*
         _User = 홈페이지 화면으로부터 받아온 user 정보 :: DB에 user 정보가 존재하는지 판단하기 위해 사용함.
          */
+        System.out.println("UserDetailsService : email=" + email);
         Optional<User> _User = this.userRepository.findByEmail(email);
 
         if (_User.isEmpty()) { // 만약 입력받은 사용자 정보가 DB에 없다면
@@ -40,7 +41,8 @@ public class UserSecurityService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
         }
         */
-        authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
-        return new CustomUserDetails(User.getEmail(), User.getPasswordHashed(), authorities);
+        //authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
+        //return new CustomUserDetails(User.getEmail(), User.getPasswordHashed(), authorities);
+        return userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException(String.format("email : {}", email)));
     }
 }
