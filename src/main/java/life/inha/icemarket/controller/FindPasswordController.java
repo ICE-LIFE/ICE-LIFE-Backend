@@ -1,12 +1,11 @@
 package life.inha.icemarket.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.UserRepository;
-import life.inha.icemarket.service.UserService;
+import life.inha.icemarket.service.UserCreateService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -58,7 +57,7 @@ public class FindPasswordController {
 
 
 
-    private final UserService userService;
+    private final UserCreateService userCreateService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -81,9 +80,7 @@ public class FindPasswordController {
             value = "/findpw",
             method = RequestMethod.POST
     )
-    public String findpw(Model model, @Valid FindPasswordForm findPasswordForm, BindingResult bindingResult,
-                         RedirectAttributes redirect
-                         ) throws UsernameNotFoundException{
+    public String findpw(Model model,@ModelAttribute("FindPasswordForm") @Valid FindPasswordForm findPasswordForm, BindingResult bindingResult) throws UsernameNotFoundException{
         log.info("findpw post_");
         Optional <User> email_User = userRepository.findByEmail(findPasswordForm.getEmail());
 
@@ -133,7 +130,7 @@ public class FindPasswordController {
         }
         User User = _User.get();
         String beforepw = User.getPasswordHashed();
-        this.userService.SetPasswordHashed(User, password);
+        this.userCreateService.SetPasswordHashed(User, password);
         String afterpw = User.getPasswordHashed();
         return beforepw + "\n" + afterpw;
     }

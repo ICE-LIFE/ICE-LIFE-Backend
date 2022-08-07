@@ -25,12 +25,13 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         try {
             User user = (User) authResult.getPrincipal();
             String email = user.getEmail();
-            Algorithm algorithm = Algorithm.HMAC256("ice-life");
+            Algorithm algorithm = Algorithm.HMAC256("ice-market");
             String accessToken = JWT.create()
                     .withIssuer("ice")
                     .withSubject(email)
                     .sign(algorithm);
             log.info("Create JWT : user_email : " + email);
+            log.info("Login From " + email);
             response.getWriter().write(accessToken);
         } catch (JWTCreationException | IOException exception){
             exception.printStackTrace();

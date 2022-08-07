@@ -28,18 +28,25 @@ public class JwtDecodeFilter  extends OncePerRequestFilter {
     private final UserSecurityService userSecurityService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
         if(header != null && header.startsWith("Bearer ")){
             try{
-                String accessToken = header.substring(8);
+                String accessToken = header.substring(7);
                 Algorithm algorithm = Algorithm.HMAC256("ice-market");
                 JWTVerifier verifier = JWT.require(algorithm).withIssuer("ice").build();
+
                 DecodedJWT jwt = verifier.verify(accessToken);
                 String email = jwt.getSubject();
                 System.out.println("Verify JWT : email=" + email);
                 User user = (User) userSecurityService.loadUserByUsername(email);
-                Authentication authenticationToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
+                System.out.println("getRole() : " + user.getRole());
+                System.out.println("getAuthorities() : " + user.getAuthorities());
+                Authentication authenticationToken
+                        = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } catch(JWTVerificationException exception){
                 exception.printStackTrace();

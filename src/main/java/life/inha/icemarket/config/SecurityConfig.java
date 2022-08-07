@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -43,8 +41,12 @@ public class SecurityConfig{
                 .csrf().disable()
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                // .anyRequest().authenticated()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/findpw").hasRole("USER")
+                .antMatchers("/resetpw").permitAll()
+                .antMatchers("/onlyuser").hasRole("USER")
+                .antMatchers("/onlyadmin").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authenticationManager(authenticationManager)
