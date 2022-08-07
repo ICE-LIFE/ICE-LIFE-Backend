@@ -3,18 +3,17 @@ package life.inha.icemarket.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
-import life.inha.icemarket.service.UserService;
+import life.inha.icemarket.domain.User;
+import life.inha.icemarket.service.UserCreateService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -52,7 +51,7 @@ public class SignupController {
         private String email;
     }
 
-    private final UserService userService;
+    private final UserCreateService userCreateService;
 
     @Operation(description = "회원가입")
     @ApiDocumentResponse
@@ -63,6 +62,7 @@ public class SignupController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public String signup(
+            @AuthenticationPrincipal User user,
             @Valid @RequestBody UserCreateForm userCreateForm, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "Binding Result Error" + bindingResult.getObjectName();
@@ -74,7 +74,7 @@ public class SignupController {
             return "signup_form";
         }
 
-        userService.create(
+        userCreateService.create(
                 userCreateForm.getId(),
                 userCreateForm.getName(),
                 userCreateForm.getEmail(),

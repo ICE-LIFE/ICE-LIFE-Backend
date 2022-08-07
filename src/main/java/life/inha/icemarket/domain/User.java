@@ -5,6 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -17,8 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
@@ -57,6 +57,9 @@ public class User implements UserDetails {
     @Transient
     private UserRole role;
 
+
+
+
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;
         this.name = name;
@@ -71,7 +74,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        return new ArrayList<>();
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(this.role.getValue()));
+        return authorities;
     }
 
     @Override
