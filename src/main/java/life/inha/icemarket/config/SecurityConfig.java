@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final UserSecurityService userSecurityService;
     private final JwtDecodeFilter jwtDecodeFilter;
@@ -26,7 +26,7 @@ public class SecurityConfig{
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userSecurityService);
@@ -46,6 +46,7 @@ public class SecurityConfig{
                 .antMatchers("/resetpw").permitAll()
                 .antMatchers("/onlyuser").hasRole("USER")
                 .antMatchers("/onlyadmin").hasRole("ADMIN")
+                .antMatchers("/ws/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -56,7 +57,7 @@ public class SecurityConfig{
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
