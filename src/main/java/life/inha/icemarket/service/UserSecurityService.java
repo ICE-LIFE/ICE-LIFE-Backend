@@ -29,7 +29,6 @@ public class UserSecurityService implements UserDetailsService {
         Optional<User> _User = this.userRepository.findByEmail(email);
 
         if (_User.isEmpty()) { // 만약 입력받은 사용자 정보가 DB에 없다면
-
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
         User user = _User.get();
