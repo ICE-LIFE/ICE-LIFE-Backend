@@ -18,6 +18,7 @@ CREATE TABLE posts (
     id          BIGINT    NOT NULL AUTO_INCREMENT PRIMARY KEY,
     category_id INT       NOT NULL,
     author_id   INT       NOT NULL,
+    title       VARCHAR(100)    NOT NULL,
     content     TEXT      NOT NULL,
     thumbnail   VARCHAR(100),
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

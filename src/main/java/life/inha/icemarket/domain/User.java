@@ -1,5 +1,6 @@
 package life.inha.icemarket.domain;
 
+import life.inha.icemarket.dto.Status;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -44,9 +45,6 @@ public class User implements UserDetails {
     @CreatedDate
     private Instant createdAt;
 
-//    @LastModifiedDate
-//    private Instant updatedAt;
-
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
@@ -55,11 +53,14 @@ public class User implements UserDetails {
     private List<Post> postList;
 
     @Transient
-    private UserRole role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.GUEST;
 
+    @Transient
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.JOIN;
 
-
-
+    @Builder
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;
         this.name = name;
