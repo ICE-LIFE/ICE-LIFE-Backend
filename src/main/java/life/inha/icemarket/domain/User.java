@@ -1,5 +1,6 @@
 package life.inha.icemarket.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -44,8 +45,8 @@ public class User {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-
-    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
 
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
