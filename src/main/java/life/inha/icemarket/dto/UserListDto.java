@@ -19,8 +19,6 @@ public class UserListDto {
 
     private Instant createAt;
 
-    private Status status;
-
     private UserRole role;
 
     public User toEntity(){

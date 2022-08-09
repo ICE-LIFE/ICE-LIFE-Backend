@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 
 @RestController
@@ -23,17 +24,17 @@ public class AdminController {
 
     @Operation(description = "가입 신청자 목록 조회")
     @GetMapping("/userList")
-    public ResponseEntity<UserListDto> getUserList(){
+    public ResponseEntity<List<UserListDto>> getUserList(){
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-        return new ResponseEntity<UserListDto>(adminService.getUserList(), header, HttpStatus.OK);
+        return new ResponseEntity<List<UserListDto>>(adminService.getUserList(), header, HttpStatus.OK);
     }
 
 
     @Operation(description = "가입자 승인 및 거절")
     @GetMapping("/userList/allowUser")
     public ResponseEntity<Integer> allowUser(Integer userId){
-        return new ResponseEntity<>(adminService.allowUser(userId), HttpStatus.OK);
+        return new ResponseEntity<>(adminService.convertGuestToUser(userId), HttpStatus.OK);
     }
 }
 
