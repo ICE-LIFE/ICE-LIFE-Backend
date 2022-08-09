@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>find pw</title>
+</head>
+<body>
+    <form th:action="@{/findpw}" th:name="info" th:object="${FindPasswordForm}" method="post">
+        <div>
+            <label for = "email">이메일 : </label>
+            <input type="email" th:field = "*{email}" id="email" name="email">
+        </div>
+        <div>
+            <label for = "nickname">닉네임 : </label>
+            <input type = "text" th:field = "*{nickname}" id = "nickname" name="nickname">
+        </div>
+        <input type="submit" value="비밀번호 찾기">
+    </form>
+</body>
+</html>

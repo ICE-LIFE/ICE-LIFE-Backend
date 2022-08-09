@@ -5,29 +5,35 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.sql.Array;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
 
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    // User의 Id는 학번이므로 자동 생성 기능을 꺼두었습니다.
     private Integer id;
 
 
-    @NonNull
+    @Column(unique=true)
     private String name;
 
-    @NonNull
+    @Email
+    @Column(unique=true)
     private String email;
 
     @NonNull
@@ -39,8 +45,8 @@ public class User {
     @CreatedDate
     private Instant createdAt;
 
-    @LastModifiedDate
-    private Instant updatedAt;
+//    @LastModifiedDate
+//    private Instant updatedAt;
 
     @Column(name = "deleted_at")
     private Instant deletedAt;
@@ -48,6 +54,12 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
+
+    @Transient
+    private UserRole role;
+
+
+
 
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;
@@ -60,5 +72,44 @@ public class User {
         // 닉네임 중복 체크 후 설정
         this.nickname = nickname;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities(){
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(this.role.getValue()));
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordHashed;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 
 }
