@@ -27,6 +27,37 @@ CREATE TABLE posts (
     FOREIGN KEY (author_id) REFERENCES users (id)
 );
 
+CREATE TABLE items (
+    id          BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(10) NOT NULL,
+    image       VARCHAR(100),
+    amount      INT         NOT NULL
+);
+
+CREATE TABLE item_history (
+    id          BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rent_at     TIMESTAMP   NOT NULL,
+    return_at   TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES items (id),
+    FOREIGN KEY (manager_id) REFERENCES users (id)
+);
+
+CREATE TABLE managers (
+    user_id     BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at  TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+CREATE TABLE comments (
+    id          BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    content     TEXT        NOT NULL,
+    created_at  TIMESTAMP   NOT NULL,
+    updated_at  TIMESTAMP,
+    deleted_at  TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts (id),
+    FOREIGN KEY (author_id) REFERENCES users (id)
+);
+
 CREATE TABLE rooms (
     id         BIGINT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(10) NOT NULL,
