@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/signup").permitAll()
                 .antMatchers("/findpw").hasRole("USER")
                 .antMatchers("/resetpw").permitAll()
                 .antMatchers("/onlyuser").hasRole("USER")
