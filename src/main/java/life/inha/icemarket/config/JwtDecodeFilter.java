@@ -9,6 +9,7 @@ import groovy.util.logging.Slf4j;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.service.UserSecurityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,7 +44,7 @@ public class JwtDecodeFilter  extends OncePerRequestFilter {
                 String email = jwt.getSubject();
                 System.out.println("Verify JWT : email=" + email);
                 User user = (User) userSecurityService.loadUserByUsername(email);
-                System.out.println("getRole() : " + user.getRole());
+//                System.out.println("getRole() : " + user.getRole());
                 System.out.println("getAuthorities() : " + user.getAuthorities());
                 Authentication authenticationToken
                         = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
