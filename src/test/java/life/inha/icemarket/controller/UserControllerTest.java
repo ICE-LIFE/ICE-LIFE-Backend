@@ -8,7 +8,6 @@ package life.inha.icemarket.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import life.inha.icemarket.config.JwtLoginFilter;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.UserSecurityService;
@@ -122,8 +121,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk());
         log.info("FindPwGet Test End");
     }
-
-    //todo : findpw post, resetpw post test
 
     @Test
     @Order(6)
