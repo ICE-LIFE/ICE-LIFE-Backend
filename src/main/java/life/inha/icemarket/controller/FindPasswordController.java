@@ -6,6 +6,7 @@ import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.UserCreateService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,18 +28,24 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-
 public class FindPasswordController {
 
+    @AllArgsConstructor
     @Getter
     @Setter
     public static class FindPasswordForm {
+
+        public FindPasswordForm(){
+
+        }
+
         @NotNull(message = "이메일을 입력해주세요.")
         @Email
         private String email;
 
         @NotNull(message = "닉네임을 입력해주세요.")
         private String nickname;
+
     }
 
     @Getter
@@ -81,7 +88,6 @@ public class FindPasswordController {
             method = RequestMethod.POST
     )
     public String findpw(Model model,@ModelAttribute("FindPasswordForm") @Valid FindPasswordForm findPasswordForm, BindingResult bindingResult) throws UsernameNotFoundException{
-        log.info("findpw post_");
         Optional <User> email_User = userRepository.findByEmail(findPasswordForm.getEmail());
 
         if(email_User.isEmpty()){
@@ -89,8 +95,6 @@ public class FindPasswordController {
         }
         User User = email_User.get();
         if(User.getNickname().equals(findPasswordForm.getNickname())){
-            log.info(User.getNickname());
-            log.info(User.getEmail());
             ResetPasswordForm resetPasswordForm = new ResetPasswordForm();
             resetPasswordForm.setEmail(User.getEmail());
             model.addAttribute("ResetPasswordForm", resetPasswordForm);
@@ -129,10 +133,8 @@ public class FindPasswordController {
             throw new UsernameNotFoundException("사용자가 없습니다.");
         }
         User User = _User.get();
-        String beforepw = User.getPasswordHashed();
         this.userCreateService.SetPasswordHashed(User, password);
-        String afterpw = User.getPasswordHashed();
-        return beforepw + "\n" + afterpw;
+        return User.getPasswordHashed();
     }
     // 비밀번호 초기화 post 요청 컨트롤러 끝 //
 }
