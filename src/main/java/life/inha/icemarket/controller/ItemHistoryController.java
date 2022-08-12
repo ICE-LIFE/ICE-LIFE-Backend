@@ -55,7 +55,7 @@ public class ItemHistoryController {
 
     @Operation(description = "복지물품 대여 기록 삭제")
     @ApiDocumentResponse
-    @GetMapping("/item-history/delete/{id}")
+    @DeleteMapping("/item-history/delete/{id}")
     public void deleteItemHistory(@PathVariable Integer id) {
         itemHistoryService.delete(id);
     }
