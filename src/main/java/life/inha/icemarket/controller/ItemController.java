@@ -43,7 +43,7 @@ public class ItemController {
 
     @Operation(description = "복지물품 수정")
     @ApiDocumentResponse
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Item> updateItem(@RequestBody ItemSaveRequestDto requestDto, @PathVariable Integer id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
@@ -52,7 +52,7 @@ public class ItemController {
 
     @Operation(description = "복지물품 삭제")
     @ApiDocumentResponse
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteItem(@PathVariable Integer id) {
         itemService.delete(id);
     }

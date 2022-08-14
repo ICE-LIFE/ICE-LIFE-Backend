@@ -21,10 +21,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    // User의 Id는 학번이므로 자동 생성 기능을 꺼두었습니다.
     private Integer id;
-
 
     @Column(unique=true)
     private String name;
@@ -49,12 +46,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
-    // @Transient
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.GUEST;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.AWAIT;
+    
     @Builder
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;

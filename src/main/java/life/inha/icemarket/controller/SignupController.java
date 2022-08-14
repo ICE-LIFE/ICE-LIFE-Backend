@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.service.UserCreateService;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -27,9 +28,15 @@ import javax.validation.constraints.Size;
 @Controller
 public class SignupController {
 
+    @AllArgsConstructor
     @Getter
     @Setter
     public static class UserCreateForm {
+
+        public UserCreateForm(){
+
+        }
+
         @NotNull(message = "사용자 ID는 필수항목입니다.")
         private Integer id;
 
@@ -49,6 +56,7 @@ public class SignupController {
         @NotEmpty(message = "사용자 이메일은 필수항목입니다.")
         @Email
         private String email;
+
     }
 
     private final UserCreateService userCreateService;
@@ -81,6 +89,6 @@ public class SignupController {
                 userCreateForm.getPassword1(),
                 userCreateForm.getNickname()
         );
-        return "redirect:/";
+        return "success";
     }
 }

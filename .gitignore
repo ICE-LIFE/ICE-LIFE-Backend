@@ -42,3 +42,6 @@ out/
 
 ### DB Password ###
 db/*.txt
+
+### NGINX ###
+/nginx/ssl
