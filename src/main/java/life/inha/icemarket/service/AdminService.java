@@ -28,4 +28,20 @@ public class AdminService {
         }
         return user.getId();
     }
+
+    public Integer grantAdmin(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        user.setRole(UserRole.ADMIN);
+        userRepository.save(user);
+        return user.getId();
+    }
+
+    public Integer depriveAdmin(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        if (user.getRole().equals(UserRole.ADMIN)) {
+            user.setRole(UserRole.USER);
+            userRepository.save(user);
+        }
+        return user.getId();
+    }
 }

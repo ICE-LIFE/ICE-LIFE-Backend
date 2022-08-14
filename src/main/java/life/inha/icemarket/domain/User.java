@@ -53,6 +53,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.GUEST;
 
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.AWAIT;
     @Builder
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;
