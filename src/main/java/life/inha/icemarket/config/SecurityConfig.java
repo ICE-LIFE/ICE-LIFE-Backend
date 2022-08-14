@@ -41,6 +41,7 @@ public class SecurityConfig{
                 .csrf().disable()
                 .formLogin().disable()
                 .authorizeRequests()
+                .antMatchers("/v3/api-docs/**", "/swagger*/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/findpw").hasRole("USER")
                 .antMatchers("/resetpw").permitAll()
