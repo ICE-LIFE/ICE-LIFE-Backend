@@ -2,7 +2,6 @@ package life.inha.icemarket.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.sql.Array;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,9 +39,6 @@ public class User implements UserDetails {
     @CreatedDate
     private Instant createdAt;
 
-//    @LastModifiedDate
-//    private Instant updatedAt;
-
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
@@ -51,9 +46,13 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
-    @Transient
-    private UserRole role;
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.GUEST;
 
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.AWAIT;
+    
+    @Builder
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;
         this.name = name;

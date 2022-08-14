@@ -14,20 +14,37 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.auth0:java-jwt:4.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'io.swagger.core.v3:swagger-annotations:2.2.1'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' //타임리프 템플릿 엔진 적용
-    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' //타임리프 템플릿 엔진 적용
+    implementation (
+            'com.auth0:java-jwt:4.0.0',
+            'org.springframework.boot:spring-boot-starter-data-jpa',
+            'org.springframework.boot:spring-boot-starter-security',
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-websocket',
+            'io.swagger.core.v3:swagger-annotations:2.2.1',
+            'org.springdoc:springdoc-openapi-ui:1.6.9',
+            'org.springframework.boot:spring-boot-starter-validation',
+            'org.springframework.boot:spring-boot-starter-thymeleaf', //타임리프 템플릿 엔진 적용
+            'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect', //타임리프 템플릿 엔진 적용
+             "com.querydsl:querydsl-jpa:5.0.0",
+
+    )
+    annotationProcessor(
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+            "com.querydsl:querydsl-apt:5.0.0:jpa")
+
     implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+}
+
+sourceSets{
+    main{
+        java{
+            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+        }
+    }
 }
 
 tasks.named('test') {
