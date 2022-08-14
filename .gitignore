@@ -45,3 +45,6 @@ db/*.txt
 
 ### NGINX ###
 /nginx/ssl
+
+## DS_Store ##
+.DS_Store
