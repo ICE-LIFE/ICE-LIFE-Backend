@@ -4,6 +4,7 @@ CREATE TABLE users (
     email           VARCHAR(100) NOT NULL UNIQUE,
     password_hashed CHAR(60)     NOT NULL,
     nickname        VARCHAR(10)  UNIQUE,
+    role            VARCHAR(10)  NOT NULL,
     created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at      TIMESTAMP
@@ -18,6 +19,7 @@ CREATE TABLE posts (
     id          BIGINT    NOT NULL AUTO_INCREMENT PRIMARY KEY,
     category_id INT       NOT NULL,
     author_id   INT       NOT NULL,
+    title       VARCHAR(100)    NOT NULL,
     content     TEXT      NOT NULL,
     thumbnail   VARCHAR(100),
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

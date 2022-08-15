@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
+import life.inha.icemarket.exception.BadRequestException;
 import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.UserCreateService;
 import lombok.AllArgsConstructor;
@@ -88,6 +89,11 @@ public class FindPasswordController {
             method = RequestMethod.POST
     )
     public String findpw(Model model,@ModelAttribute("FindPasswordForm") @Valid FindPasswordForm findPasswordForm, BindingResult bindingResult) throws UsernameNotFoundException{
+
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException("FindPasswordForm에 맞지 않습니다");
+        }
+
         Optional <User> email_User = userRepository.findByEmail(findPasswordForm.getEmail());
 
         if(email_User.isEmpty()){
