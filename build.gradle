@@ -20,6 +20,7 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-websocket',
+            'org.springframework.boot:spring-boot-starter-mail',
             'io.swagger.core.v3:swagger-annotations:2.2.1',
             'org.springdoc:springdoc-openapi-ui:1.6.9',
             'org.springframework.boot:spring-boot-starter-validation',
