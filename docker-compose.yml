@@ -57,6 +57,7 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./ICE-LIFE-Frontend/build:/usr/src/icemarket/www:ro
 
 networks:
   backend:
