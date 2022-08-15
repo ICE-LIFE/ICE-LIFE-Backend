@@ -1,5 +1,6 @@
 package life.inha.icemarket.service;
 
+import life.inha.icemarket.domain.Status;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.domain.UserRole;
 import life.inha.icemarket.dto.UserListDto;
@@ -29,6 +30,12 @@ public class AdminService {
         return user.getId();
     }
 
+    public Integer rejectUser(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException(userId));
+        user.setStatus(Status.DENIED);
+        userRepository.save(user);
+        return user.getId();
+    }
     public Integer grantAdmin(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         user.setRole(UserRole.ADMIN);
@@ -44,4 +51,5 @@ public class AdminService {
         }
         return user.getId();
     }
+
 }
