@@ -18,13 +18,15 @@ public class UserCreateService {
             String name,
             String email,
             String passwordHashed,
-            String nickname){
+            String nickname,
+            UserRole userRole){
         User user = new User();
         user.setId(id);
         user.setName(name);
         user.setEmail(email);
         user.setNickname(nickname);
         user.setPasswordHashed(passwordEncoder.encode(passwordHashed));
+        user.setRole(userRole);
         this.userRepository.save(user);
         return user;
     }
