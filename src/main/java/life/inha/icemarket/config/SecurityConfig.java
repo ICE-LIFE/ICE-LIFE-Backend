@@ -44,7 +44,6 @@ public class SecurityConfig {
                 .antMatchers("/v3/api-docs/**", "/swagger*/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
-                .antMatchers("/emailconfirm").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/**").permitAll()
                 .antMatchers("/findpw").permitAll()
