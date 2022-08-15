@@ -50,6 +50,7 @@ public class User implements UserDetails {
     @NonNull
     private UserRole role;
 
+
     @Enumerated(EnumType.STRING)
     private Status status = Status.AWAIT;
     
