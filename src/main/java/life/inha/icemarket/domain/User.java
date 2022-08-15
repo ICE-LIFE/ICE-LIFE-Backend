@@ -18,7 +18,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
@@ -51,7 +52,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
-    @Transient
+    @NonNull
     private UserRole role;
 
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
@@ -69,7 +70,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-
         authorities.add(new SimpleGrantedAuthority(this.role.getValue()));
         return authorities;
     }
