@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+**/src/main/generated/
 
 ### STS ###
 .apt_generated
@@ -44,3 +45,6 @@ db/*.txt
 
 ### NGINX ###
 /nginx/ssl
+
+## DS_Store ##
+.DS_Store
