@@ -1,5 +1,8 @@
 package life.inha.icemarket.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.domain.UserRole;
 import life.inha.icemarket.dto.EmailDto;
@@ -18,6 +21,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @Controller
+@Tag(name="EmailConfirm", description = "이메일 인증 API")
 public class EmailController {
 
     private final UserRepository userRepository;
@@ -25,7 +29,8 @@ public class EmailController {
     private final EmailService emailService;
 
     private String confirm;
-
+    @Operation(description = "회원가입 시 이메일 전송 페이지 - 회원가입 페이지에서 EmailDto를 받아옵니다.")
+    @ApiDocumentResponse
     @GetMapping("/emailconfirm")
     public String emailConfirm(@ModelAttribute("EmailDto") EmailDto emailDto, Model model) throws Exception{
         String email = emailDto.getEmail();
@@ -36,7 +41,8 @@ public class EmailController {
         model.addAttribute("EmailDto",emailDto);
         return "ConfirmEmail";
     }
-
+    @Operation(description = "회원가입 시 이메일 인증 페이지 - EmailDto를 받아옵니다.")
+    @ApiDocumentResponse
     @ResponseBody
     @RequestMapping(
             value="/emailconfirm",

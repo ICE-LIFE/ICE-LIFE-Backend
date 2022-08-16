@@ -23,11 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 @Tag(name="Signup", description = "회원가입 API")
 @Slf4j
@@ -71,7 +67,8 @@ public class SignupController {
         redirectAttributes.addFlashAttribute("EmailDto", emailDto);
         return "redirect:/emailconfirm"; //todo redirect
     }
-
+    @Operation(description = "회원가입")
+    @ApiDocumentResponse
     @GetMapping("/signup")
     public String signup(Model model){
         model.addAttribute("UserCreateDto", new UserCreateDto());
