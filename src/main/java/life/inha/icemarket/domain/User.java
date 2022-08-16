@@ -16,7 +16,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
@@ -46,8 +47,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.GUEST;
+    @NonNull
+    private UserRole role;
+
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.AWAIT;
@@ -68,7 +70,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-
         authorities.add(new SimpleGrantedAuthority(this.role.getValue()));
         return authorities;
     }
