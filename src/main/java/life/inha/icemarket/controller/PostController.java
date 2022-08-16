@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "post", description = "게시판 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/api/board")
 public class PostController {
     private final PostService postService;
 
@@ -41,6 +41,7 @@ public class PostController {
     public ResponseEntity<String> savePost(@PathVariable String category, @RequestBody PostSaveDto postSaveDto) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
         return new ResponseEntity<>(postService.save(category, postSaveDto), header, HttpStatus.OK);
     }
 
@@ -54,6 +55,7 @@ public class PostController {
         @PageableDefault(size = 5, sort = "id") Pageable pageable) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
         return new ResponseEntity<>(postService.getPosts(category, pageable), header, HttpStatus.OK);
     }
 
@@ -66,6 +68,7 @@ public class PostController {
     public ResponseEntity<PostDto> getPosts(@PathVariable String category, @PathVariable Long id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
         return new ResponseEntity<>(postService.getPost(id), header, HttpStatus.OK);
     }
 
@@ -78,6 +81,7 @@ public class PostController {
     public ResponseEntity<String> modifyPost(@PathVariable String category, @PathVariable Long id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
         return new ResponseEntity<>(postService.updatePost(category, id), header, HttpStatus.OK);
     }
 
@@ -90,6 +94,7 @@ public class PostController {
     public ResponseEntity<String> deletePost(@PathVariable String category, @PathVariable Long id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
         return new ResponseEntity<>(postService.deletePost(category, id), header, HttpStatus.OK);
     }
 }

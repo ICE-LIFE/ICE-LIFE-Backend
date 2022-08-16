@@ -2,10 +2,13 @@ package life.inha.icemarket.service;
 
 import life.inha.icemarket.domain.Category;
 import life.inha.icemarket.domain.Post;
+import life.inha.icemarket.domain.User;
 import life.inha.icemarket.dto.PostDto;
 import life.inha.icemarket.dto.PostSaveDto;
+import life.inha.icemarket.exception.UserNotFoundException;
 import life.inha.icemarket.respository.CategoryRepository;
 import life.inha.icemarket.respository.PostRepository;
+import life.inha.icemarket.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,9 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+
     public String save(String category, PostSaveDto postSaveDto) {
         Category categoryEntity = categoryRepository.findByName(category);
-        Long postId = postRepository.save(postSaveDto.toEntity(categoryEntity)).getId();
+        User userEntity = userRepository.findById(postSaveDto.getUserId())
+            .orElseThrow(null);
+
+        Long postId = postRepository.save(postSaveDto.toEntity(categoryEntity, userEntity)).getId();
 
         String result = "게시글 등록이 완료되었습니다. postId = " + postId;
         return result;

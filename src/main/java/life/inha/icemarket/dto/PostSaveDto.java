@@ -14,24 +14,26 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PostSaveDto {
+    private Integer userId;
     private String title;
 
     private String content;
 
     private String thumbnail;
 
-    public PostSaveDto(String title, String content, String thumbnail) {
+    public PostSaveDto(Integer userId, String  title, String content, String thumbnail) {
+        this.userId = userId;
         this.title = title;
         this.content = content;
         this.thumbnail = thumbnail;
     }
 
-    public Post toEntity(Category category) {
+    public Post toEntity(Category category, User user) {
         return Post.builder()
             .title(title)
             .content(content)
             .thumbnail(thumbnail)
-            .user(new User())
+            .user(user)
             .category(category)
             .build();
     }
