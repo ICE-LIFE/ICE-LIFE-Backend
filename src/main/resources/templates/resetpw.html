@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>reset pw</title>
+</head>
+<body>
+<form th:action="@{/resetpw}" th:object="${ResetPasswordForm}"  method="post" >
+    <div>
+        <label for = "email"> email: </label>
+        <input type="email" th:value = *{email} th:field="*{email}" id="email" name="email" readonly="true">
+    </div>
+    <div>
+        <label for = "password1">password 1 : </label>
+        <input type="password" th:field="*{password1}" id="password1" name="password1">
+    </div>
+    <div>
+        <label for = "password2">password 2 : </label>
+        <input type = "password" th:field="*{password2}"  id="password2" name="password2">
+    </div>
+    <button type="submit" id="submit">submit</button>
+</form>
+</body>
+</html>
