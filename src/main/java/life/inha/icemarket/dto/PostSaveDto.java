@@ -14,15 +14,13 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PostSaveDto {
-    private Integer userId;
     private String title;
 
     private String content;
 
     private String thumbnail;
 
-    public PostSaveDto(Integer userId, String  title, String content, String thumbnail) {
-        this.userId = userId;
+    public PostSaveDto(String  title, String content, String thumbnail) {
         this.title = title;
         this.content = content;
         this.thumbnail = thumbnail;

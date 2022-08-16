@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.Post;
+import life.inha.icemarket.domain.User;
 import life.inha.icemarket.dto.PostDto;
 import life.inha.icemarket.dto.PostSaveDto;
 import life.inha.icemarket.service.PostService;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,11 +40,11 @@ public class PostController {
      */
     @ApiDocumentResponse
     @PostMapping("/{category}")
-    public ResponseEntity<String> savePost(@PathVariable String category, @RequestBody PostSaveDto postSaveDto) {
+    public ResponseEntity<String> savePost(@AuthenticationPrincipal User user, @PathVariable String category, @RequestBody PostSaveDto postSaveDto) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        return new ResponseEntity<>(postService.save(category, postSaveDto), header, HttpStatus.OK);
+        return new ResponseEntity<>(postService.save(user, category, postSaveDto), header, HttpStatus.OK);
     }
 
     /**

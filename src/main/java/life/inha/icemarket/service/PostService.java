@@ -25,12 +25,10 @@ public class PostService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
-    public String save(String category, PostSaveDto postSaveDto) {
+    public String save(User user, String category, PostSaveDto postSaveDto) {
         Category categoryEntity = categoryRepository.findByName(category);
-        User userEntity = userRepository.findById(postSaveDto.getUserId())
-            .orElseThrow(null);
 
-        Long postId = postRepository.save(postSaveDto.toEntity(categoryEntity, userEntity)).getId();
+        Long postId = postRepository.save(postSaveDto.toEntity(categoryEntity, user)).getId();
 
         String result = "게시글 등록이 완료되었습니다. postId = " + postId;
         return result;
