@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
+import life.inha.icemarket.domain.User;
 import life.inha.icemarket.exception.BadRequestException;
 import life.inha.icemarket.service.ChatService;
+import life.inha.icemarket.service.UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -21,12 +23,14 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private final UserSecurityService userSecurityService;
 
     @MessageMapping("/room/create")
     @ApiDocumentResponse
     public void createRoom(Principal principal, String message) {
         try {
-            Integer inviterId = Integer.valueOf(principal.getName());
+            User inviter = (User) userSecurityService.loadUserByUsername(principal.getName());
+            Integer inviterId = inviter.getId();
             String[] args = message.split(",");
             if (args.length == 0) {
                 throw new IllegalArgumentException();
@@ -49,7 +53,8 @@ public class ChatController {
     @ApiDocumentResponse
     public void broadcastChat(Principal principal, @DestinationVariable Integer roomId, String message) {
         try {
-            Integer senderId = Integer.valueOf(principal.getName());
+            User sender = (User) userSecurityService.loadUserByUsername(principal.getName());
+            Integer senderId = sender.getId();
             chatService.broadcastChat(roomId, senderId, message);
         } catch (NumberFormatException exception) {
             throw new BadRequestException(exception);
@@ -60,7 +65,8 @@ public class ChatController {
     @ApiDocumentResponse
     public void inviteUser(Principal principal, @DestinationVariable Integer roomId, String message) {
         try {
-            Integer inviterId = Integer.valueOf(principal.getName());
+            User inviter = (User) userSecurityService.loadUserByUsername(principal.getName());
+            Integer inviterId = inviter.getId();
             Integer inviteeId = Integer.valueOf(message);
             chatService.inviteUser(roomId, inviterId, inviteeId);
         } catch (NumberFormatException exception) {
@@ -76,7 +82,8 @@ public class ChatController {
     })
     public void leaveRoom(Principal principal, @DestinationVariable Integer roomId) throws IllegalArgumentException {
         try {
-            Integer memberId = Integer.valueOf(principal.getName());
+            User member = (User) userSecurityService.loadUserByUsername(principal.getName());
+            Integer memberId = member.getId();
             chatService.leaveRoom(roomId, memberId);
         } catch (NumberFormatException exception) {
             throw new BadRequestException(exception);

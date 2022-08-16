@@ -23,7 +23,7 @@ public class ChatService {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void createRoom(String roomName, List<Integer> memberIds) {
-        List<User> members = (List<User>) userRepository.findAllById(memberIds);
+        List<User> members = userRepository.findAllById(memberIds);
         Room newRoom = Room.builder().name(roomName).users(members).build();
         roomRepository.save(newRoom);
     }
@@ -41,7 +41,7 @@ public class ChatService {
 
         chatRepository.record(receivingRoomId, senderId, message);
         for (User receiver : receivers) {
-            messagingTemplate.convertAndSendToUser(String.valueOf(receiver.getId()), "/topic/room/" + receivingRoomId, message);
+            messagingTemplate.convertAndSendToUser(receiver.getEmail(), "/topic/room/" + receivingRoomId, message);
         }
     }
 
