@@ -1,0 +1,3 @@
+[submodule "ICE-LIFE-Frontend"]
+	path = ICE-LIFE-Frontend
+	url = https://github.com/ICE-LIFE/ICE-LIFE-Frontend
