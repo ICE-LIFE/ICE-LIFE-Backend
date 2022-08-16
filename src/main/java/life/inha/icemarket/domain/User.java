@@ -48,7 +48,7 @@ public class User implements UserDetails {
     private List<Post> postList;
 
     @NonNull
-    private UserRole role;
+    private UserRole role = UserRole.GUEST;
 
 
     @Enumerated(EnumType.STRING)

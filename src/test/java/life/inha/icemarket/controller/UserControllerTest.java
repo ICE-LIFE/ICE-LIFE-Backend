@@ -63,7 +63,7 @@ public class UserControllerTest {
     @Order(1)
     public void signup() throws Exception {
         String content = this.objectMapper.writeValueAsString(
-                new SignupController.UserCreateForm(
+                new SignupController.UserCreateForm (
                         12340000,
                         "TestUser",
                         "password",
