@@ -1,29 +1,35 @@
 package life.inha.icemarket.service;
 
 
+import life.inha.icemarket.domain.User;
+import life.inha.icemarket.respository.UserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @Getter
 @Service
 public class EmailServiceImpl implements EmailService{
     private final JavaMailSender javaMailSender;
+    private final UserRepository userRepository;
 
-    private final String emailPW = createKey();
+    private String emailKey;
 
     public MimeMessage createMessage(String to) throws Exception{
+        emailKey = loadEmailKey(to);
         System.out.println("Send to : " + to);
-        System.out.println("Code : " + emailPW);
+        System.out.println("Code : " + emailKey);
         MimeMessage message = javaMailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to);
@@ -41,16 +47,13 @@ public class EmailServiceImpl implements EmailService{
         msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
         msgg+= "<div style='font-size:130%'>";
         msgg+= "CODE : <strong>";
-        msgg+= emailPW+"</strong><div><br/> ";
+        msgg+= emailKey+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
 
         message.setFrom(new InternetAddress("imdongle123.gmail.com","ICE-LIFE"));//보내는 사람
 
         return message;
-    }
-    public static String createKey() {
-        return "1234";
     }
 
     @Override
@@ -62,6 +65,29 @@ public class EmailServiceImpl implements EmailService{
            es.printStackTrace();
            throw new IllegalArgumentException();
        }
-       return emailPW;
+       return emailKey;
+    }
+
+    public String CreateEmailKey(User user) throws Exception{
+        int certCharLength=8;
+        char[] characterTable = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+        Random random = new Random(System.currentTimeMillis());
+        int tablelength = characterTable.length;
+        StringBuffer buf = new StringBuffer();
+
+        for(int i=0;i<certCharLength;i++){
+            buf.append(characterTable[random.nextInt(tablelength)]);
+        }
+        String key = buf.toString();
+        user.setEmailconfirmkey(key);
+        userRepository.save(user);
+        return key;
+    }
+
+    public String loadEmailKey(String email) throws Exception{
+        User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("No user @ EmailServiceImpl"));
+        return user.getEmailconfirmkey();
     }
 }

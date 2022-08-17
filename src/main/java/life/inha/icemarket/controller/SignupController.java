@@ -7,6 +7,7 @@ import life.inha.icemarket.domain.User;
 import life.inha.icemarket.domain.UserRole;
 import life.inha.icemarket.dto.EmailDto;
 import life.inha.icemarket.dto.UserCreateDto;
+import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserCreateService;
 import life.inha.icemarket.service.UserRoleService;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,9 @@ import javax.validation.Valid;
 public class SignupController {
 
     private final UserCreateService userCreateService;
+    private final EmailService emailService;
 
+    @ResponseBody
     @Operation(description = "회원가입")
     @ApiDocumentResponse
     @RequestMapping(
@@ -41,8 +44,8 @@ public class SignupController {
     )
     public String signup(
             @AuthenticationPrincipal User user,
-            @ModelAttribute("UserCreateDto") @Valid UserCreateDto userCreateDto, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) throws Exception{
+            @ModelAttribute("UserCreateDto") @Valid UserCreateDto userCreateDto, BindingResult bindingResult
+            ) throws Exception{
         if (bindingResult.hasErrors()){
             return "Binding Result Error " + bindingResult.getObjectName();
         }
@@ -62,10 +65,7 @@ public class SignupController {
                 UserRole.GUEST
         );
 
-        EmailDto emailDto = new EmailDto();
-        emailDto.setEmail(userCreateDto.getEmail());
-        redirectAttributes.addFlashAttribute("EmailDto", emailDto);
-        return "redirect:/emailconfirm"; //todo redirect
+        return "success"; //todo redirect
     }
     @Operation(description = "회원가입")
     @ApiDocumentResponse

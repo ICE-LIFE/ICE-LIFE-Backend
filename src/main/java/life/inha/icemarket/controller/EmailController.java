@@ -11,6 +11,8 @@ import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,16 +30,17 @@ public class EmailController {
     private final UserRoleService userRoleService;
     private final EmailService emailService;
 
-    private String confirm;
     @Operation(description = "회원가입 시 이메일 전송 페이지 - 회원가입 페이지에서 EmailDto를 받아옵니다.")
     @ApiDocumentResponse
     @GetMapping("/emailconfirm")
-    public String emailConfirm(@ModelAttribute("EmailDto") EmailDto emailDto, Model model) throws Exception{
-        String email = emailDto.getEmail();
-        System.out.println(email);
-        confirm = emailService.sendSimpleMessage(email);
-        System.out.println("회원가입한 이메일 : " + email);
-        System.out.println("부여한 인증코드 : " + confirm);
+    public String emailConfirm(@AuthenticationPrincipal User user, Model model) throws Exception{
+        // emailController에 get요청을 할때마다 이 사용자에게 새로운 이메일 인증코드를 발급해주고 이메일로 전송합니다.
+        String emailKey = emailService.CreateEmailKey(user);
+        System.out.println("인증하려고 하는 사용자의 이메일 : " + user.getEmail());
+        System.out.println("부여한 인증코드 : " + emailKey);
+        emailService.sendSimpleMessage(user.getEmail());
+        EmailDto emailDto = new EmailDto();
+        emailDto.setEmail(user.getEmail());
         model.addAttribute("EmailDto",emailDto);
         return "ConfirmEmail";
     }
@@ -53,6 +56,8 @@ public class EmailController {
             @Valid EmailDto emailDto,
             BindingResult bindingResult) throws Exception{
 
+        String emailKey = emailService.loadEmailKey(emailDto.getEmail());
+
         if (bindingResult.hasErrors()) {
             throw new BadRequestException("EmailDto 형식에 맞지 않습니다");
         }
@@ -61,9 +66,10 @@ public class EmailController {
         User user = this.userRepository.findByEmail(emailDto.getEmail())
                 .orElseThrow(()->new UsernameNotFoundException("Can't find user by email @ EmailController"));
 
-        if(confirm.equals(emailDto.getInputcode())){
-            userRoleService.SetUserRole(user,UserRole.USER);
+        if(emailKey.equals(emailDto.getInputcode())) {
+            userRoleService.SetUserRole(user, UserRole.USER);
         }
         return user.getAuthorities().toString();
+
     }
 }
