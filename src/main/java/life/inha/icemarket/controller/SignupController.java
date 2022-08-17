@@ -41,10 +41,10 @@ public class SignupController {
     )
     public String signup(
             @AuthenticationPrincipal User user,
-            @Valid UserCreateDto userCreateDto, BindingResult bindingResult,
+            @ModelAttribute("UserCreateDto") @Valid UserCreateDto userCreateDto, BindingResult bindingResult,
             RedirectAttributes redirectAttributes) throws Exception{
         if (bindingResult.hasErrors()){
-            return "Binding Result Error" + bindingResult.getObjectName();
+            return "Binding Result Error " + bindingResult.getObjectName();
         }
 
         if (!userCreateDto.getPassword1().equals(userCreateDto.getPassword2())){
