@@ -36,7 +36,7 @@ public class SignupController {
     private final EmailService emailService;
 
     @ResponseBody
-    @Operation(description = "회원가입")
+    @Operation(description = "회원가입 POST - 채워진 UserCreateDto를 받아 회원가입 처리합니다.")
     @ApiDocumentResponse
     @RequestMapping(
             value = "/signup",
@@ -67,7 +67,7 @@ public class SignupController {
 
         return "success"; //todo redirect
     }
-    @Operation(description = "회원가입")
+    @Operation(description = "회원가입 - signup.html에 UserCreateDto를 보냅니다.")
     @ApiDocumentResponse
     @GetMapping("/signup")
     public String signup(Model model){
