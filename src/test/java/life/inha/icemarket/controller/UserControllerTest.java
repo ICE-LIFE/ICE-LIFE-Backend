@@ -9,6 +9,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import life.inha.icemarket.domain.User;
+import life.inha.icemarket.dto.UserCreateDto;
 import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.UserSecurityService;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class UserControllerTest {
     @Autowired
     UserSecurityService userSecurityService;
 
-    private static final String EMAIL = "test@example.com";
+    private static final String EMAIL = "daezang102@naver.com";
 
     private static String createToken(String email){
         if(email == null) email = EMAIL;
@@ -62,22 +63,17 @@ public class UserControllerTest {
     @Test
     @Order(1)
     public void signup() throws Exception {
-        String content = this.objectMapper.writeValueAsString(
-                new SignupController.UserCreateForm(
-                        12340000,
-                        "TestUser",
-                        "password",
-                        "password",
-                        "testuser",
-                        EMAIL
-                )
-        );
+        MultiValueMap<String, String> SignupForm = new LinkedMultiValueMap<>();
+        SignupForm.add("id","12340000");
+        SignupForm.add("name", "TestUser");
+        SignupForm.add("password1","password");
+        SignupForm.add("password2","password");
+        SignupForm.add("nickname","testuser");
+        SignupForm.add("email",EMAIL);
 
         mvc.perform(post("/signup")
-                    .content(content)
-                    .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("success"));
+                        .params(SignupForm))
+                .andExpect(status().is3xxRedirection());
         log.info("Signup Test End");
     }
 
@@ -101,7 +97,7 @@ public class UserControllerTest {
     public void OnlyUserTest() throws Exception {
         mvc.perform(get("/onlyuser")
                         .header("authorization", "Bearer " + createToken(null)))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(status().is4xxClientError());
         log.info("OnlyUser Test End");
     }
 
@@ -114,6 +110,11 @@ public class UserControllerTest {
         log.info("OnlyAdmin Test End");
     }
 
+    @Test
+    public void EmailConfirmTest() throw Exception{
+        mvc.perform(post("/emailconfirm")
+                .)
+    }
     @Test
     @Order(5)
     public void FindPwGetTest() throws Exception{

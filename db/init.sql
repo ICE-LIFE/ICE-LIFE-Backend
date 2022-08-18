@@ -6,6 +6,7 @@ CREATE TABLE users (
     nickname        VARCHAR(10)  UNIQUE,
     role            VARCHAR(10)  NOT NULL,
     status          VARCHAR(10)  NOT NULL,
+    emailconfirmkey VARCHAR(10),
     created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at      TIMESTAMP
