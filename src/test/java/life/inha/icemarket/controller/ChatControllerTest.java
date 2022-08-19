@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.StringMessageConverter;
-import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
@@ -16,7 +15,6 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -47,26 +45,10 @@ public class ChatControllerTest {
         Integer userId = 1234;
         Integer roomId = 1;
 
-        session.subscribe(String.format("/user/%d/topic/room/%d", userId, roomId), new StompFrameHandler() {
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return String.class;
-            }
-
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                assert payload == "Hello World";
-            }
-        });
-        Thread.sleep(1000);
-
         session.send("/app/room/create", "Test");
-        Thread.sleep(1000);
-
         session.send(String.format("/app/room/%d/invite", roomId), String.valueOf(userId));
-        Thread.sleep(1000);
-
-        session.send(String.format("/app/room/%d", roomId), "Hello World 22");
+        session.send(String.format("/app/room/%d", roomId), "Hello World");
+        session.send(String.format("/app/room/%d/leave", roomId), "");
         Thread.sleep(1000);
     }
 }
