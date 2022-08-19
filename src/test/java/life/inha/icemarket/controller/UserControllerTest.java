@@ -64,7 +64,7 @@ public class UserControllerTest {
 
     @Test
     @Order(1)
-    public void signup() throws 
+    public void signup() throws Exception{
         MultiValueMap<String, String> SignupForm = new LinkedMultiValueMap<>();
         SignupForm.add("id","12340000");
         SignupForm.add("name", "TestUser");
