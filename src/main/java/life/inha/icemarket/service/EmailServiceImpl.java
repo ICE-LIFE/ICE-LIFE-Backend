@@ -5,8 +5,6 @@ import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.UserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

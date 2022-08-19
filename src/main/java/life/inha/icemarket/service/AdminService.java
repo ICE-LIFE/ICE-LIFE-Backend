@@ -1,14 +1,13 @@
 package life.inha.icemarket.service;
 
-import life.inha.icemarket.domain.Status;
-import life.inha.icemarket.domain.User;
-import life.inha.icemarket.domain.UserRole;
+import life.inha.icemarket.domain.*;
 import life.inha.icemarket.dto.UserListDto;
 import life.inha.icemarket.exception.UserNotFoundException;
+import life.inha.icemarket.respository.CommentRepository;
+import life.inha.icemarket.respository.PostRepository;
 import life.inha.icemarket.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
@@ -16,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminService {
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     public List<UserListDto> getUserList(){
         return userRepository.getUserList();
@@ -52,4 +53,12 @@ public class AdminService {
         return user.getId();
     }
 
+    public List<Comment> getCommentsByUser(Integer userId) throws IllegalArgumentException {
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        return commentRepository.getCommentsByAuthorUser(userId);
+    }
+    public List<Post> getPostsByUser(Integer userId) throws IllegalArgumentException {
+        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        return postRepository.findAllById(userId);
+    }
 }
