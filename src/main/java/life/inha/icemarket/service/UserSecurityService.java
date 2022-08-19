@@ -1,21 +1,13 @@
 package life.inha.icemarket.service;
 
 import life.inha.icemarket.domain.User;
-import life.inha.icemarket.domain.UserRole;
 import life.inha.icemarket.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,9 +22,6 @@ public class UserSecurityService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new UsernameNotFoundException("Can't find user by email @ UserDetails"));
 
-//        if(user.getEmail().equals("daezang102@naver.com")){
-//            userRoleService.SetUserRole(user,UserRole.ADMIN);
-//        }
         return user;
     }
 }

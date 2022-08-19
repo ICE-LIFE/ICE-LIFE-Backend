@@ -22,8 +22,6 @@ public class SecurityConfig {
     private final UserSecurityService userSecurityService;
     private final JwtDecodeFilter jwtDecodeFilter;
 
-    //private final JwtAuthenticationEntryPoint unauthorizedHandler;
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

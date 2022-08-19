@@ -5,23 +5,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.domain.UserRole;
-import life.inha.icemarket.dto.EmailDto;
 import life.inha.icemarket.dto.UserCreateDto;
 import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserCreateService;
-import life.inha.icemarket.service.UserRoleService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
