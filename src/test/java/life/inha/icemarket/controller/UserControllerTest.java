@@ -1,5 +1,5 @@
 /*
-    UserControllerTest.java 는 SignupController, FindPasswordController, WhoAmIController를 테스트합니다.
+    UserControllerTest.java 는 SignupController, FindPasswordController, WhoAmIController, EmailController를 테스트합니다.
     회원가입, 로그인, 비밀번호 찾기(초기화), 사용자 권한 테스트
  */
 
@@ -9,7 +9,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import life.inha.icemarket.domain.User;
-import life.inha.icemarket.dto.UserCreateDto;
 import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserSecurityService;

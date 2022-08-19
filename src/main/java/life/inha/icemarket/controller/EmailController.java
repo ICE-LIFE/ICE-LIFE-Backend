@@ -11,7 +11,6 @@ import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
