@@ -48,9 +48,10 @@ public class User implements UserDetails {
     private List<Post> postList;
 
     @NonNull
+    @JoinColumn
     private UserRole role;
 
-
+    @JoinColumn
     @Enumerated(EnumType.STRING)
     private Status status = Status.AWAIT;
 

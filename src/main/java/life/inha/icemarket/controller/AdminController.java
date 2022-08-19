@@ -1,6 +1,8 @@
 package life.inha.icemarket.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import life.inha.icemarket.domain.Comment;
+import life.inha.icemarket.domain.Post;
 import life.inha.icemarket.dto.UserListDto;
 import life.inha.icemarket.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +55,16 @@ public class AdminController {
     public ResponseEntity<Integer> depriveAdmin(Integer userId){
         return new ResponseEntity<Integer>(adminService.depriveAdmin(userId), HttpStatus.OK);
     }
-}
 
+    @Operation(description = "회원 게시물 조회")
+    @GetMapping("/userPostList")
+    public ResponseEntity<List<Post>> getPostsByUser(Integer userId) {
+        return new ResponseEntity<>(adminService.getPostsByUser(userId), HttpStatus.OK);
+    }
+
+    @Operation(description = "회원 댓글 조회")
+    @GetMapping("/userCommentList")
+    public ResponseEntity<List<Comment>> getCommentsByUser(Integer userId) {
+        return new ResponseEntity<>(adminService.getCommentsByUser(userId), HttpStatus.OK);
+    }
+}
