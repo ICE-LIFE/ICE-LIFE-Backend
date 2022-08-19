@@ -30,7 +30,7 @@ public class EmailController {
     private final UserRoleService userRoleService;
     private final EmailService emailService;
 
-    @Operation(description = "회원가입 시 이메일 전송 페이지 - 회원가입 페이지에서 EmailDto를 받아옵니다.")
+    @Operation(description = "Email 인증 페이지입니다. ConfirmEmail.html에 EmailDto를 담아서 보냅니다. EmailDto의 Email값은 JWT를 이용해 로그인한 사용자의 정보에서 가져옵니다.")
     @ApiDocumentResponse
     @GetMapping("/emailconfirm")
     public String emailConfirm(@AuthenticationPrincipal User user, Model model) throws Exception{
@@ -44,7 +44,7 @@ public class EmailController {
         model.addAttribute("EmailDto",emailDto);
         return "ConfirmEmail";
     }
-    @Operation(description = "회원가입 시 이메일 인증 페이지 - EmailDto를 받아옵니다.")
+    @Operation(description = "POST 이메일 인증 페이지 - EmailDto를 받아옵니다. 또 인증코드가 올바르다면 권한을 승급합니다.")
     @ApiDocumentResponse
     @ResponseBody
     @RequestMapping(
