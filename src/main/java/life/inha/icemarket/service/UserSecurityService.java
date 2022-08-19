@@ -30,9 +30,9 @@ public class UserSecurityService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(()->new UsernameNotFoundException("Can't find user by email @ UserDetails"));
 
-        if(user.getEmail().equals("daezang102@naver.com")){
-            userRoleService.SetUserRole(user,UserRole.ADMIN);
-        }
+//        if(user.getEmail().equals("daezang102@naver.com")){
+//            userRoleService.SetUserRole(user,UserRole.ADMIN);
+//        }
         return user;
     }
 }

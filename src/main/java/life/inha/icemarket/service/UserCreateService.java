@@ -35,4 +35,5 @@ public class UserCreateService {
         user.setPasswordHashed(passwordHashed);
         userRepository.save(user);
     }
+
 }

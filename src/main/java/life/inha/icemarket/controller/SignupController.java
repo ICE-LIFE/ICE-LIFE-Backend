@@ -7,6 +7,7 @@ import life.inha.icemarket.domain.User;
 import life.inha.icemarket.domain.UserRole;
 import life.inha.icemarket.dto.EmailDto;
 import life.inha.icemarket.dto.UserCreateDto;
+import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserCreateService;
 import life.inha.icemarket.service.UserRoleService;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 @Tag(name="Signup", description = "회원가입 API")
 @Slf4j
@@ -36,7 +33,9 @@ import javax.validation.constraints.Size;
 public class SignupController {
 
     private final UserCreateService userCreateService;
+    private final EmailService emailService;
 
+    @ResponseBody
     @Operation(description = "회원가입")
     @ApiDocumentResponse
     @RequestMapping(
@@ -45,10 +44,10 @@ public class SignupController {
     )
     public String signup(
             @AuthenticationPrincipal User user,
-            @Valid UserCreateDto userCreateDto, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) throws Exception{
+            @ModelAttribute("UserCreateDto") @Valid UserCreateDto userCreateDto, BindingResult bindingResult
+            ) throws Exception{
         if (bindingResult.hasErrors()){
-            return "Binding Result Error" + bindingResult.getObjectName();
+            return "Binding Result Error " + bindingResult.getObjectName();
         }
 
         if (!userCreateDto.getPassword1().equals(userCreateDto.getPassword2())){
@@ -66,12 +65,10 @@ public class SignupController {
                 UserRole.GUEST
         );
 
-        EmailDto emailDto = new EmailDto();
-        emailDto.setEmail(userCreateDto.getEmail());
-        redirectAttributes.addFlashAttribute("EmailDto", emailDto);
-        return "redirect:/emailconfirm"; //todo redirect
+        return "success"; //todo redirect
     }
-
+    @Operation(description = "회원가입")
+    @ApiDocumentResponse
     @GetMapping("/signup")
     public String signup(Model model){
         model.addAttribute("UserCreateDto", new UserCreateDto());
