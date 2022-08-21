@@ -1,14 +1,15 @@
 package life.inha.icemarket.service;
 
 import life.inha.icemarket.domain.Comment;
+import life.inha.icemarket.domain.Post;
 import life.inha.icemarket.domain.User;
-import life.inha.icemarket.dto.GetCommentRes;
-import life.inha.icemarket.dto.PostCommentReq;
-import life.inha.icemarket.dto.PostCommentRes;
-import life.inha.icemarket.exception.UserNotFoundException;
+import life.inha.icemarket.dto.CommentResDto;
+import life.inha.icemarket.dto.CommentSaveReqDto;
+import life.inha.icemarket.dto.CommentSaveResDto;
 import life.inha.icemarket.respository.CommentRepository;
-import life.inha.icemarket.respository.UserRepository;
+import life.inha.icemarket.respository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,30 +22,36 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
-    public PostCommentRes createComment(PostCommentReq dto) {
+    public CommentSaveResDto createComment(User user, CommentSaveReqDto dto) {
 
-        User authorUser = userRepository.findById(dto.getAuthorIdx()).orElseThrow(()->new UserNotFoundException(dto.getAuthorIdx()));
-//        Post post postRepository.findById(dto.getPostIdx()).orElse(null);
-        Comment comment = Comment.createComment(dto,
-              // , post
-                authorUser
-                );
+        Post post = postRepository.findById(dto.getPostIdx()).orElse(null);
+        Comment comment = Comment.createComment(dto,post,user);
 
         commentRepository.save(comment);
 
-        return new PostCommentRes(comment.getId());
+        return new CommentSaveResDto(comment.getId());
     }
 
     @Transactional(readOnly = true)
-    public List<GetCommentRes> readComment(Integer postIdx){
-        List<Comment> commentList = commentRepository.findByPostId(postIdx);
-        List<GetCommentRes> commentResList = new ArrayList<>();
+    public List<CommentResDto> readCommentList(Integer postIdx, Pageable pageable){
+        // 게시글
+        Post post = postRepository.findById(postIdx).orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
+        // 해당 게시글에 달린 댓글 찾기
+        List<Comment> commentList = commentRepository.findByPost(post,pageable);
+
+        List<CommentResDto> commentResList = new ArrayList<>();
         for(Comment comment : commentList){
-            commentResList.add(GetCommentRes.createCommentRes(comment));
+            commentResList.add(CommentResDto.createCommentRes(comment));
         }
         return commentResList;
+    }
+
+    @Transactional(readOnly = true)
+    public CommentResDto readComment(Integer commentIdx){
+        Comment comment = commentRepository.findById(commentIdx).orElseThrow(()->new IllegalArgumentException("댓글의 인덱스 번호를 확인해주세요."));
+        return CommentResDto.createCommentRes(comment);
     }
 
     public void deleteComment(Integer id) {

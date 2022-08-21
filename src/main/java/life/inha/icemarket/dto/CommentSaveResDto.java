@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PostCommentRes {
+public class CommentSaveResDto {
     private Integer commentIdx;
 
-    public PostCommentRes(Integer commentIdx){
+    public CommentSaveResDto(Integer commentIdx){
 
         this.commentIdx = commentIdx;
     }
