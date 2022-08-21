@@ -124,12 +124,14 @@ public class FindPasswordController {
             BindingResult bindingResult) throws  Exception {
         log.info("resetPasswordForm email : {}", resetPasswordForm.getEmail());
         log.info("resetPasswordForm password : {}", resetPasswordForm.getPassword1());
-        if (bindingResult.hasErrors()) {
-            return "Binding Result Error " + bindingResult.getObjectName();
+        if (bindingResult.hasErrors()){
+            log.error(String.valueOf(bindingResult));
+            log.error(String.valueOf(bindingResult.getAllErrors()));
+            return "Binding Result Error " + bindingResult.getObjectName() + "<p>Errors: " + bindingResult.getAllErrors();
         }
         log.info("resetpw post");
         if (!resetPasswordForm.getPassword1().equals(resetPasswordForm.getPassword2())) {
-            throw new Exception("입력한 두 비밀번호가 서로 다릅니다.");
+            throw new BadRequestException("입력한 두 비밀번호가 서로 다릅니다.");
         }
 
         String password = passwordEncoder.encode(resetPasswordForm.getPassword1());

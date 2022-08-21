@@ -11,6 +11,7 @@ import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserRoleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.regex.Pattern;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 @Tag(name="EmailConfirm", description = "이메일 인증 API")
@@ -55,14 +58,17 @@ public class EmailController {
             @Valid EmailDto emailDto,
             BindingResult bindingResult) throws Exception{
 
-        String emailKey = emailService.loadEmailKey(emailDto.getEmail());
+        String email = emailDto.getEmail();
+        String emailKey = emailService.loadEmailKey(email);
 
-        if (bindingResult.hasErrors()) {
-            throw new BadRequestException("EmailDto 형식에 맞지 않습니다");
+        if (bindingResult.hasErrors()){
+            log.error(String.valueOf(bindingResult));
+            log.error(String.valueOf(bindingResult.getAllErrors()));
+            return "Binding Result Error " + bindingResult.getObjectName() + "<p>Errors: " + bindingResult.getAllErrors();
         }
 
         System.out.println("입력받은 인증코드 : " + emailDto.getInputcode());
-        User user = this.userRepository.findByEmail(emailDto.getEmail())
+        User user = this.userRepository.findByEmail(email)
                 .orElseThrow(()->new UsernameNotFoundException("Can't find user by email @ EmailController"));
 
         if(emailKey.equals(emailDto.getInputcode())) {
