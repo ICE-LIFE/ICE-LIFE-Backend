@@ -51,7 +51,7 @@ public class UserControllerTest {
     @Autowired
     EmailService emailService;
 
-    private static final String EMAIL = "daezang102@naver.com";
+    private static final String EMAIL = "daezang102@inha.edu";
 
     private static String createToken(String email){
         if(email == null) email = EMAIL;

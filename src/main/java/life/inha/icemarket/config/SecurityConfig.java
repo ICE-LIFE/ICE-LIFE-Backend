@@ -38,6 +38,8 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .csrf().disable()
                 .formLogin().disable()
+                .cors()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .antMatchers("/login").permitAll()
