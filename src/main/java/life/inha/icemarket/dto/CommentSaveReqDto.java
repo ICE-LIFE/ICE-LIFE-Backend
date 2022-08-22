@@ -4,17 +4,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @NoArgsConstructor
-public class PostCommentReq {
+public class CommentSaveReqDto {
+
     private Integer postIdx;
-    private Integer authorIdx;
+    @NotBlank(message = "댓글 내용을 입력해주세요")
     private String content;
 
     @Builder
-    public PostCommentReq(Integer postIdx, Integer authorIdx, String content){
+    public CommentSaveReqDto(Integer postIdx, String content){
         this.postIdx = postIdx;
-        this.authorIdx = authorIdx;
         this.content = content;
     }
 }
