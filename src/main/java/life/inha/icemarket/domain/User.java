@@ -48,6 +48,7 @@ public class User implements UserDetails {
     private List<Post> postList;
 
     @NonNull
+    @Enumerated(value = EnumType.STRING)
     @JoinColumn
     private UserRole role;
 
