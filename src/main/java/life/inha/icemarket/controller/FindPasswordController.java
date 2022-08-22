@@ -90,14 +90,18 @@ public class FindPasswordController {
     )
     public String findpw(Model model,@ModelAttribute("FindPasswordForm") @Valid FindPasswordForm findPasswordForm, BindingResult bindingResult) throws UsernameNotFoundException{
 
-        if (bindingResult.hasErrors()) {
-            throw new BadRequestException("FindPasswordForm에 맞지 않습니다");
+        if (bindingResult.hasErrors()){
+            log.error(String.valueOf(bindingResult));
+            log.error(String.valueOf(bindingResult.getAllErrors()));
+            return "Binding Result Error " + bindingResult.getObjectName() + "<p>Errors: " + bindingResult.getAllErrors();
         }
 
         Optional <User> email_User = userRepository.findByEmail(findPasswordForm.getEmail());
 
         if(email_User.isEmpty()){
-            return "find_pw";
+            log.error(findPasswordForm.getEmail()+" 이메일을 사용하는 사용자를 찾을 수 없습니다.");
+            bindingResult.rejectValue("email","emailIncorrect","해당 이메일을 사용하는 사용자를 찾을 수 없습니다.");
+            return "redirect:/findpw";
         }
         User User = email_User.get();
         if(User.getNickname().equals(findPasswordForm.getNickname())){
@@ -106,7 +110,9 @@ public class FindPasswordController {
             model.addAttribute("ResetPasswordForm", resetPasswordForm);
             return "resetpw"; //resetpw template로 email 정보 전달.
         } else {
-            return "find_pw";
+            log.error("이메일과 닉네임이 일치하는 사용자가 없습니다.");
+            bindingResult.rejectValue("nickname","nicknameIncorrect","이메일과 닉네임이 일치하는 사용자가 없습니다.");
+            return "redirect:/findpw";
         }
     }
     // 비밀번호 찾기 post 요청 컨트롤러 끝 //
@@ -124,12 +130,16 @@ public class FindPasswordController {
             BindingResult bindingResult) throws  Exception {
         log.info("resetPasswordForm email : {}", resetPasswordForm.getEmail());
         log.info("resetPasswordForm password : {}", resetPasswordForm.getPassword1());
-        if (bindingResult.hasErrors()) {
-            return "Binding Result Error " + bindingResult.getObjectName();
+        if (bindingResult.hasErrors()){
+            log.error(String.valueOf(bindingResult));
+            log.error(String.valueOf(bindingResult.getAllErrors()));
+            return "Binding Result Error " + bindingResult.getObjectName() + "<p>Errors: " + bindingResult.getAllErrors();
         }
         log.info("resetpw post");
         if (!resetPasswordForm.getPassword1().equals(resetPasswordForm.getPassword2())) {
-            throw new Exception("입력한 두 비밀번호가 서로 다릅니다.");
+            log.error("입력한 두 비밀번호가 다릅니다.");
+            bindingResult.rejectValue("password2","EachPasswordIncorrect","입력한 두 비밀번호가 다릅니다.");
+            return bindingResult + "<p>Error : 입력한 두 비밀번호가 다릅니다.";
         }
 
         String password = passwordEncoder.encode(resetPasswordForm.getPassword1());

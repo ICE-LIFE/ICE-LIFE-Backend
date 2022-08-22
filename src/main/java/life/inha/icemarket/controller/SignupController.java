@@ -6,6 +6,7 @@ import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.domain.UserRole;
 import life.inha.icemarket.dto.UserCreateDto;
+import life.inha.icemarket.exception.BadRequestException;
 import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserCreateService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.regex.Pattern;
 
 
 @Tag(name="Signup", description = "회원가입 API")
@@ -36,12 +38,14 @@ public class SignupController {
             method = RequestMethod.POST
     )
     public String signup(
-            @AuthenticationPrincipal User user,
             @ModelAttribute("UserCreateDto") @Valid UserCreateDto userCreateDto, BindingResult bindingResult
-            ) throws Exception{
+            ){
         if (bindingResult.hasErrors()){
-            return "Binding Result Error " + bindingResult.getObjectName();
+            log.error(String.valueOf(bindingResult));
+            log.error(String.valueOf(bindingResult.getAllErrors()));
+            return "Binding Result Error " + bindingResult.getObjectName() + "<p>Errors: " + bindingResult.getAllErrors();
         }
+        String email = userCreateDto.getEmail();
 
         if (!userCreateDto.getPassword1().equals(userCreateDto.getPassword2())){
             bindingResult.rejectValue("password2", "passwordInCorrect",
@@ -58,7 +62,7 @@ public class SignupController {
                 UserRole.GUEST
         );
 
-        return "success"; //todo redirect
+        return "success";
     }
     @Operation(description = "회원가입 - signup.html에 UserCreateDto를 보냅니다.")
     @ApiDocumentResponse
