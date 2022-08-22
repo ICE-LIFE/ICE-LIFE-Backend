@@ -2,7 +2,8 @@ package life.inha.icemarket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import life.inha.icemarket.domain.User;
-import life.inha.icemarket.dto.PostCommentReq;
+import life.inha.icemarket.dto.CommentSaveReqDto;
+import life.inha.icemarket.respository.CommentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CommentControllerTest {
@@ -22,6 +24,9 @@ public class CommentControllerTest {
 
     @Autowired
     ObjectMapper mapper;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     private static final String BASE_URL = "/comment";
 
@@ -35,7 +40,7 @@ public class CommentControllerTest {
 
         //when
         String body = mapper.writeValueAsString(
-                PostCommentReq.builder().postIdx(postIdx).authorIdx(authorIdx).content(text).build()
+                CommentSaveReqDto.builder().postIdx(postIdx).content(text).build()
         );
 
         //then
@@ -45,6 +50,5 @@ public class CommentControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
-
 
 }

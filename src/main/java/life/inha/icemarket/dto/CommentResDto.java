@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class GetCommentRes {
+public class CommentResDto {
     // 작성자 이름
     private String author;
     // 댓글 인덱스 번호
@@ -18,8 +18,8 @@ public class GetCommentRes {
     // 작성 일자
     private LocalDateTime createdDate;
 
-    public static GetCommentRes createCommentRes(Comment comment){
-        GetCommentRes newCommentRes = new GetCommentRes();
+    public static CommentResDto createCommentRes(Comment comment){
+        CommentResDto newCommentRes = new CommentResDto();
         newCommentRes.author = comment.getAuthorUser().getName();
         newCommentRes.commentIdx = comment.getId();
         newCommentRes.comment = comment.getContent();
