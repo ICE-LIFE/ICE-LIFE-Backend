@@ -82,7 +82,7 @@ public class FindPasswordController {
 
 
     // 비밀번호 찾기 get 요청 컨트롤러
-    @Operation(description = "비밀번호 찾기 페이지 - find_pw.html에 FindPasswordForm을 담아서 보냅니다.")
+    @Operation(description = "find_pw.html에 FindPasswordForm을 담아서 보냅니다.")
     @ApiDocumentResponse
     @GetMapping("/findpw")
     public String findpw(Model model){
@@ -91,10 +91,8 @@ public class FindPasswordController {
     }
 
 
-    // 비밀번호 찾기 post 요청 컨트롤러 시작 //
-    @Operation(description = "POST 비밀번호 찾기 - 채워진 FindPasswordForm을 받아 비밀번호를 바꿀 사용자를 확인한 뒤 해당 사용자의 이메일을 담은 ResetPasswordForm을 resetpw.html에 보냅니다.")
+    @Operation(description = "find_pw.html이 보낸 채워진 FindPasswordForm로부터 바꿀 사용자의 이메일을 받아 인증 코드를 보내고 이메일을 담은 FindPWEmailValidCode를 findpw_code.html에 보냅니다.")
     @ApiDocumentResponse
-   // @ResponseBody
     @RequestMapping(
             value = "/findpw",
             method = RequestMethod.POST
@@ -128,8 +126,8 @@ public class FindPasswordController {
         model.addAttribute("FindPWEmailValidCodeForm",findPWEmailValidCodeForm);
         return "findpw_code";
     }
-    // 비밀번호 찾기 post 요청 컨트롤러 끝 //
-
+    @Operation(description = "findpw_code.html이 보낸 FindPWEmailValidCodeForm으로부터 인증코드를 받아와 인증코드가 올바른지 판단 후 ResetPasswordForm에 email정보를 담아서 resetpw.html에 보냅니다.")
+    @ApiDocumentResponse
     @RequestMapping(
             value="/pwvalidcheck",
             method=RequestMethod.POST
@@ -152,8 +150,7 @@ public class FindPasswordController {
         }
     }
 
-    // 비밀번호 초기화 post 요청 컨트롤러 시작 //
-    @Operation(description = "비밀번호 초기화 - 채워진 ResetPasswordForm을 받아 비밀번호를 변경합니다.")
+    @Operation(description = "resetpw.html이 보낸 채워진 ResetPasswordForm을 받아 비밀번호를 변경합니다.")
     @ApiDocumentResponse
     @ResponseBody
     @RequestMapping(
@@ -187,5 +184,4 @@ public class FindPasswordController {
         this.userCreateService.SetPasswordHashed(User, password);
         return User.getPasswordHashed();
     }
-    // 비밀번호 초기화 post 요청 컨트롤러 끝 //
 }
