@@ -130,6 +130,7 @@ public class FindPasswordController {
 //        return "findpw_code";
         return "/findpw post success";//프론트엔드 작업을 위한
     }
+  
     @Operation(description = "findpw_code.html이 보낸 FindPWEmailValidCodeForm으로부터 인증코드를 받아와 인증코드가 올바른지 판단 후 ResetPasswordForm에 email정보를 담아서 resetpw.html에 보냅니다.")
     @ApiDocumentResponse
     @ResponseBody//프론트엔드 작업을 위한
