@@ -40,7 +40,7 @@ public class EmailController {
         String emailKey = emailService.CreateEmailKey(user);
         System.out.println("인증하려고 하는 사용자의 이메일 : " + user.getEmail());
         System.out.println("부여한 인증코드 : " + emailKey);
-        emailService.sendSimpleMessage(user.getEmail());
+        emailService.sendSimpleMessage(user.getEmail(),true);
         EmailDto emailDto = new EmailDto();
         emailDto.setEmail(user.getEmail());
         model.addAttribute("EmailDto",emailDto);
