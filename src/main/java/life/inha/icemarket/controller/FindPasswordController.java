@@ -84,13 +84,16 @@ public class FindPasswordController {
     // 비밀번호 찾기 get 요청 컨트롤러
     @Operation(description = "find_pw.html에 FindPasswordForm을 담아서 보냅니다.")
     @ApiDocumentResponse
+    @ResponseBody
     @GetMapping("/findpw")
     public String findpw(Model model){
         model.addAttribute("FindPasswordForm", new FindPasswordForm());
-        return "find_pw";
+//        return "find_pw";
+        return "/findpw get success";
     }
 
 
+    @ResponseBody //프론트엔드 작업을 위한
     @Operation(description = "find_pw.html이 보낸 채워진 FindPasswordForm로부터 바꿀 사용자의 이메일을 받아 인증 코드를 보내고 이메일을 담은 FindPWEmailValidCode를 findpw_code.html에 보냅니다.")
     @ApiDocumentResponse
     @RequestMapping(
@@ -124,10 +127,13 @@ public class FindPasswordController {
         FindPWEmailValidCodeForm findPWEmailValidCodeForm = new FindPWEmailValidCodeForm();
         findPWEmailValidCodeForm.setEmail(user.getEmail());
         model.addAttribute("FindPWEmailValidCodeForm",findPWEmailValidCodeForm);
-        return "findpw_code";
+//        return "findpw_code";
+        return "/findpw post success";//프론트엔드 작업을 위한
     }
+  
     @Operation(description = "findpw_code.html이 보낸 FindPWEmailValidCodeForm으로부터 인증코드를 받아와 인증코드가 올바른지 판단 후 ResetPasswordForm에 email정보를 담아서 resetpw.html에 보냅니다.")
     @ApiDocumentResponse
+    @ResponseBody//프론트엔드 작업을 위한
     @RequestMapping(
             value="/pwvalidcheck",
             method=RequestMethod.POST
@@ -142,7 +148,8 @@ public class FindPasswordController {
             ResetPasswordForm resetPasswordForm = new ResetPasswordForm();
             resetPasswordForm.setEmail(findPWEmailValidCodeForm.getEmail());
             model.addAttribute("ResetPasswordForm",resetPasswordForm);
-            return "resetpw";
+//            return "resetpw";
+            return "resetpw post success";//프론트엔드 작업을 위한
         }else{
             log.error("FindPWEmailValidCodeForm으로 부터 받아온 인증 코드가 맞지 않습니다.");
             bindingResult.rejectValue("validcode","codeIncorrect","인증 코드가 잘못되었습니다.");

@@ -65,10 +65,12 @@ public class SignupController {
         return "success";
     }
     @Operation(description = "회원가입 - signup.html에 UserCreateDto를 보냅니다.")
+    @ResponseBody//프론트엔드 작업을 위한
     @ApiDocumentResponse
     @GetMapping("/signup")
     public String signup(Model model){
         model.addAttribute("UserCreateDto", new UserCreateDto());
-        return "signup";
+//        return "signup";
+        return "signup get success";//프론트엔드 작업을 위한
     }
 }
