@@ -99,7 +99,11 @@ public class FindPasswordController {
             value = "/findpw",
             method = RequestMethod.POST
     )
-    public String findpw(Model model,@ModelAttribute("FindPasswordForm") @Valid FindPasswordForm findPasswordForm, BindingResult bindingResult) throws Exception{
+    public String findpw(
+            Model model,
+            @ModelAttribute("FindPasswordForm")
+            @Valid FindPasswordForm findPasswordForm,
+            BindingResult bindingResult) throws Exception{
 
         if (bindingResult.hasErrors()){
             log.error(String.valueOf(bindingResult));

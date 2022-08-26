@@ -149,7 +149,6 @@ public class UserControllerTest {
     public void FindPwPostTest() throws Exception {
         MultiValueMap<String, String> findpwform = new LinkedMultiValueMap<>();
         findpwform.add("email",EMAIL);
-        findpwform.add("nickname","testuser");
         mvc.perform(post("/findpw")
                         .params(findpwform))
                 .andExpect(status().isOk())
@@ -161,6 +160,16 @@ public class UserControllerTest {
     @Test
     @Order(8)
     public void ResetPwPostTest() throws Exception{
+        String ValidCode = emailService.loadEmailKey(EMAIL);
+        MultiValueMap<String, String> findpwvalidcodeform = new LinkedMultiValueMap<>();
+        findpwvalidcodeform.add("email",EMAIL);
+        findpwvalidcodeform.add("validcode",ValidCode);
+        mvc.perform(post("/pwvalidcheck")
+                .params(findpwvalidcodeform))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"));
+
+
         MultiValueMap<String, String> resetpwform = new LinkedMultiValueMap<>();
         resetpwform.add("password1","123411");
         resetpwform.add("password2","123411");
