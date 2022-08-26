@@ -72,3 +72,13 @@ CREATE TABLE item_history (
     rent_at         TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     return_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE comments (
+    id              INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    post_id         BIGINT       NOT NULL,
+    author_id       INT          NOT NULL,
+    content         TEXT         NOT NULL,
+    created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts (id),
+    FOREIGN KEY (author_id) REFERENCES users (id)
+);
