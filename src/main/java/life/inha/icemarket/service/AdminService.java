@@ -59,6 +59,6 @@ public class AdminService {
     }
     public List<Post> getPostsByUser(Integer userId) throws IllegalArgumentException {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        return postRepository.findAllById(userId);
+        return postRepository.findByUserId(userId);
     }
 }

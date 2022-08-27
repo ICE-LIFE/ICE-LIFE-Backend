@@ -54,8 +54,8 @@ public class CommentControllerTest {
         //given
         User user = new User(12192152, "허영은", "12192152@inha.edu", "푸하항");
         Post post = Post.builder().user(user).title("~ 제목 ~").build();
-        CommentSaveReqDto comment1 = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 1 ~").build();
-        CommentSaveReqDto comment2 = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 2 ~").build();
+        CommentSaveReqDto comment1 = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 1 ~").build();
+        CommentSaveReqDto comment2 = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 2 ~").build();
 
         commentRepository.save(Comment.createComment(comment1,post,user));
         commentRepository.save(Comment.createComment(comment2,post,user));
@@ -74,7 +74,7 @@ public class CommentControllerTest {
         //given
         User user = new User(12192152, "허영은", "12192152@inha.edu", "푸하항");
         Post post = Post.builder().user(user).title("~ 제목 ~").build();
-        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 ~").build();
+        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 ~").build();
         Comment comment = Comment.createComment(dto, post, user);
         commentRepository.save(Comment.createComment(dto,post,user));
 
@@ -93,7 +93,7 @@ public class CommentControllerTest {
         //given
         User user = new User(12192152, "허영은", "12192152@inha.edu", "푸하항");
         Post post = Post.builder().user(user).title("~ 제목 ~").build();
-        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 ~").build();
+        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 ~").build();
         Comment comment = Comment.createComment(dto, post, user);
         commentRepository.save(Comment.createComment(dto,post,user));
 
