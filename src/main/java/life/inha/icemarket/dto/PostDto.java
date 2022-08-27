@@ -1,12 +1,13 @@
 package life.inha.icemarket.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.time.LocalDateTime;
 import life.inha.icemarket.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,13 +25,13 @@ public class PostDto {
 
     public static PostDto getPost(Post post) {
         return PostDto.builder()
-            .id(post.getId())
-            .categoryId(post.getCategory().getId())
-            .title(post.getTitle())
-            .content(post.getContent())
-            .thumbnail(post.getThumbnail())
-            .createdAt(post.getCreatedAt())
-            .updatedAt(post.getModifiedAt())
-            .build();
+                .id(post.getId())
+                .categoryId(post.getCategory().getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .thumbnail(post.getThumbnail())
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getModifiedAt())
+                .build();
     }
 }

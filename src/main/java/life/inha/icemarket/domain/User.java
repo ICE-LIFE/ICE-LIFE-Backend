@@ -25,11 +25,11 @@ public class User implements UserDetails {
     @Id
     private Integer id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String name;
 
     @Email
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     @NonNull
@@ -58,7 +58,7 @@ public class User implements UserDetails {
     private Status status = Status.AWAIT;
 
     private String emailconfirmkey;
-    
+
     @Builder
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;
@@ -73,7 +73,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(this.role.getValue()));
         return authorities;

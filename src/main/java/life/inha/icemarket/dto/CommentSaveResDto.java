@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class CommentSaveResDto {
     private Integer commentIdx;
 
-    public CommentSaveResDto(Integer commentIdx){
+    public CommentSaveResDto(Integer commentIdx) {
 
         this.commentIdx = commentIdx;
     }

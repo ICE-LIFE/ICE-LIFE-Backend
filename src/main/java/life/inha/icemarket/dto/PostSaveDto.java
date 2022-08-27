@@ -20,7 +20,7 @@ public class PostSaveDto {
 
     private String thumbnail;
 
-    public PostSaveDto(String  title, String content, String thumbnail) {
+    public PostSaveDto(String title, String content, String thumbnail) {
         this.title = title;
         this.content = content;
         this.thumbnail = thumbnail;
@@ -28,12 +28,12 @@ public class PostSaveDto {
 
     public Post toEntity(Category category, User user) {
         return Post.builder()
-            .title(title)
-            .content(content)
-            .thumbnail(thumbnail)
-            .user(user)
-            .category(category)
-            .build();
+                .title(title)
+                .content(content)
+                .thumbnail(thumbnail)
+                .user(user)
+                .category(category)
+                .build();
     }
 
 }

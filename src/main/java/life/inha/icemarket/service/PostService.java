@@ -5,7 +5,6 @@ import life.inha.icemarket.domain.Post;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.dto.PostDto;
 import life.inha.icemarket.dto.PostSaveDto;
-import life.inha.icemarket.exception.UserNotFoundException;
 import life.inha.icemarket.respository.CategoryRepository;
 import life.inha.icemarket.respository.PostRepository;
 import life.inha.icemarket.respository.UserRepository;
@@ -42,7 +41,7 @@ public class PostService {
 
     public PostDto getPost(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow();
+                .orElseThrow();
         PostDto postDto = PostDto.getPost(post);
 
         return postDto;
@@ -60,7 +59,6 @@ public class PostService {
 
         return "게시글 삭제가 완료되었습니다.";
     }
-
 
 
 }

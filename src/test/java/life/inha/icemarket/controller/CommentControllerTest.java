@@ -13,8 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,16 +23,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CommentControllerTest {
+    private static final String BASE_URL = "/comment";
     @Autowired
     MockMvc mvc;
-
     @Autowired
     ObjectMapper mapper;
-
     @Autowired
     CommentRepository commentRepository;
-
-    private static final String BASE_URL = "/comment";
 
     @Test
     @WithMockUser
@@ -42,8 +39,8 @@ public class CommentControllerTest {
 
         //when
         mvc.perform(post(BASE_URL)
-                .content(mapper.writeValueAsString(dto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(dto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -54,16 +51,16 @@ public class CommentControllerTest {
         //given
         User user = new User(12192152, "허영은", "12192152@inha.edu", "푸하항");
         Post post = Post.builder().user(user).title("~ 제목 ~").build();
-        CommentSaveReqDto comment1 = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 1 ~").build();
-        CommentSaveReqDto comment2 = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 2 ~").build();
+        CommentSaveReqDto comment1 = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 1 ~").build();
+        CommentSaveReqDto comment2 = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 2 ~").build();
 
-        commentRepository.save(Comment.createComment(comment1,post,user));
-        commentRepository.save(Comment.createComment(comment2,post,user));
+        commentRepository.save(Comment.createComment(comment1, post, user));
+        commentRepository.save(Comment.createComment(comment2, post, user));
 
         //when
         mvc.perform(get(BASE_URL)
-                        .param("board","1")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .param("board", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -74,9 +71,9 @@ public class CommentControllerTest {
         //given
         User user = new User(12192152, "허영은", "12192152@inha.edu", "푸하항");
         Post post = Post.builder().user(user).title("~ 제목 ~").build();
-        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 ~").build();
+        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 ~").build();
         Comment comment = Comment.createComment(dto, post, user);
-        commentRepository.save(Comment.createComment(dto,post,user));
+        commentRepository.save(Comment.createComment(dto, post, user));
 
         //when
         mvc.perform(get(BASE_URL + "/" + comment.getId()))
@@ -93,9 +90,9 @@ public class CommentControllerTest {
         //given
         User user = new User(12192152, "허영은", "12192152@inha.edu", "푸하항");
         Post post = Post.builder().user(user).title("~ 제목 ~").build();
-        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(post.getId()).content("~ 댓글 ~").build();
+        CommentSaveReqDto dto = CommentSaveReqDto.builder().postIdx(Math.toIntExact(post.getId())).content("~ 댓글 ~").build();
         Comment comment = Comment.createComment(dto, post, user);
-        commentRepository.save(Comment.createComment(dto,post,user));
+        commentRepository.save(Comment.createComment(dto, post, user));
 
         //when
         mvc.perform(delete(BASE_URL))

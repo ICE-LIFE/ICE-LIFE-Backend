@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>find pw</title>
+    <title>find pw</title>
 </head>
 <body>
-<form th:action="@{/pwvalidcheck}" th:name="info" th:object="${FindPWEmailValidCodeForm}" method="post">
-  <div>
-    <label for = "email"> email: </label>
-    <input type="email" th:value = *{email} th:field="*{email}" id="email" name="email" readonly="true">
-  </div>
+<form method="post" th:action="@{/pwvalidcheck}" th:name="info" th:object="${FindPWEmailValidCodeForm}">
+    <div>
+        <label for="email"> email: </label>
+        <input id="email" name="email" readonly="true" th:field="*{email}" th:value=*{email} type="email">
+    </div>
 
-  <div>
-    <label for = "validcode">인증 코드 : </label>
-    <input type="validcode" th:field = "*{validcode}" id="validcode" name="validcode">
-  </div>
-  <input type="submit" value="비밀번호 찾기">
+    <div>
+        <label for="validcode">인증 코드 : </label>
+        <input id="validcode" name="validcode" th:field="*{validcode}" type="validcode">
+    </div>
+    <input type="submit" value="비밀번호 찾기">
 </form>
 </body>
 </html>
