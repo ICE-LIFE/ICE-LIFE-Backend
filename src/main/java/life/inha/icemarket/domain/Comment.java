@@ -1,10 +1,9 @@
 package life.inha.icemarket.domain;
 
-import life.inha.icemarket.dto.PostCommentReq;
+import life.inha.icemarket.dto.CommentSaveReqDto;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,22 +14,22 @@ import static javax.persistence.FetchType.LAZY;
 @Entity(name = "comments")
 public class Comment {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /* 게시글 */
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     /* 댓글 작성자 */
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     private User authorUser;
 
     /* 댓글 내용 */
     @NonNull
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     /* 생성일자 */
@@ -38,28 +37,16 @@ public class Comment {
     @Column(name = "created_at")
     private LocalDateTime createdDate;
 
-    /* 삭제일자 */
-    @LastModifiedDate
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedDate;
-
     protected Comment() {};
 
-    public static Comment createComment(PostCommentReq dto
-            //, Post post
-            , User user){
+    public static Comment createComment(CommentSaveReqDto dto, Post post, User user){
         Comment newComment = new Comment();
-//        newComment.post = post;
+        newComment.post = post;
         newComment.authorUser = user;
         newComment.content = dto.getContent();
         newComment.createdDate = LocalDateTime.now();
 
         return newComment;
-    }
-
-    /* 댓글 내용 수정 method */
-    public void updateComment(String content) {
-        this.content = content;
     }
 
 }

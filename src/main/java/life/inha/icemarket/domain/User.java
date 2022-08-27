@@ -49,11 +49,15 @@ public class User implements UserDetails {
     private List<Post> postList;
 
     @NonNull
+    @Enumerated(value = EnumType.STRING)
+    @JoinColumn
     private UserRole role;
 
-
+    @JoinColumn
     @Enumerated(EnumType.STRING)
     private Status status = Status.AWAIT;
+
+    private String emailconfirmkey;
     
     @Builder
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {

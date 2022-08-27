@@ -5,29 +5,21 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import life.inha.icemarket.config.swagger.ApiDocumentResponse;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.domain.UserRole;
-import life.inha.icemarket.dto.EmailDto;
 import life.inha.icemarket.dto.UserCreateDto;
+import life.inha.icemarket.exception.BadRequestException;
+import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserCreateService;
-import life.inha.icemarket.service.UserRoleService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.regex.Pattern;
+
 
 @Tag(name="Signup", description = "회원가입 API")
 @Slf4j
@@ -36,20 +28,24 @@ import javax.validation.constraints.Size;
 public class SignupController {
 
     private final UserCreateService userCreateService;
+    private final EmailService emailService;
 
-    @Operation(description = "회원가입")
+    @ResponseBody
+    @Operation(description = "회원가입 POST - 채워진 UserCreateDto를 받아 회원가입 처리합니다.")
     @ApiDocumentResponse
     @RequestMapping(
             value = "/signup",
             method = RequestMethod.POST
     )
     public String signup(
-            @AuthenticationPrincipal User user,
-            @Valid UserCreateDto userCreateDto, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) throws Exception{
+            @ModelAttribute("UserCreateDto") @Valid UserCreateDto userCreateDto, BindingResult bindingResult
+            ){
         if (bindingResult.hasErrors()){
-            return "Binding Result Error" + bindingResult.getObjectName();
+            log.error(String.valueOf(bindingResult));
+            log.error(String.valueOf(bindingResult.getAllErrors()));
+            return "Binding Result Error " + bindingResult.getObjectName() + "<p>Errors: " + bindingResult.getAllErrors();
         }
+        String email = userCreateDto.getEmail();
 
         if (!userCreateDto.getPassword1().equals(userCreateDto.getPassword2())){
             bindingResult.rejectValue("password2", "passwordInCorrect",
@@ -66,15 +62,15 @@ public class SignupController {
                 UserRole.GUEST
         );
 
-        EmailDto emailDto = new EmailDto();
-        emailDto.setEmail(userCreateDto.getEmail());
-        redirectAttributes.addFlashAttribute("EmailDto", emailDto);
-        return "redirect:/emailconfirm"; //todo redirect
+        return "success";
     }
-
+    @Operation(description = "회원가입 - signup.html에 UserCreateDto를 보냅니다.")
+    @ResponseBody//프론트엔드 작업을 위한
+    @ApiDocumentResponse
     @GetMapping("/signup")
     public String signup(Model model){
         model.addAttribute("UserCreateDto", new UserCreateDto());
-        return "signup";
+//        return "signup";
+        return "signup get success";//프론트엔드 작업을 위한
     }
 }

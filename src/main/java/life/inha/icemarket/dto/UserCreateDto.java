@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @AllArgsConstructor
 @Getter
@@ -35,5 +32,6 @@ public class UserCreateDto {
 
     @NotEmpty(message = "사용자 이메일은 필수항목입니다.")
     @Email
+    @Pattern(regexp = "[a-z0-9]+@inha.edu")
     private String email;
 }

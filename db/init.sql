@@ -5,6 +5,8 @@ CREATE TABLE users (
     password_hashed CHAR(60)     NOT NULL,
     nickname        VARCHAR(10)  UNIQUE,
     role            VARCHAR(10)  NOT NULL,
+    status          VARCHAR(10)  NOT NULL,
+    emailconfirmkey VARCHAR(10),
     created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at      TIMESTAMP
@@ -69,4 +71,14 @@ CREATE TABLE item_history (
     manager_id      INT          NOT NULL,
     rent_at         TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     return_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE comments (
+    id              INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    post_id         BIGINT       NOT NULL,
+    author_id       INT          NOT NULL,
+    content         TEXT         NOT NULL,
+    created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts (id),
+    FOREIGN KEY (author_id) REFERENCES users (id)
 );

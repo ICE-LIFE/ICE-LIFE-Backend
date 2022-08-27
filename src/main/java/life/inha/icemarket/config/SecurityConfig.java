@@ -22,8 +22,6 @@ public class SecurityConfig {
     private final UserSecurityService userSecurityService;
     private final JwtDecodeFilter jwtDecodeFilter;
 
-    //private final JwtAuthenticationEntryPoint unauthorizedHandler;
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,6 +38,8 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .csrf().disable()
                 .formLogin().disable()
+                .cors()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .antMatchers("/login").permitAll()
@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .antMatchers("/emailconfirm").permitAll()
                 .antMatchers("/findpw").permitAll()
                 .antMatchers("/resetpw").permitAll()
+                .antMatchers("/pwvalidcheck").permitAll()
                 .antMatchers("/onlyuser").hasRole("USER")
                 .antMatchers("/onlyadmin").hasRole("ADMIN")
                 .antMatchers("/ws/**").permitAll()

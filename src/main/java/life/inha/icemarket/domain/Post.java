@@ -3,9 +3,9 @@ package life.inha.icemarket.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import lombok.NoArgsConstructor;
 
 @Entity(name = "posts")
 @Getter
@@ -41,10 +41,14 @@ public class Post extends BaseTimeEntity {
         this.category = category;
     }
 
+    @Builder
+    public Post(User user, String title) {
+        this.user = user;
+        this.title = title;
+    }
+
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
-
-
 }

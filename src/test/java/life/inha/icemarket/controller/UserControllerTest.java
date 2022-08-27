@@ -1,5 +1,5 @@
 /*
-    UserControllerTest.java 는 SignupController, FindPasswordController, WhoAmIController를 테스트합니다.
+    UserControllerTest.java 는 SignupController, FindPasswordController, WhoAmIController, EmailController를 테스트합니다.
     회원가입, 로그인, 비밀번호 찾기(초기화), 사용자 권한 테스트
  */
 
@@ -10,13 +10,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.respository.UserRepository;
+import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserSecurityService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -48,7 +48,10 @@ public class UserControllerTest {
     @Autowired
     UserSecurityService userSecurityService;
 
-    private static final String EMAIL = "test@example.com";
+    @Autowired
+    EmailService emailService;
+
+    private static final String EMAIL = "daezang102@inha.edu";
 
     private static String createToken(String email){
         if(email == null) email = EMAIL;
@@ -61,23 +64,19 @@ public class UserControllerTest {
 
     @Test
     @Order(1)
-    public void signup() throws Exception {
-        String content = this.objectMapper.writeValueAsString(
-                new SignupController.UserCreateForm(
-                        12340000,
-                        "TestUser",
-                        "password",
-                        "password",
-                        "testuser",
-                        EMAIL
-                )
-        );
+    public void signup() throws Exception{
+        MultiValueMap<String, String> SignupForm = new LinkedMultiValueMap<>();
+        SignupForm.add("id","12340000");
+        SignupForm.add("name", "TestUser");
+        SignupForm.add("password1","password");
+        SignupForm.add("password2","password");
+        SignupForm.add("nickname","testuser");
+        SignupForm.add("email",EMAIL);
 
         mvc.perform(post("/signup")
-                    .content(content)
-                    .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string("success"));
+                            .params(SignupForm))
+                        .andExpect(status().isOk())
+                        .andExpect(content().string("success"));
         log.info("Signup Test End");
     }
 
@@ -100,8 +99,8 @@ public class UserControllerTest {
     @Order(3)
     public void OnlyUserTest() throws Exception {
         mvc.perform(get("/onlyuser")
-                        .header("authorization", "Bearer " + createToken(null)))
-                .andExpect(status().is2xxSuccessful());
+                        .header("authorization", "Bearer " + createToken(EMAIL)))
+                .andExpect(status().is4xxClientError());
         log.info("OnlyUser Test End");
     }
 
@@ -109,13 +108,36 @@ public class UserControllerTest {
     @Order(4)
     public void OnlyAdminTest() throws Exception{
         mvc.perform(get("/onlyadmin")
-                    .header("authorization", "Bearer " + createToken(null)))
+                    .header("authorization", "Bearer " + createToken(EMAIL)))
                 .andExpect(status().is4xxClientError());
         log.info("OnlyAdmin Test End");
     }
 
     @Test
     @Order(5)
+    public void EmailConfirmTest() throws Exception{
+        mvc.perform(get("/emailconfirm")
+                .header("authorization", "Bearer " + createToken(EMAIL)))
+                .andExpect(content().contentType("text/html;charset=UTF-8"));
+
+        log.info("EmailConfirm GET TEST End");
+
+
+        MultiValueMap<String, String> EmailInfo = new LinkedMultiValueMap<>();
+        String ValidCode = emailService.loadEmailKey(EMAIL);
+        EmailInfo.add("inputcode", ValidCode);
+        EmailInfo.add("email",EMAIL);
+
+        mvc.perform(post("/emailconfirm")
+                        .params(EmailInfo)
+                .header("authorization", "Bearer " + createToken(EMAIL)))
+                .andExpect(content().string("[ROLE_USER]"));
+
+        log.info("EmailConfirm POST TEST End");
+    }
+
+    @Test
+    @Order(6)
     public void FindPwGetTest() throws Exception{
         mvc.perform(get("/findpw"))
                 .andExpect(status().isOk());
@@ -123,11 +145,10 @@ public class UserControllerTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void FindPwPostTest() throws Exception {
         MultiValueMap<String, String> findpwform = new LinkedMultiValueMap<>();
         findpwform.add("email",EMAIL);
-        findpwform.add("nickname","testuser");
         mvc.perform(post("/findpw")
                         .params(findpwform))
                 .andExpect(status().isOk())
@@ -137,11 +158,21 @@ public class UserControllerTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void ResetPwPostTest() throws Exception{
+        String ValidCode = emailService.loadEmailKey(EMAIL);
+        MultiValueMap<String, String> findpwvalidcodeform = new LinkedMultiValueMap<>();
+        findpwvalidcodeform.add("email",EMAIL);
+        findpwvalidcodeform.add("validcode",ValidCode);
+        mvc.perform(post("/pwvalidcheck")
+                .params(findpwvalidcodeform))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"));
+
+
         MultiValueMap<String, String> resetpwform = new LinkedMultiValueMap<>();
-        resetpwform.add("password1","1234");
-        resetpwform.add("password2","1234");
+        resetpwform.add("password1","123411");
+        resetpwform.add("password2","123411");
         resetpwform.add("email", EMAIL);
         MvcResult result = mvc.perform(post("/resetpw")
                     .params(resetpwform))
