@@ -27,7 +27,7 @@ public class CommentService {
     public CommentSaveResDto createComment(User user, CommentSaveReqDto dto) {
 
         Post post = postRepository.findById(Long.valueOf(dto.getPostIdx())).orElse(null);
-        Comment comment = Comment.createComment(dto,post,user);
+        Comment comment = Comment.createComment(dto, post, user);
 
         commentRepository.save(comment);
 
@@ -35,22 +35,22 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResDto> readCommentList(Integer postIdx, Pageable pageable){
+    public List<CommentResDto> readCommentList(Integer postIdx, Pageable pageable) {
         // 게시글
-        Post post = postRepository.findById(Long.valueOf(postIdx)).orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
+        Post post = postRepository.findById(Long.valueOf(postIdx)).orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
         // 해당 게시글에 달린 댓글 찾기
-        List<Comment> commentList = commentRepository.findByPost(post,pageable);
+        List<Comment> commentList = commentRepository.findByPost(post, pageable);
 
         List<CommentResDto> commentResList = new ArrayList<>();
-        for(Comment comment : commentList){
+        for (Comment comment : commentList) {
             commentResList.add(CommentResDto.createCommentRes(comment));
         }
         return commentResList;
     }
 
     @Transactional(readOnly = true)
-    public CommentResDto readComment(Integer commentIdx){
-        Comment comment = commentRepository.findById(commentIdx).orElseThrow(()->new IllegalArgumentException("댓글의 인덱스 번호를 확인해주세요."));
+    public CommentResDto readComment(Integer commentIdx) {
+        Comment comment = commentRepository.findById(commentIdx).orElseThrow(() -> new IllegalArgumentException("댓글의 인덱스 번호를 확인해주세요."));
         return CommentResDto.createCommentRes(comment);
     }
 

@@ -1,8 +1,8 @@
 package life.inha.icemarket.service;
 
 import life.inha.icemarket.domain.User;
-import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.domain.UserRole;
+import life.inha.icemarket.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class UserCreateService {
             String email,
             String passwordHashed,
             String nickname,
-            UserRole userRole){
+            UserRole userRole) {
         User user = new User();
         user.setId(id);
         user.setName(name);
@@ -31,7 +31,7 @@ public class UserCreateService {
         return user;
     }
 
-    public void SetPasswordHashed(User user,  String passwordHashed) throws Exception{
+    public void SetPasswordHashed(User user, String passwordHashed) throws Exception {
         user.setPasswordHashed(passwordHashed);
         userRepository.save(user);
     }

@@ -14,7 +14,8 @@ import static javax.persistence.FetchType.LAZY;
 @Entity(name = "comments")
 public class Comment {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /* 게시글 */
@@ -37,9 +38,10 @@ public class Comment {
     @Column(name = "created_at")
     private LocalDateTime createdDate;
 
-    protected Comment() {};
+    protected Comment() {
+    }
 
-    public static Comment createComment(CommentSaveReqDto dto, Post post, User user){
+    public static Comment createComment(CommentSaveReqDto dto, Post post, User user) {
         Comment newComment = new Comment();
         newComment.post = post;
         newComment.authorUser = user;

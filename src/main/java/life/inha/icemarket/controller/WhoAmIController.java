@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WhoAmIController {
     @ResponseBody
     @GetMapping("/whoami")
-    public String whoami(@AuthenticationPrincipal User user){
+    public String whoami(@AuthenticationPrincipal User user) {
         String info =
                 "Email : " + user.getEmail() + "\nId : " + user.getId() + "\nRole : " + user.getAuthorities();
         return info;
@@ -21,13 +21,13 @@ public class WhoAmIController {
 
     @ResponseBody
     @GetMapping("/onlyuser")
-    public String onlyuser(@AuthenticationPrincipal User user){
+    public String onlyuser(@AuthenticationPrincipal User user) {
         return "You (" + user.getEmail() + ") are user. Your user.getAuthorities() is : " + user.getAuthorities();
     }
 
     @ResponseBody
     @GetMapping("/onlyadmin")
-    public String onlyadmin(@AuthenticationPrincipal User user){
+    public String onlyadmin(@AuthenticationPrincipal User user) {
         return "You (" + user.getEmail() + ") are admin. Your user.getAuthorities() is : " + user.getAuthorities();
     }
 }

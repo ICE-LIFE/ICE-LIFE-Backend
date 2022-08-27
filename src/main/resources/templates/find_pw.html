@@ -4,12 +4,12 @@
     <title>find pw</title>
 </head>
 <body>
-    <form th:action="@{/findpw}" th:name="info" th:object="${FindPasswordForm}" method="post">
-        <div>
-            <label for = "email">이메일 : </label>
-            <input type="email" th:field = "*{email}" id="email" name="email">
-        </div>
-        <input type="submit" value="비밀번호 찾기">
-    </form>
+<form method="post" th:action="@{/findpw}" th:name="info" th:object="${FindPasswordForm}">
+    <div>
+        <label for="email">이메일 : </label>
+        <input id="email" name="email" th:field="*{email}" type="email">
+    </div>
+    <input type="submit" value="비밀번호 찾기">
+</form>
 </body>
 </html>

@@ -8,5 +8,6 @@ public interface EmailService {
     String sendSimpleMessage(String to, Boolean isSignup) throws Exception;
 
     String CreateEmailKey(User user) throws Exception;
+
     String loadEmailKey(String email) throws Exception;
 }

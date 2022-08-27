@@ -13,7 +13,10 @@ import life.inha.icemarket.respository.UserRepository;
 import life.inha.icemarket.service.EmailService;
 import life.inha.icemarket.service.UserSecurityService;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,24 +40,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class UserControllerTest {
 
+    private static final String EMAIL = "daezang102@inha.edu";
     @Autowired
     MockMvc mvc;
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     UserSecurityService userSecurityService;
-
     @Autowired
     EmailService emailService;
 
-    private static final String EMAIL = "daezang102@inha.edu";
-
-    private static String createToken(String email){
-        if(email == null) email = EMAIL;
+    private static String createToken(String email) {
+        if (email == null) email = EMAIL;
         Algorithm algorithm = Algorithm.HMAC256("ice-market");
         return JWT.create()
                 .withIssuer("ice")
@@ -64,34 +63,34 @@ public class UserControllerTest {
 
     @Test
     @Order(1)
-    public void signup() throws Exception{
+    public void signup() throws Exception {
         MultiValueMap<String, String> SignupForm = new LinkedMultiValueMap<>();
-        SignupForm.add("id","12340000");
+        SignupForm.add("id", "12340000");
         SignupForm.add("name", "TestUser");
-        SignupForm.add("password1","password");
-        SignupForm.add("password2","password");
-        SignupForm.add("nickname","testuser");
-        SignupForm.add("email",EMAIL);
+        SignupForm.add("password1", "password");
+        SignupForm.add("password2", "password");
+        SignupForm.add("nickname", "testuser");
+        SignupForm.add("email", EMAIL);
 
         mvc.perform(post("/signup")
-                            .params(SignupForm))
-                        .andExpect(status().isOk())
-                        .andExpect(content().string("success"));
+                        .params(SignupForm))
+                .andExpect(status().isOk())
+                .andExpect(content().string("success"));
         log.info("Signup Test End");
     }
 
     @Test
     @Order(2)
-    public void LoginTest() throws Exception{
+    public void LoginTest() throws Exception {
         String Email = EMAIL;
         String accessToken = createToken(Email);
         MultiValueMap<String, String> logininfo = new LinkedMultiValueMap<>();
-        logininfo.add("email",Email);
-        logininfo.add("password","password");
+        logininfo.add("email", Email);
+        logininfo.add("password", "password");
         mvc.perform(post("/login")
-                .params(logininfo))
-                        .andExpect(status().isOk())
-                        .andExpect(content().string(accessToken));
+                        .params(logininfo))
+                .andExpect(status().isOk())
+                .andExpect(content().string(accessToken));
         log.info("Login Test End");
     }
 
@@ -106,18 +105,18 @@ public class UserControllerTest {
 
     @Test
     @Order(4)
-    public void OnlyAdminTest() throws Exception{
+    public void OnlyAdminTest() throws Exception {
         mvc.perform(get("/onlyadmin")
-                    .header("authorization", "Bearer " + createToken(EMAIL)))
+                        .header("authorization", "Bearer " + createToken(EMAIL)))
                 .andExpect(status().is4xxClientError());
         log.info("OnlyAdmin Test End");
     }
 
     @Test
     @Order(5)
-    public void EmailConfirmTest() throws Exception{
+    public void EmailConfirmTest() throws Exception {
         mvc.perform(get("/emailconfirm")
-                .header("authorization", "Bearer " + createToken(EMAIL)))
+                        .header("authorization", "Bearer " + createToken(EMAIL)))
                 .andExpect(content().contentType("text/html;charset=UTF-8"));
 
         log.info("EmailConfirm GET TEST End");
@@ -126,11 +125,11 @@ public class UserControllerTest {
         MultiValueMap<String, String> EmailInfo = new LinkedMultiValueMap<>();
         String ValidCode = emailService.loadEmailKey(EMAIL);
         EmailInfo.add("inputcode", ValidCode);
-        EmailInfo.add("email",EMAIL);
+        EmailInfo.add("email", EMAIL);
 
         mvc.perform(post("/emailconfirm")
                         .params(EmailInfo)
-                .header("authorization", "Bearer " + createToken(EMAIL)))
+                        .header("authorization", "Bearer " + createToken(EMAIL)))
                 .andExpect(content().string("[ROLE_USER]"));
 
         log.info("EmailConfirm POST TEST End");
@@ -138,7 +137,7 @@ public class UserControllerTest {
 
     @Test
     @Order(6)
-    public void FindPwGetTest() throws Exception{
+    public void FindPwGetTest() throws Exception {
         mvc.perform(get("/findpw"))
                 .andExpect(status().isOk());
         log.info("FindPwGet Test End");
@@ -148,7 +147,7 @@ public class UserControllerTest {
     @Order(7)
     public void FindPwPostTest() throws Exception {
         MultiValueMap<String, String> findpwform = new LinkedMultiValueMap<>();
-        findpwform.add("email",EMAIL);
+        findpwform.add("email", EMAIL);
         mvc.perform(post("/findpw")
                         .params(findpwform))
                 .andExpect(status().isOk())
@@ -159,23 +158,23 @@ public class UserControllerTest {
 
     @Test
     @Order(8)
-    public void ResetPwPostTest() throws Exception{
+    public void ResetPwPostTest() throws Exception {
         String ValidCode = emailService.loadEmailKey(EMAIL);
         MultiValueMap<String, String> findpwvalidcodeform = new LinkedMultiValueMap<>();
-        findpwvalidcodeform.add("email",EMAIL);
-        findpwvalidcodeform.add("validcode",ValidCode);
+        findpwvalidcodeform.add("email", EMAIL);
+        findpwvalidcodeform.add("validcode", ValidCode);
         mvc.perform(post("/pwvalidcheck")
-                .params(findpwvalidcodeform))
+                        .params(findpwvalidcodeform))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"));
 
 
         MultiValueMap<String, String> resetpwform = new LinkedMultiValueMap<>();
-        resetpwform.add("password1","123411");
-        resetpwform.add("password2","123411");
+        resetpwform.add("password1", "123411");
+        resetpwform.add("password2", "123411");
         resetpwform.add("email", EMAIL);
         MvcResult result = mvc.perform(post("/resetpw")
-                    .params(resetpwform))
+                        .params(resetpwform))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -187,7 +186,7 @@ public class UserControllerTest {
         String result_string = result.getResponse().getContentAsString();
         assertThat(result_string)
                 .isEqualTo(user.getPasswordHashed());
-        
+
         log.info("ResetPwpost test End");
     }
 }

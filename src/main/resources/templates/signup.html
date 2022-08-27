@@ -4,33 +4,33 @@
     <title>signup</title>
 </head>
 <body>
-<form th:action="@{/signup}"  th:object="${UserCreateDto}" method="post">
+<form method="post" th:action="@{/signup}" th:object="${UserCreateDto}">
     <div>
-        <label for = "email">학교 이메일 : </label>
-        <input type="email" th:field = "*{email}" id="email" name="email">
+        <label for="email">학교 이메일 : </label>
+        <input id="email" name="email" th:field="*{email}" type="email">
     </div>
     <div>
-        <label for = "name">이름 : </label>
-        <input type="text" th:field = "*{name}" id="name" name="name">
+        <label for="name">이름 : </label>
+        <input id="name" name="name" th:field="*{name}" type="text">
     </div>
     <div>
-        <label for = "id">학번 : </label>
-        <input type="number" th:field = "*{id}" id="id" name="id">
+        <label for="id">학번 : </label>
+        <input id="id" name="id" th:field="*{id}" type="number">
     </div>
     <div>
-        <label for = "password1">비밀번호 1 : </label>
-        <input type="password" th:field = "*{password1}" id="password1" name="password1">
+        <label for="password1">비밀번호 1 : </label>
+        <input id="password1" name="password1" th:field="*{password1}" type="password">
     </div>
     <div>
-        <label for = "password2">비밀번호 2 : </label>
-        <input type="password" th:field = "*{password2}" id="password2" name="password2">
+        <label for="password2">비밀번호 2 : </label>
+        <input id="password2" name="password2" th:field="*{password2}" type="password">
     </div>
     <div>
-        <label for = "nickname">닉네임 : </label>
-        <input type="text" th:field = "*{nickname}" id="nickname" name="nickname">
+        <label for="nickname">닉네임 : </label>
+        <input id="nickname" name="nickname" th:field="*{nickname}" type="text">
     </div>
 
-    <button type="submit" id="submit">submit</button>
+    <button id="submit" type="submit">submit</button>
 </form>
 </body>
 </html>

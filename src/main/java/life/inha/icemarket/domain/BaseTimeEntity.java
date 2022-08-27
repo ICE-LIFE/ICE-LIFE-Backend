@@ -1,12 +1,13 @@
 package life.inha.icemarket.domain;
 
-import java.time.LocalDateTime;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
@@ -19,7 +20,7 @@ public class BaseTimeEntity {
     private LocalDateTime modifiedAt;
 
     /**
-    질문) deletedAt은 어노테이션이 없는 것 같은데, 직접 구현? 혹은 modifiedAt을 사용?
+     질문) deletedAt은 어노테이션이 없는 것 같은데, 직접 구현? 혹은 modifiedAt을 사용?
      **/
 
 }

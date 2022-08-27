@@ -9,7 +9,6 @@ import groovy.util.logging.Slf4j;
 import life.inha.icemarket.domain.User;
 import life.inha.icemarket.service.UserSecurityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +24,7 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class JwtDecodeFilter  extends OncePerRequestFilter {
+public class JwtDecodeFilter extends OncePerRequestFilter {
     private final UserSecurityService userSecurityService;
 
     @Override
@@ -34,8 +33,8 @@ public class JwtDecodeFilter  extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
-        if(header != null && header.startsWith("Bearer ")){
-            try{
+        if (header != null && header.startsWith("Bearer ")) {
+            try {
                 String accessToken = header.substring(7);
                 Algorithm algorithm = Algorithm.HMAC256("ice-market");
                 JWTVerifier verifier = JWT.require(algorithm).withIssuer("ice").build();
@@ -47,9 +46,9 @@ public class JwtDecodeFilter  extends OncePerRequestFilter {
 //                System.out.println("getRole() : " + user.getRole());
                 System.out.println("getAuthorities() : " + user.getAuthorities());
                 Authentication authenticationToken
-                        = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
+                        = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            } catch(JWTVerificationException exception){
+            } catch (JWTVerificationException exception) {
                 exception.printStackTrace();
             }
         }

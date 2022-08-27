@@ -10,9 +10,10 @@ import java.util.List;
 import static life.inha.icemarket.domain.QUser.user;
 
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepositoryCustom{
+public class UserRepositoryImpl implements UserRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
     @Override
     public List<UserListDto> getUserList() {
         return queryFactory
@@ -23,7 +24,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                         user.nickname,
                         user.createdAt,
                         user.role))
-                        .from(user)
+                .from(user)
                 .orderBy(user.createdAt.desc())
                 .fetch();
     }
