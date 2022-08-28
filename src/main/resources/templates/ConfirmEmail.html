@@ -1,20 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>emailconfirm</title>
 </head>
 <body>
-<form th:action="@{/emailconfirm}" th:object="${EmailDto}"  method="post" >
+<form method="post" th:action="@{/emailconfirm}" th:object="${EmailDto}">
     <div>
-        <label for = "email"> email: </label>
-        <input type="email" th:value = *{email} th:field="*{email}" id="email" name="email" readonly="true">
+        <label for="email"> email: </label>
+        <input id="email" name="email" readonly="true" th:field="*{email}" th:value=*{email} type="email">
     </div>
     <div>
-        <label for = "inputcode">valid code : </label>
-        <input type="text" th:field="*{inputcode}" id="inputcode" name="inputcode">
+        <label for="inputcode">valid code : </label>
+        <input id="inputcode" name="inputcode" th:field="*{inputcode}" type="text">
     </div>
-    <button type="submit" id="submit">submit</button>
+    <button id="submit" type="submit">submit</button>
 </form>
 </body>
 </html>

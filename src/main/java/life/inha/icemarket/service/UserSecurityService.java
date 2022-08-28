@@ -20,7 +20,7 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("UserDetailsService : email=" + email);
         User user = userRepository.findByEmail(email)
-                .orElseThrow(()->new UsernameNotFoundException("Can't find user by email @ UserDetails"));
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find user by email @ UserDetails"));
 
         return user;
     }

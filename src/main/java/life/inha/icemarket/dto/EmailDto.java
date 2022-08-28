@@ -10,13 +10,13 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Getter
 @Setter
-public class EmailDto{
-    public EmailDto(){
-
-    }
-    @NotEmpty(message="코드를 입력해주세요.")
+public class EmailDto {
+    @NotEmpty(message = "코드를 입력해주세요.")
     private String inputcode;
-
     @Email
     private String email;
+
+    public EmailDto() {
+
+    }
 }

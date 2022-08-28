@@ -16,12 +16,12 @@ import java.io.IOException;
 
 @Slf4j
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
-    public JwtLoginFilter(AuthenticationManager authenticationManager){
+    public JwtLoginFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         try {
             User user = (User) authResult.getPrincipal();
             String email = user.getEmail();
@@ -33,7 +33,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
             log.info("Create JWT : user_email : " + email);
             log.info("Login From " + email);
             response.getWriter().write(accessToken);
-        } catch (JWTCreationException | IOException exception){
+        } catch (JWTCreationException | IOException exception) {
             exception.printStackTrace();
         }
     }

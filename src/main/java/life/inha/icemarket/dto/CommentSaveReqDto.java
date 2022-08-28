@@ -15,7 +15,7 @@ public class CommentSaveReqDto {
     private String content;
 
     @Builder
-    public CommentSaveReqDto(Integer postIdx, String content){
+    public CommentSaveReqDto(Integer postIdx, String content) {
         this.postIdx = postIdx;
         this.content = content;
     }

@@ -39,7 +39,7 @@ public class Comment {
 
     protected Comment() {};
 
-    public static Comment createComment(CommentSaveReqDto dto, Post post, User user){
+    public static Comment createComment(CommentSaveReqDto dto, Post post, User user) {
         Comment newComment = new Comment();
         newComment.post = post;
         newComment.authorUser = user;
