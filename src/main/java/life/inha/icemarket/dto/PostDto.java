@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class PostDto {
-    private Long id;
-    private Long categoryId;
+    private Integer id;
+    private Integer categoryId;
     private String title;
     private String content;
     private String thumbnail;
@@ -31,7 +31,7 @@ public class PostDto {
                 .content(post.getContent())
                 .thumbnail(post.getThumbnail())
                 .createdAt(post.getCreatedAt())
-                .updatedAt(post.getModifiedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 }

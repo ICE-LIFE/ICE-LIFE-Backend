@@ -17,7 +17,7 @@ public class BaseTimeEntity {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updatedAt;
 
     /**
      질문) deletedAt은 어노테이션이 없는 것 같은데, 직접 구현? 혹은 modifiedAt을 사용?
