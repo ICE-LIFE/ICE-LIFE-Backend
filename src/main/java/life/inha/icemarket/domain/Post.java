@@ -14,7 +14,7 @@ public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
     private String title;
 
@@ -32,19 +32,13 @@ public class Post extends BaseTimeEntity {
     private Category category;
 
     @Builder
-    public Post(Long id, String title, String content, String thumbnail, User user, Category category) {
+    public Post(Integer id, String title, String content, String thumbnail, User user, Category category) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.thumbnail = thumbnail;
         this.user = user;
         this.category = category;
-    }
-
-    @Builder
-    public Post(User user, String title) {
-        this.user = user;
-        this.title = title;
     }
 
     public void update(String title, String content) {

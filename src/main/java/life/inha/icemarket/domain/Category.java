@@ -14,12 +14,12 @@ import javax.persistence.Id;
 public class Category {
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
     private String name;
 
     @Builder
-    public Category(Long id, String name) {
+    public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
