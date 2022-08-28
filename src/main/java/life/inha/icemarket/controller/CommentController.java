@@ -43,17 +43,17 @@ public class CommentController {
 
     /**
      * 댓글 목록 보기 API
-     * [GET] comment?board=3
+     * [GET] comment?post=3
      *
      * @return List<GetCommentRes>
      */
     @GetMapping("/comment")
-    public ResponseEntity<List<CommentResDto>> readCommentList(@RequestParam Integer board, @PageableDefault(direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
-        // board : 게시글
+    public ResponseEntity<List<CommentResDto>> readCommentList(@RequestParam Integer post, @PageableDefault(direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
+        // post : 게시글 인덱스
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        return new ResponseEntity<>(commentService.readCommentList(board, pageable), header, HttpStatus.OK);
+        return new ResponseEntity<>(commentService.readCommentList(post, pageable), header, HttpStatus.OK);
     }
 
     /**
