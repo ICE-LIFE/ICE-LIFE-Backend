@@ -27,7 +27,7 @@ public class PostService {
     public String save(User user, String category, PostSaveDto postSaveDto) {
         Category categoryEntity = categoryRepository.findByName(category);
 
-        Long postId = postRepository.save(postSaveDto.toEntity(categoryEntity, user)).getId();
+        Integer postId = postRepository.save(postSaveDto.toEntity(categoryEntity, user)).getId();
 
         String result = "게시글 등록이 완료되었습니다. postId = " + postId;
         return result;
@@ -39,7 +39,7 @@ public class PostService {
         return posts;
     }
 
-    public PostDto getPost(Long id) {
+    public PostDto getPost(Integer id) {
         Post post = postRepository.findById(id)
                 .orElseThrow();
         PostDto postDto = PostDto.getPost(post);
@@ -47,14 +47,14 @@ public class PostService {
         return postDto;
     }
 
-    public String updatePost(String category, Long id) {
+    public String updatePost(String category, Integer id) {
         Post post = postRepository.findById(id).orElseThrow();
         post.update(post.getTitle(), post.getContent());
 
         return "게시글 수정이 완료되었습니다.";
     }
 
-    public String deletePost(String category, Long id) {
+    public String deletePost(String category, Integer id) {
         postRepository.deleteById(id);
 
         return "게시글 삭제가 완료되었습니다.";

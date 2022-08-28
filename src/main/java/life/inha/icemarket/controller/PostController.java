@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 @Tag(name = "post", description = "게시판 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/board")
+@RequestMapping("/board")
 public class PostController {
     private final PostService postService;
 
@@ -60,7 +60,7 @@ public class PostController {
      */
     @ApiDocumentResponse
     @GetMapping("/{category}/{id}")
-    public ResponseEntity<PostDto> getPosts(@PathVariable String category, @PathVariable Long id) {
+    public ResponseEntity<PostDto> getPosts(@PathVariable String category, @PathVariable Integer id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
@@ -73,7 +73,7 @@ public class PostController {
      */
     @ApiDocumentResponse
     @PatchMapping("/{category}/{id}")
-    public ResponseEntity<String> modifyPost(@PathVariable String category, @PathVariable Long id) {
+    public ResponseEntity<String> modifyPost(@PathVariable String category, @PathVariable Integer id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
@@ -86,7 +86,7 @@ public class PostController {
      */
     @ApiDocumentResponse
     @DeleteMapping("/{category}/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable String category, @PathVariable Long id) {
+    public ResponseEntity<String> deletePost(@PathVariable String category, @PathVariable Integer id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
