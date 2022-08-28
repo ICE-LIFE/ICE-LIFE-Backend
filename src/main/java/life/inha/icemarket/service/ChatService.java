@@ -25,7 +25,11 @@ public class ChatService {
     public void createRoom(String roomName, List<Integer> memberIds) {
         List<User> members = userRepository.findAllById(memberIds);
         Room newRoom = Room.builder().name(roomName).users(members).build();
-        roomRepository.save(newRoom);
+        newRoom = roomRepository.save(newRoom);
+
+        for (User member : members) {
+            messagingTemplate.convertAndSendToUser(member.getEmail(), "/queue/room/join", new JoinRoom(newRoom.getId(), memberIds));
+        }
     }
 
     public void broadcastChat(Integer receivingRoomId, Integer senderId, String message) throws ForbiddenException, NotFoundException {
@@ -41,7 +45,7 @@ public class ChatService {
 
         chatRepository.record(receivingRoomId, senderId, message);
         for (User receiver : receivers) {
-            messagingTemplate.convertAndSendToUser(receiver.getEmail(), "/topic/room/" + receivingRoomId, message);
+            messagingTemplate.convertAndSendToUser(receiver.getEmail(), "/topic/room/" + receivingRoomId, new SendMessage(senderId, receivingRoomId, message));
         }
     }
 
@@ -75,5 +79,11 @@ public class ChatService {
             throw new ConflictException(String.format("초대받지 못한 채팅방입니다: room_id=%d, user_id=%d", roomId, memberId));
         }
         roomRepository.leaveUser(roomId, memberId);
+    }
+
+    public record JoinRoom(Integer where, List<Integer> members) {
+    }
+
+    public record SendMessage(Integer from, Integer to, String content) { // from: sender id, to: room id
     }
 }
