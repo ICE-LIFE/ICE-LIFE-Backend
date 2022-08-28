@@ -18,10 +18,23 @@ const client = new StompJs.Client({
 채팅방 생성
 
 ```js
+client.subscribe(`/user/${email}/queue/room/join`, (message) => {
+    console.log(message.body); // JSON
+});
+
 client.publish({
     destination: '/app/room/create',
     body: '테스트방,12190000,12200000',
 });
+```
+
+출력 예시:
+
+```json
+{
+    "where": 1, // 채팅방 ID
+    "members": [12190000, 12200000] // 참가자 학번
+}
 ```
 
 ### /app/room/{roomId}
@@ -29,14 +42,24 @@ client.publish({
 채팅 전송
 
 ```js
-client.subscribe(`/user/12190000/topic/room/1`, (message) => {
-    console.log(message.body);
+client.subscribe(`/user/${email}/topic/room/1`, (message) => {
+    console.log(message.body); // JSON
 });
 
 client.publish({
     destination: '/app/room/1',
     body: '안녕하세요',
 });
+```
+
+출력 예시:
+
+```json
+{
+    "from": 12190000, // 전송자 학번
+    "to": 1, // 채팅방 ID
+    "content": "안녕하세요"
+}
 ```
 
 ### /app/room/{roomId}/invite
