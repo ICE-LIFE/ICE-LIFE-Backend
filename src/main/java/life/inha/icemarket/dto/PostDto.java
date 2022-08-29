@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class PostDto {
     private Integer id;
     private Integer categoryId;
+    private Integer authorId;
     private String title;
     private String content;
     private String thumbnail;
@@ -27,6 +28,7 @@ public class PostDto {
         return PostDto.builder()
                 .id(post.getId())
                 .categoryId(post.getCategory().getId())
+                .authorId(post.getUser().getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .thumbnail(post.getThumbnail())

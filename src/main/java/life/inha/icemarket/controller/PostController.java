@@ -46,7 +46,7 @@ public class PostController {
      */
     @ApiDocumentResponse
     @GetMapping("/{category}")
-    public ResponseEntity<Page<Post>> getPosts(@PathVariable String category,
+    public ResponseEntity<Page<PostDto>> getPosts(@PathVariable String category,
                                                @PageableDefault(size = 5, sort = "id") Pageable pageable) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
@@ -60,7 +60,7 @@ public class PostController {
      */
     @ApiDocumentResponse
     @GetMapping("/{category}/{id}")
-    public ResponseEntity<PostDto> getPosts(@PathVariable String category, @PathVariable Integer id) {
+    public ResponseEntity<PostDto> getPost(@PathVariable String category, @PathVariable Integer id) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 

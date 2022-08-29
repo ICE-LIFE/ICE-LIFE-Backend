@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 public class CommentResDto {
     // 작성자 이름
     private String author;
+    // 작성자 학번
+    private Integer authorId;
     // 댓글 인덱스 번호
     private Integer commentIdx;
     // 댓글 내용
@@ -21,6 +23,7 @@ public class CommentResDto {
     public static CommentResDto createCommentRes(Comment comment) {
         CommentResDto newCommentRes = new CommentResDto();
         newCommentRes.author = comment.getAuthorUser().getName();
+        newCommentRes.authorId = comment.getAuthorUser().getId();
         newCommentRes.commentIdx = comment.getId();
         newCommentRes.comment = comment.getContent();
         newCommentRes.createdDate = comment.getCreatedDate();
