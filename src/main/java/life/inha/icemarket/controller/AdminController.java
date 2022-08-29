@@ -26,7 +26,7 @@ public class AdminController {
 
     @Operation(description = "가입 신청자 목록 조회")
     @GetMapping("/userList")
-    public ResponseEntity<List<UserListDto>> getUserList(){
+    public ResponseEntity<List<UserListDto>> getUserList() {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         return new ResponseEntity<List<UserListDto>>(adminService.getUserList(), header, HttpStatus.OK);
@@ -35,9 +35,10 @@ public class AdminController {
 
     @Operation(description = "가입자 승인 및 거절")
     @GetMapping("/userList/allowUser")
-    public ResponseEntity<Integer> allowUser(Integer userId){
+    public ResponseEntity<Integer> allowUser(Integer userId) {
         return new ResponseEntity<>(adminService.convertGuestToUser(userId), HttpStatus.OK);
     }
+
     @Operation(description = "가입자를 사이트에서 거절된 상태로 변경")
     @GetMapping("/userList/rejectUser")
     public ResponseEntity<Integer> rejectUser(Integer userId) {
@@ -52,7 +53,7 @@ public class AdminController {
 
     @Operation(description = "관리자 권한 박탈")
     @GetMapping("/userList/depriveAdmin")
-    public ResponseEntity<Integer> depriveAdmin(Integer userId){
+    public ResponseEntity<Integer> depriveAdmin(Integer userId) {
         return new ResponseEntity<Integer>(adminService.depriveAdmin(userId), HttpStatus.OK);
     }
 

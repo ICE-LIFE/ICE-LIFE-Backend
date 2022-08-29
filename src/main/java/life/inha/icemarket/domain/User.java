@@ -1,5 +1,6 @@
 package life.inha.icemarket.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -24,11 +25,11 @@ public class User implements UserDetails {
     @Id
     private Integer id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String name;
 
     @Email
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
 
     @NonNull
@@ -43,11 +44,12 @@ public class User implements UserDetails {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-
-    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> postList;
 
     @NonNull
+    @Enumerated(value = EnumType.STRING)
     @JoinColumn
     private UserRole role;
 
@@ -56,7 +58,7 @@ public class User implements UserDetails {
     private Status status = Status.AWAIT;
 
     private String emailconfirmkey;
-    
+
     @Builder
     public User(Integer id, @NonNull String name, @NonNull String email, String nickname) {
         this.id = id;
@@ -71,7 +73,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(this.role.getValue()));
         return authorities;

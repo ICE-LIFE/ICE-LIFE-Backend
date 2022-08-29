@@ -20,7 +20,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +66,7 @@ class AdminControllerTest {
 
         // when
         mvc.perform(get("/userList/allowUser")
-                .param("userId", "12201863"))
+                        .param("userId", "12201863"))
                 .andExpect(content().string("12201863"));
 
     }
@@ -84,7 +84,7 @@ class AdminControllerTest {
     }
 
     @Test
-    void grantAdmin() throws Exception{
+    void grantAdmin() throws Exception {
         User user = new User(12201863, "김민겸", "mingyum119@naver.com", "겨미");
         given(adminService.convertGuestToUser(anyInt())).willReturn(user.getId());
 
@@ -95,7 +95,7 @@ class AdminControllerTest {
     }
 
     @Test
-    void depriveAdmin() throws Exception{
+    void depriveAdmin() throws Exception {
         User user = new User(12201863, "김민겸", "mingyum119@naver.com", "겨미");
         given(adminService.convertGuestToUser(anyInt())).willReturn(user.getId());
 

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,7 +23,7 @@ public class UserListDto {
 
     private UserRole role;
 
-    public User toEntity(){
+    public User toEntity() {
         return User.builder()
                 .id(id)
                 .name(name)

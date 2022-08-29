@@ -8,6 +8,7 @@ import life.inha.icemarket.respository.PostRepository;
 import life.inha.icemarket.respository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 
@@ -18,13 +19,13 @@ public class AdminService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    public List<UserListDto> getUserList(){
+    public List<UserListDto> getUserList() {
         return userRepository.getUserList();
     }
 
     public Integer convertGuestToUser(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException(userId));
-        if(user.getRole().equals(UserRole.GUEST)) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        if (user.getRole().equals(UserRole.GUEST)) {
             user.setRole(UserRole.USER);
             userRepository.save(user);
         }
@@ -32,11 +33,12 @@ public class AdminService {
     }
 
     public Integer rejectUser(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         user.setStatus(Status.DENIED);
         userRepository.save(user);
         return user.getId();
     }
+
     public Integer grantAdmin(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         user.setRole(UserRole.ADMIN);
@@ -57,8 +59,9 @@ public class AdminService {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return commentRepository.getCommentsByAuthorUser(userId);
     }
+
     public List<Post> getPostsByUser(Integer userId) throws IllegalArgumentException {
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        return postRepository.findAllById(userId);
+        return postRepository.findByUserId(userId);
     }
 }

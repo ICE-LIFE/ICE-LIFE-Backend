@@ -30,37 +30,40 @@ public class CommentController {
     /**
      * 댓글 생성 API
      * [Post] /comment
+     *
      * @return PostCommentRes
      */
     @PostMapping("/comment")
-    public ResponseEntity<CommentSaveResDto> createComment(@AuthenticationPrincipal User user, @RequestBody @Valid CommentSaveReqDto dto){
+    public ResponseEntity<CommentSaveResDto> createComment(@AuthenticationPrincipal User user, @RequestBody @Valid CommentSaveReqDto dto) {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        return new ResponseEntity<>(commentService.createComment(user,dto), header, HttpStatus.OK);
+        return new ResponseEntity<>(commentService.createComment(user, dto), header, HttpStatus.OK);
     }
 
     /**
      * 댓글 목록 보기 API
-     * [GET] comment?board=3
+     * [GET] comment?post=3
+     *
      * @return List<GetCommentRes>
      */
     @GetMapping("/comment")
-    public ResponseEntity<List<CommentResDto>> readCommentList(@RequestParam Integer board, @PageableDefault(direction = Sort.Direction.DESC, size = 5) Pageable pageable){
-        // board : 게시글
+    public ResponseEntity<List<CommentResDto>> readCommentList(@RequestParam Integer post, @PageableDefault(direction = Sort.Direction.DESC, size = 5) Pageable pageable) {
+        // post : 게시글 인덱스
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        return new ResponseEntity<>(commentService.readCommentList(board,pageable), header, HttpStatus.OK);
+        return new ResponseEntity<>(commentService.readCommentList(post, pageable), header, HttpStatus.OK);
     }
 
     /**
      * 단일 댓글 보기 API
      * [GET] /comment/3
+     *
      * @return GetCommentRes
      */
     @GetMapping("/comment/{id}")
-    public ResponseEntity<CommentResDto> readComment(@PathVariable Integer id){
+    public ResponseEntity<CommentResDto> readComment(@PathVariable Integer id) {
         // id : 댓글 인덱스
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
@@ -72,6 +75,7 @@ public class CommentController {
     /**
      * 댓글 삭제 API
      * [Delete] /comment/{id}
+     *
      * @return
      */
     @DeleteMapping("/comment/{id}")
@@ -81,7 +85,7 @@ public class CommentController {
         header.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
         commentService.deleteComment(id);
-        return new ResponseEntity<>("삭제 완료 !",header,HttpStatus.OK);
+        return new ResponseEntity<>("삭제 완료 !", header, HttpStatus.OK);
     }
 
 }

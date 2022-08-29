@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .antMatchers("/emailconfirm").permitAll()
                 .antMatchers("/findpw").permitAll()
                 .antMatchers("/resetpw").permitAll()
+                .antMatchers("/pwvalidcheck").permitAll()
                 .antMatchers("/onlyuser").hasRole("USER")
                 .antMatchers("/onlyadmin").hasRole("ADMIN")
                 .antMatchers("/ws/**").permitAll()

@@ -18,7 +18,7 @@ public class CommentResDto {
     // 작성 일자
     private LocalDateTime createdDate;
 
-    public static CommentResDto createCommentRes(Comment comment){
+    public static CommentResDto createCommentRes(Comment comment) {
         CommentResDto newCommentRes = new CommentResDto();
         newCommentRes.author = comment.getAuthorUser().getName();
         newCommentRes.commentIdx = comment.getId();
