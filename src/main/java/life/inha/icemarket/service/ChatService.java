@@ -51,10 +51,9 @@ public class ChatService {
 
     public void inviteUser(Integer roomId, Integer inviterId, Integer inviteeId) throws ForbiddenException, NotFoundException, ConflictException {
         Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
+        User invitee = userRepository.findById(inviteeId).orElseThrow(() -> new UserNotFoundException(inviteeId));
         if (!userRepository.existsById(inviterId)) {
             throw new UserNotFoundException(inviterId);
-        } else if (!userRepository.existsById(inviteeId)) {
-            throw new UserNotFoundException(inviteeId);
         }
 
         List<User> members = room.getUsers();
@@ -66,6 +65,11 @@ public class ChatService {
             throw new ConflictException(String.format("이미 초대된 이용자입니다: room_id=%d, user_id=%d", roomId, inviteeId));
         }
         roomRepository.joinUser(roomId, inviteeId);
+
+        members.add(invitee);
+        for (User member : members) {
+            messagingTemplate.convertAndSendToUser(member.getEmail(), "/queue/room/join", new JoinRoom(room.getId(), members.stream().map(User::getId).toList()));
+        }
     }
 
     public void leaveRoom(Integer roomId, Integer memberId) throws NotFoundException, ConflictException {
