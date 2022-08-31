@@ -62,7 +62,7 @@ public class ItemHistoryControllerTest {
         ItemHistorySaveRequestDto requestDto = new ItemHistorySaveRequestDto(itemId, managerId);
         Timestamp rentAt = requestDto.getRentAt();
         ItemHistory itemHistory = new ItemHistory(itemId,managerId,rentAt);
-        itemHistory.setId(1);
+        //itemHistory.setId(1);
         String content = objectMapper.writeValueAsString(requestDto);
 
         when(itemHistoryService.create(any())).thenReturn(itemHistory);
@@ -89,7 +89,7 @@ public class ItemHistoryControllerTest {
         ItemHistory itemHistory = new ItemHistory(itemId,managerId,rentAt);
         Timestamp returnAt = new Timestamp(System.currentTimeMillis());
         itemHistory.update(returnAt);
-        itemHistory.setId(1);
+        //itemHistory.setId(1);
 
         when(itemHistoryService.update(any(),any())).thenReturn(itemHistory);
 
@@ -114,7 +114,7 @@ public class ItemHistoryControllerTest {
         ItemHistory itemHistory1 = new ItemHistory(itemId1,managerId1,rentAt1);
         Timestamp returnAt1 = new Timestamp(System.currentTimeMillis());
         itemHistory1.update(returnAt1);
-        itemHistory1.setId(1);
+        //itemHistory1.setId(1);
 
         Integer itemId2 = 2;
         Integer managerId2 = 12222222;
@@ -123,7 +123,7 @@ public class ItemHistoryControllerTest {
         ItemHistory itemHistory2 = new ItemHistory(itemId2,managerId2,rentAt2);
         Timestamp returnAt2 = new Timestamp(System.currentTimeMillis());
         itemHistory2.update(returnAt2);
-        itemHistory2.setId(2);
+        //itemHistory2.setId(2);
 
         Iterable<ItemHistory> itemHistories = new ArrayList<ItemHistory>(Arrays.asList(itemHistory1, itemHistory2));
 

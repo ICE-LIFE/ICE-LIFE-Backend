@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity(name = "item_history")
 public class ItemHistory {
     @Id

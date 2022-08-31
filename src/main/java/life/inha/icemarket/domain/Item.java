@@ -51,7 +51,5 @@ public class Item {
         this.remainder = remainder;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+
 }

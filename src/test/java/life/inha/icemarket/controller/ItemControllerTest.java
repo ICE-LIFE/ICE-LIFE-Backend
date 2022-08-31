@@ -66,7 +66,7 @@ public class ItemControllerTest {
         Integer amount = 100;
         ItemSaveRequestDto requestDto = new ItemSaveRequestDto("복지물품 이름", "복지물품 이미지 url", amount);
         Item item = new Item("복지물품 이름", "복지물품 이미지 url",amount);
-        item.setId(1);
+        //item.setId(1);
         String content = objectMapper.writeValueAsString(requestDto);
 
         when(itemService.create(any())).thenReturn(item);
@@ -89,8 +89,8 @@ public class ItemControllerTest {
         Integer amount = 100;
         Item item1 = new Item("복지물품 이름 1", "복지물품 이미지 url 1", amount);
         Item item2 = new Item("복지물품 이름 2", "복지물품 이미지 url 2", amount);
-        item1.setId(1);
-        item2.setId(2);
+        //item1.setId(1);
+        //item2.setId(2);
         Iterable<Item> items = new ArrayList<Item>(Arrays.asList(item1, item2));
 
         when(itemService.readAll()).thenReturn(items);
@@ -109,7 +109,7 @@ public class ItemControllerTest {
         Integer newAmount = 40;
         ItemSaveRequestDto requestDto = new ItemSaveRequestDto("수정된 복지물품 이름", "수정된 복지물품 이미지 url", newAmount);
         Item newItem = new Item("수정된 복지물품 이름", "수정된 복지물품 이미지 url", newAmount);
-        newItem.setId(1);
+        //newItem.setId(1);
         String content = objectMapper.writeValueAsString(requestDto);
 
         when(itemService.update(any(), any())).thenReturn(newItem);
