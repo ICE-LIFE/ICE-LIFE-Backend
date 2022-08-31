@@ -1,9 +1,6 @@
 package life.inha.icemarket.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +10,7 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity(name = "item_history")
 public class ItemHistory {
     @Id
