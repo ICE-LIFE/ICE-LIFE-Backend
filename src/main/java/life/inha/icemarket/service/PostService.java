@@ -33,10 +33,9 @@ public class PostService {
         return result;
     }
 
-    public Page<Post> getPosts(String category, Pageable pageable) {
+    public Page<PostDto> getPosts(String category, Pageable pageable) {
         Page<Post> posts = postRepository.findAllByCategory(categoryRepository.findByName(category), pageable);
-
-        return posts;
+        return posts.map(PostDto::getPost);
     }
 
     public PostDto getPost(Integer id) {
